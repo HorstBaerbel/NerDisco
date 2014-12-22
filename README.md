@@ -13,6 +13,7 @@ License
 
 Building
 ========
+Atm a .pro file for Qt Creator / QMake is provided, so use that until CMake is working...
 
 **Use CMake:**
 <pre>
