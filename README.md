@@ -13,12 +13,23 @@ License
 
 Building
 ========
-Atm a .pro file for Qt Creator / QMake is provided, so use that until CMake is working...
+A .pro file for Qt Creator / QMake is provided, so you can just compile it from the Qt Creator IDE or import it into Visual Studio using the Qt addin. If you want to use the command line:
 
-**Use CMake:**
+**Windows / MSVC**
+
+Open up a Visual Studio command prompt of x86 or x64 flavor (depending on your Qt installation).
 <pre>
 cd NerDisco
-cmake .
+set QTDIR="PATH_TO_QT_INSTALLATION"
+set PATH=%PATH%;%QTDIR%\bin
+qmake
+nmake
+</pre>
+
+**Unix /GCC**
+<pre>
+cd NerDisco
+qmake
 make
 </pre>
 
