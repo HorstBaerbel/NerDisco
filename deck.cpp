@@ -3,6 +3,8 @@
 #include "settings.h"
 
 #include <QtQml/QQmlContext>
+#include <QFileDialog>
+#include <QMessageBox>
 
 
 Deck::Deck(QWidget *parent)
@@ -65,7 +67,11 @@ bool Deck::loadScript(const QString & path)
         m_codeEdit->setPlainText(file.readAll());
         m_codeEdit->document()->setModified(false);
         m_currentScriptPath = path;
-        ui->groupBox->setTitle(m_deckName + " (" + path + ")");
+        if (!m_currentScriptPath.startsWith(":/"))
+        {
+            m_currentScriptPath = QDir::current().relativeFilePath(path);
+        }
+        ui->groupBox->setTitle(m_deckName + " (" + m_currentScriptPath + ")");
         return true;
     }
     return false;
@@ -73,7 +79,8 @@ bool Deck::loadScript(const QString & path)
 
 bool Deck::saveScript()
 {
-    if (!m_currentScriptPath.isEmpty())
+    //check if the script name is not empty and the script is not coming from a resource
+    if (!m_currentScriptPath.isEmpty() && !m_currentScriptPath.startsWith(":/"))
     {
         QFile file(m_currentScriptPath);
         if (file.open(QFile::WriteOnly))
@@ -85,23 +92,39 @@ bool Deck::saveScript()
                 return true;
             }
         }
+        else
+        {
+            QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Failed to open file!") , tr("Failed to open \"") + m_currentScriptPath + tr("\". Do you want to save the script under a different name?"), QMessageBox::Yes | QMessageBox::No);
+            if (result == QMessageBox::No)
+            {
+                return false;
+            }
+        }
     }
-    return false;
+    return saveAsScript();
 }
 
 bool Deck::saveAsScript(const QString & path)
 {
-    if (!path.isEmpty())
+    QString filePath = path;
+    //if the path is empty, query the user for a file name
+    if (filePath.isEmpty())
     {
-        QFile file(path);
+        QString startName = m_currentScriptPath.startsWith(":/") ? QFileInfo(m_currentScriptPath).fileName() : m_currentScriptPath;
+        filePath = QFileDialog::getSaveFileName(this, tr("Save current script as"), startName, tr("QML files (*.qml)"));
+    }
+    if (!filePath.isEmpty())
+    {
+        QFile file(filePath);
         if (file.open(QFile::WriteOnly))
         {
             QByteArray data(m_codeEdit->toPlainText().toUtf8());
             if (file.write(data) == data.size())
             {
                 m_codeEdit->document()->setModified(false);
-                m_currentScriptPath = path;
-                ui->groupBox->setTitle(m_deckName + " (" + path + ")");
+                //make path relative
+                m_currentScriptPath = QDir::current().relativeFilePath(filePath);
+                ui->groupBox->setTitle(m_deckName + " (" + m_currentScriptPath + ")");
                 return true;
             }
         }

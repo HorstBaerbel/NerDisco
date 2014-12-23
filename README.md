@@ -38,7 +38,20 @@ G++ 4.7 (for C++11) is needed to compile NerDisco. For installing G++ 4.7 see [h
 
 Overview
 ========
-![GUI overview](NerDisco_gui.png?raw=true)  
+![GUI overview](NerDisco_gui.png?raw=true)
+
+Scripts
+========
+
+QML script are read from the "effects" directory and should have the extension ".qml" to be found and displayed in the menu.
+The dials A-C and the trigger button can be queried in scripts from the parent object via the variables valueA, valueB, valueC and trigger. Dial values range from [0,1] and trigger [false,true].
+<pre>
+Item {
+	property real x: parent.valueA
+	property bool y: parent.trigger
+	//now do something with x and y
+}
+</pre>
 
 FAQ
 ========

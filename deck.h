@@ -17,7 +17,7 @@ public:
 
     bool loadScript(const QString & path);
     bool saveScript();
-    bool saveAsScript(const QString & path);
+    bool saveAsScript(const QString & path = "");
 
     QImage grabFramebuffer();
 

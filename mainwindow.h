@@ -25,7 +25,11 @@ protected slots:
     void updateSettingsFromUi();
 
     void loadDeckA(bool checked = false);
+    void saveDeckA(bool checked = false);
+    void saveAsDeckA(bool checked = false);
     void loadDeckB(bool checked = false);
+    void saveDeckB(bool checked = false);
+    void saveAsDeckB(bool checked = false);
 
     void showResponse(const QString &s);
     void processError(const QString &s);

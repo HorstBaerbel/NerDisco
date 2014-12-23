@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_currentImage = QImage(settings.frameBufferWidth(), settings.frameBufferHeight(), QImage::Format_ARGB32);
     m_realImage = QImage(settings.displayWidth(), settings.displayHeight(), QImage::Format_ARGB32);
     //connect menu actions
+    connect(ui->actionSaveDeckA, SIGNAL(triggered()), this, SLOT(saveDeckA()));
+    connect(ui->actionSaveAsDeckA, SIGNAL(triggered()), this, SLOT(saveAsDeckA()));
+    connect(ui->actionSaveDeckB, SIGNAL(triggered()), this, SLOT(saveDeckB()));
+    connect(ui->actionSaveAsDeckB, SIGNAL(triggered()), this, SLOT(saveAsDeckB()));
     connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(ui->actionBeenden, SIGNAL(triggered()), this, SLOT(exitApplication()));
     //update the menu showing the effect files
@@ -201,12 +205,44 @@ void MainWindow::loadDeckA(bool /*checked*/)
     }
 }
 
+void MainWindow::saveDeckA(bool /*checked*/)
+{
+    if (ui->widgetDeckA->saveScript())
+    {
+        updateMenu();
+    }
+}
+
+void MainWindow::saveAsDeckA(bool /*checked*/)
+{
+    if (ui->widgetDeckA->saveAsScript())
+    {
+        updateMenu();
+    }
+}
+
 void MainWindow::loadDeckB(bool /*checked*/)
 {
     QAction * action = qobject_cast<QAction*>(sender());
     if (action)
     {
         ui->widgetDeckB->loadScript(action->data().toString());
+    }
+}
+
+void MainWindow::saveDeckB(bool /*checked*/)
+{
+    if (ui->widgetDeckB->saveScript())
+    {
+        updateMenu();
+    }
+}
+
+void MainWindow::saveAsDeckB(bool /*checked*/)
+{
+    if (ui->widgetDeckB->saveAsScript())
+    {
+        updateMenu();
     }
 }
 
