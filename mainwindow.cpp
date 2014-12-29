@@ -3,6 +3,7 @@
 #include "SettingsDialog.h"
 #include "Settings.h"
 #include "ColorOperations.h"
+#include "AudioThread.h"
 
 #include <QPainter>
 #include <QDir>
@@ -16,8 +17,20 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     //showFullScreen();
-    //set up the final preview
+    //retrieve settings
     Settings & settings = Settings::getInstance();
+    //update audio devices
+    ui->comboBoxAudioDevice->addItem("None", -1);
+    QStringList inputDevices = AudioThread::inputDeviceNames();
+    for (int i = 0; i < inputDevices.size(); ++i)
+    {
+        ui->comboBoxAudioDevice->addItem(inputDevices.at(i), i);
+    }
+    connect(ui->comboBoxAudioDevice, SIGNAL(currentIndexChanged(int)), this, SLOT(inputAudioDeviceChanged(int)));
+    connect(ui->comboBoxAudioDevice, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSettingsFromUi()));
+    //try to select the saved audio device
+    ui->comboBoxAudioDevice->setCurrentText(settings.inputAudioDeviceName());
+    //set up the final preview
     ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
     ui->labelRealImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
     //setup preview gamma/brighness/contrast
@@ -70,11 +83,16 @@ void MainWindow::updateSettingsFromUi()
     settings.setDisplayGamma(ui->horizontalSliderGamma->value() / 100.0f);
     settings.setDisplayBrightness(ui->horizontalSliderBrightness->value() / 50.0f);
     settings.setDisplayContrast(ui->horizontalSliderContrast->value() / 50.0f + 1.0f);
+    settings.setInputAudioDeviceName(ui->comboBoxAudioDevice->currentText());
 }
 
 void MainWindow::exitApplication()
 {
     close();
+}
+
+void MainWindow::inputAudioDeviceChanged(int index)
+{
 }
 
 QImage MainWindow::currentImage() const

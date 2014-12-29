@@ -49,6 +49,9 @@ public:
     ScanlineDirection scanlineDirection() const;
     void setScanlineDirection(ScanlineDirection direction);
 
+    QString inputAudioDeviceName() const;
+    void setInputAudioDeviceName(const QString & name);
+
     void save();
 
     ~Settings();
@@ -71,6 +74,7 @@ private:
     float m_displayContrast;
     ScanlineDirection m_scanlineDirection;
     QString m_audioSinkName;
+    QString m_inputAudioDeviceName;
 
     static Settings s_settings;
 };

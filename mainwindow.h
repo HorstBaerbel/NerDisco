@@ -24,6 +24,8 @@ protected slots:
     void updateMenu();
     void updateSettingsFromUi();
 
+    void inputAudioDeviceChanged(int index);
+
     void loadDeckA(bool checked = false);
     void saveDeckA(bool checked = false);
     void saveAsDeckA(bool checked = false);
