@@ -44,11 +44,12 @@ Scripts
 ========
 
 QML script are read from the "effects" directory and should have the extension ".qml" to be found and displayed in the menu.
-The dials A-C and the trigger button can be queried in scripts from the parent object via the variables valueA, valueB, valueC and trigger. Dial values range from [0,1] and trigger [false,true].
+The dials A-C and the trigger button can be used in scripts via the variables valueA, valueB, valueC and trigger. Dial values range from [0,1] and trigger [false,true].
 <pre>
 Item {
-	property real x: parent.valueA
-	property bool y: parent.trigger
+	//define variables and default values
+	property real valueA: 0.0
+	property bool trigger: false
 	//now do something with x and y
 }
 </pre>

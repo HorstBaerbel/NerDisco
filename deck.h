@@ -1,6 +1,6 @@
 #pragma once
 
-#include "liveview.h"
+#include "LiveView.h"
 #include "CodeEdit.h"
 
 #include <QWidget>

@@ -1,6 +1,6 @@
-#include "settingsdialog.h"
+#include "SettingsDialog.h"
 #include "ui_settingsdialog.h"
-#include "settings.h"
+#include "Settings.h"
 
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>

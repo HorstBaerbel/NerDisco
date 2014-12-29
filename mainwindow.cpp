@@ -1,7 +1,7 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
-#include "settingsdialog.h"
-#include "settings.h"
+#include "SettingsDialog.h"
+#include "Settings.h"
 #include "ColorOperations.h"
 
 #include <QPainter>

@@ -1,5 +1,5 @@
-#include "liveview.h"
-#include "settings.h"
+#include "LiveView.h"
+#include "Settings.h"
 
 #include <QDebug>
 #include <QQmlEngine>

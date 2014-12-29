@@ -8,36 +8,36 @@ TARGET = nerdisco
 TEMPLATE = app
 
 HEADERS += \
-    mainwindow.h \
-    settingsdialog.h \
-    deck.h \
-    liveview.h \
-    settings.h \
-    displaythread.h \
     QTextEditLineNumberArea.h \
     CodeEdit.h \
     ColorOperations.h \
     AudioThread.h \
-    QTextEditStatusArea.h
+    QTextEditStatusArea.h \
+    Deck.h \
+    DisplayThread.h \
+    LiveView.h \
+    MainWindow.h \
+    Settings.h \
+    SettingsDialog.h
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp \
-    settingsdialog.cpp \
-    deck.cpp \
-    liveview.cpp \
-    settings.cpp \
-    displaythread.cpp \
     QTextEditLineNumberArea.cpp \
     CodeEdit.cpp \
     AudioThread.cpp \
     QTextEditStatusArea.cpp \
-    ColorOperations.cpp
+    ColorOperations.cpp \
+    Deck.cpp \
+    DisplayThread.cpp \
+    LiveView.cpp \
+    MainWindow.cpp \
+    Settings.cpp \
+    SettingsDialog.cpp \
+    NerDisco.cpp
 
 FORMS += \
-    mainwindow.ui \
-    settingsdialog.ui \
-    codedeck.ui
+    CodeDeck.ui \
+    MainWindow.ui \
+    SettingsDialog.ui
 
 RESOURCES += \
     resources.qrc

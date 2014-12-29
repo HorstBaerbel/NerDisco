@@ -1,5 +1,5 @@
-#include "displaythread.h"
-#include "settings.h"
+#include "DisplayThread.h"
+#include "Settings.h"
 
 #include <QtSerialPort/QSerialPort>
 #include <QTime>
