@@ -1,7 +1,8 @@
 #pragma once
 
-#include "deck.h"
-#include "displaythread.h"
+#include "Deck.h"
+#include "DisplayThread.h"
+#include "AudioInterface.h"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -23,8 +24,14 @@ protected slots:
     void updateCurrentImage();
     void updateMenu();
     void updateSettingsFromUi();
+    void updateAudioDevices();
 
-    void inputAudioDeviceChanged(int index);
+    void audioInputDeviceSelected();
+    void audioInputDeviceChanged(const QString & name);
+    void audioRecordTriggered(bool checked);
+    void audioStopTriggered();
+    void audioCaptureStateChanged(bool capturing);
+    void audioUpdateData(const QVector<float> & data, float timeus);
 
     void loadDeckA(bool checked = false);
     void saveDeckA(bool checked = false);
@@ -49,4 +56,5 @@ private:
     QImage m_currentImage;
     QImage m_realImage;
     DisplayThread m_displayThread;
+    AudioInterface m_audioInterface;
 };

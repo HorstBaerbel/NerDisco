@@ -216,3 +216,6 @@ pip-log.txt
 
 #Qt generated files
 ui_*.h
+
+#Qt + Visual Studio generated files
+GeneratedFiles/
