@@ -9,7 +9,7 @@
 AudioWorker::AudioWorker(QObject *parent)
 	: QObject(parent)
 {
-	qRegisterMetaType<QVector<float>>("QVector<float>");
+    qRegisterMetaType< QVector<float> >("QVector<float>");
 }
 
 void AudioWorker::processAudioData(const QByteArray & buffer, const QAudioFormat & format)
@@ -27,13 +27,13 @@ AudioWorker::~AudioWorker()
 AudioInterface::AudioInterface(QObject *parent)
 	: QObject(parent)
 	, m_worker(new AudioWorker())
-	, m_audioInput(nullptr)
-	, m_inputDevice(nullptr)
+    , m_audioInput(NULL)
+    , m_inputDevice(NULL)
 	, m_capturing(false)
 	, m_captureInterval(33)
 {
 	//register metatype so all signal/slot connections work
-	qRegisterMetaType<QVector<float>>("QVector<float>");
+    qRegisterMetaType< QVector<float> >("QVector<float>");
 	//do all possible connections to worker object
 	connect(&m_workerThread, &QThread::finished, m_worker, &QObject::deleteLater);
 	connect(this, SIGNAL(processAudioData(const QByteArray &, const QAudioFormat &)), m_worker, SLOT(processAudioData(const QByteArray &, const QAudioFormat &)));
@@ -45,9 +45,12 @@ AudioInterface::AudioInterface(QObject *parent)
 
 AudioInterface::~AudioInterface()
 {
-	m_audioInput->stop();
-	delete m_audioInput;
-	delete m_inputDevice;
+    if (m_audioInput)
+    {
+        m_audioInput->stop();
+        delete m_audioInput;
+        delete m_inputDevice;
+    }
 	m_workerThread.quit();
 	m_workerThread.wait();
 }
@@ -89,7 +92,7 @@ void AudioInterface::setCaptureState(bool capturing)
 				m_inputDevice->close();
 				m_inputDevice->disconnect(this);
 				delete m_inputDevice;
-				m_inputDevice = nullptr;
+                m_inputDevice = NULL;
 			}
 		}
 	}
@@ -108,16 +111,16 @@ void AudioInterface::setCurrentInputDevice(const QString & inputName)
 			m_audioInput->stop();
 			m_audioInput->disconnect(this);
 			delete m_audioInput;
-			m_audioInput = nullptr;
+            m_audioInput = NULL;
 			m_inputDevice->disconnect(this);
 			delete m_inputDevice;
-			m_inputDevice = nullptr;
+            m_inputDevice = NULL;
 		}
 		//if we've got a device name, try to find the device
 		if (!m_currentInputDeviceName.isEmpty())
 		{
 			//find device for name
-			for (const QAudioDeviceInfo & info : QAudioDeviceInfo::availableDevices(QAudio::AudioInput))
+            foreach (const QAudioDeviceInfo & info, QAudioDeviceInfo::availableDevices(QAudio::AudioInput))
 			{
 				if (info.deviceName() == m_currentInputDeviceName)
 				{

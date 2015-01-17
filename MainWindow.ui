@@ -531,7 +531,7 @@
   <customwidget>
    <class>Deck</class>
    <extends>QWidget</extends>
-   <header>deck.h</header>
+   <header>Deck.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

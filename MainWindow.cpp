@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
+#include "ui_MainWindow.h"
 #include "SettingsDialog.h"
 #include "Settings.h"
 #include "ColorOperations.h"
@@ -93,13 +93,13 @@ void MainWindow::updateAudioDevices()
 	QMenu * oldMenu = ui->actionAudioDevices->menu();
 	if (oldMenu)
 	{
-		oldMenu->setParent(nullptr);
+        oldMenu->setParent(NULL);
 		delete oldMenu;
-		ui->actionAudioDevices->setMenu(nullptr);
+        ui->actionAudioDevices->setMenu(NULL);
 	}
 	//add default device
 	QMenu * deviceMenu = new QMenu(this);
-	QAction * selected = nullptr;
+    QAction * selected = NULL;
 	QAction * action = deviceMenu->addAction(tr("None"));
 	action->setCheckable(true);
 	deviceMenu->addAction(action);
@@ -157,7 +157,7 @@ void MainWindow::audioInputDeviceChanged(const QString & name)
 	QMenu * menu = ui->actionAudioDevices->menu();
 	if (menu && menu->actions().size() > 0)
 	{
-		for (QAction * action : menu->actions())
+        foreach (QAction * action, menu->actions())
 		{
 			action->setChecked(action->text() == name || (action->text() == tr("None") && name == ""));
 		}
@@ -184,7 +184,7 @@ void MainWindow::audioCaptureStateChanged(bool capturing)
 
 void MainWindow::audioUpdateData(const QVector<float> & data, float timeus)
 {
-	//qDebug() << "Audio data arrived" << timeus / 1000;
+    qDebug() << "Audio data arrived" << timeus / 1000;
 	QImage image(ui->labelSpectrumImage->size(), QImage::Format_ARGB32);
 	QPainter painter(&image);
 	painter.setCompositionMode(QPainter::CompositionMode_Source);

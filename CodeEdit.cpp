@@ -253,7 +253,7 @@ void CodeEdit::statusAreaPaintEvent(QPaintEvent *event)
     {
         bool errorUnderCursor = false;
         //check if a line is selected in which an error occured
-        for (auto error : m_errors)
+        foreach (Error error, m_errors)
         {
             if (textCursor().block().position() == document()->findBlockByLineNumber(error.line - 1).position())
             {

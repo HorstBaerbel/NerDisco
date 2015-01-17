@@ -1,6 +1,6 @@
-#include "deck.h"
-#include "ui_codedeck.h"
-#include "settings.h"
+#include "Deck.h"
+#include "ui_Deck.h"
+#include "Settings.h"
 
 #include <QtQml/QQmlContext>
 #include <QFileDialog>

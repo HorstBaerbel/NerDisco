@@ -1,7 +1,7 @@
 NerDisco
 ========
 
-Is a simple VJ tool leveraging Qts' QML/JavaScript libraries to provide live-editing functions and is meant to be connected to a [Boblight](https://code.google.com/p/boblight/)display of the ["Adalight"](http://www.adafruit.com/product/461) type via a serial port. It was tested with an Arduino Pro connected to an LEDstrip using [LPD8806 chips](http://www.adafruit.com/product/306). The code running on the Arduino was [Adalights' LPD8806 LEDstream sketch](https://github.com/adafruit/Adalight/blob/master/Arduino/LEDstream_LPD8806/LEDstream_LPD8806.pde). The code was compiled and tested on a Windows 7 and Ubuntu 14.04 machine and may or may not work on other systems.
+Is a simple VJ tool leveraging Qts' QML/JavaScript libraries to provide live-editing functions and is meant to be connected to a [Boblight](https://code.google.com/p/boblight/) display of the ["Adalight"](http://www.adafruit.com/product/461) type via a serial port. It was tested with an Arduino Pro connected to an LEDstrip using [LPD8806 chips](http://www.adafruit.com/product/306). The code running on the Arduino was [Adalights' LPD8806 LEDstream sketch](https://github.com/adafruit/Adalight/blob/master/Arduino/LEDstream_LPD8806/LEDstream_LPD8806.pde). The code was compiled and tested on a Windows 7 and Ubuntu 14.04 machine and may or may not work on other systems.
 It is in parts inspired by the live shader-editing tool [quint](https://gitorious.org/quint). So hats off to those guys...
 
 Please note that the tool was rather quickly hacked together for a party and obviously needs some heavy refactoring and improvements. Planned features are some audio input facilities, so e.g. the music spectrum can be used in the scripts and MIDI controller input for the dials/triggers for better interaction.
@@ -33,8 +33,9 @@ qmake
 make
 </pre>
 
-The Qt framework with version 5.3 or higher is required for GUI, audio and serial port functionality.
-G++ 4.7 (for C++11) is needed to compile NerDisco. For installing G++ 4.7 see [here](http://lektiondestages.blogspot.de/2013/05/installing-and-switching-gccg-versions.html).
+The Qt framework version 5.1 or higher is required for GUI, audio and serial port functionality. You might need to additionally install the "qtmultimedia5-dev" package for audio input support.
+If NerDisco does not find any audio devices your system might lack the [Qt5 multimedia plugins](http://stackoverflow.com/questions/21939759/qaudiodeviceinfo-finds-no-default-audio-device-on-ubuntu). Install the "libqt5multimedia5-plugins" package.
+G++ 4.7 (for C++11) might be needed to compile NerDisco. For installing G++ 4.7 see [here](http://lektiondestages.blogspot.de/2013/05/installing-and-switching-gccg-versions.html).
 
 Overview
 ========
