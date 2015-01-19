@@ -5,16 +5,16 @@
 #include <QAudioBuffer>
 #include <QAudioInput>
 #include <QThread>
-#include <QMutex>
-#include <QWaitCondition>
 
-class AudioWorker : public QObject
+
+//private worker class used in the interface
+class InterfaceWorker : public QObject
 {
 	Q_OBJECT
 
 public:
-	AudioWorker(QObject *parent = 0);
-	~AudioWorker();
+	InterfaceWorker(QObject *parent = 0);
+	~InterfaceWorker();
 
 signals:
 	void audioDataProcessed(const QVector<float> & data, float timeus);
@@ -22,6 +22,8 @@ signals:
 public slots:
 	void processAudioData(const QByteArray & buffer, const QAudioFormat & format);
 };
+
+//-------------------------------------------------------------------------------------------------
 
 class AudioInterface: public QObject
 {
@@ -52,7 +54,6 @@ public:
 signals:
 	void inputDeviceChanged(const QString & name);
 	void captureStateChanged(bool capturing);
-	void processAudioData(const QByteArray & buffer, const QAudioFormat & format);
 	void audioDataCaptured(const QVector<float> & data, float timeus);
 
 protected slots:
@@ -60,7 +61,7 @@ protected slots:
 	void inputStateChanged(QAudio::State state);
 
 private:
-	AudioWorker * m_worker;
+	InterfaceWorker * m_worker;
 	QThread m_workerThread;
 	QAudioInput * m_audioInput;
 	QIODevice * m_inputDevice;

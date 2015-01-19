@@ -184,7 +184,7 @@ void MainWindow::audioCaptureStateChanged(bool capturing)
 
 void MainWindow::audioUpdateData(const QVector<float> & data, float timeus)
 {
-    qDebug() << "Audio data arrived" << timeus / 1000;
+    //qDebug() << "Audio data arrived" << timeus / 1000;
 	QImage image(ui->labelSpectrumImage->size(), QImage::Format_ARGB32);
 	QPainter painter(&image);
 	painter.setCompositionMode(QPainter::CompositionMode_Source);

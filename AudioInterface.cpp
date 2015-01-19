@@ -6,19 +6,19 @@
 
 //-------------------------------------------------------------------------------------------------
 
-AudioWorker::AudioWorker(QObject *parent)
+InterfaceWorker::InterfaceWorker(QObject *parent)
 	: QObject(parent)
 {
     qRegisterMetaType< QVector<float> >("QVector<float>");
 }
 
-void AudioWorker::processAudioData(const QByteArray & buffer, const QAudioFormat & format)
+void InterfaceWorker::processAudioData(const QByteArray & buffer, const QAudioFormat & format)
 {
 	QVector<float> levels = AudioInterface::getBufferLevels(buffer, format);
 	emit audioDataProcessed(levels, AudioInterface::getDuration(buffer, format));
 }
 
-AudioWorker::~AudioWorker()
+InterfaceWorker::~InterfaceWorker()
 {
 }
 
@@ -26,7 +26,7 @@ AudioWorker::~AudioWorker()
 
 AudioInterface::AudioInterface(QObject *parent)
 	: QObject(parent)
-	, m_worker(new AudioWorker())
+	, m_worker(new InterfaceWorker())
     , m_audioInput(NULL)
     , m_inputDevice(NULL)
 	, m_capturing(false)
@@ -36,7 +36,7 @@ AudioInterface::AudioInterface(QObject *parent)
     qRegisterMetaType< QVector<float> >("QVector<float>");
 	//do all possible connections to worker object
 	connect(&m_workerThread, &QThread::finished, m_worker, &QObject::deleteLater);
-	connect(this, SIGNAL(processAudioData(const QByteArray &, const QAudioFormat &)), m_worker, SLOT(processAudioData(const QByteArray &, const QAudioFormat &)));
+	//connect(this, SIGNAL(processAudioData(const QByteArray &, const QAudioFormat &)), m_worker, SLOT(processAudioData(const QByteArray &, const QAudioFormat &)));
 	connect(m_worker, SIGNAL(audioDataProcessed(const QVector<float> &, float)), this, SIGNAL(audioDataCaptured(const QVector<float> &, float)));
 	//move worker object to thread and run thread
 	m_worker->moveToThread(&m_workerThread);
@@ -77,10 +77,10 @@ void AudioInterface::setCaptureState(bool capturing)
 				m_inputDevice = new QBuffer(this);
 				m_inputDevice->open(QIODevice::ReadWrite);
 				//connect(m_inputDevice, SIGNAL(readyRead()), this, SLOT(inputDataReady()));
-				//allocate buffer for 100ms of audio and start input
+				//allocate audio buffer sized twice the capture interval and start input
 				m_audioInput->setBufferSize(m_audioInput->format().bytesForDuration(1000 * 2 * m_captureInterval));
 				m_audioInput->start(m_inputDevice);
-				//m_inputDevice = m_audioInput->start(m_inputDevice); //DOES NOT WORK!
+				//m_inputDevice = m_audioInput->start(); //DOES NOT WORK! Why. ever.
 			}
 		}
 		else
@@ -308,7 +308,8 @@ void AudioInterface::inputDataReady()
 		if (m_inputDevice->bytesAvailable() > 0)
 		{
 			//send data to worker thread for processing
-			emit processAudioData(m_inputDevice->readAll(), m_audioInput->format());
+			QMetaObject::invokeMethod(m_worker, "processAudioData", Q_ARG(const QByteArray &, m_inputDevice->readAll()), Q_ARG(const QAudioFormat &, m_audioInput->format()));
+			//emit processAudioData(m_inputDevice->readAll(), m_audioInput->format());
 		}
 		m_inputDevice->reset();
 	}
