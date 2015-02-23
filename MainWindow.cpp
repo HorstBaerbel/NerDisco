@@ -242,7 +242,7 @@ void MainWindow::grabDeckImages()
 	m_signalJoiner.stop();
 	//grab images from the decks
 	QImage deckImageA = ui->widgetDeckA->getGrabbedFramebuffer();
-	QImage deckImageB = ui->widgetDeckA->getGrabbedFramebuffer();
+	QImage deckImageB = ui->widgetDeckB->getGrabbedFramebuffer();
 	//composite deck framebuffers into final image
 	QPainter painter(&m_currentImage);
 	painter.setCompositionMode(QPainter::CompositionMode_Source);
