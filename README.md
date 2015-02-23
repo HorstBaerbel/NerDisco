@@ -1,7 +1,7 @@
 NerDisco
 ========
 
-Is a simple VJ tool leveraging OpenGL GLSL to provide live-editing functions and is meant to be connected to a [Boblight](https://code.google.com/p/boblight/) display of the ["Adalight"](http://www.adafruit.com/product/461) type via a serial port. It was tested with an Arduino Pro connected to an LEDstrip using [LPD8806 chips](http://www.adafruit.com/product/306). The code running on the Arduino was [Adalights' LPD8806 LEDstream sketch](https://github.com/adafruit/Adalight/blob/master/Arduino/LEDstream_LPD8806/LEDstream_LPD8806.pde). The code was compiled and tested on a Windows 7 and Ubuntu 14.04 machine and may or may not work on other systems.
+Is a simple VJ tool leveraging OpenGL/GLSL to provide live-editing functions and is meant to be connected to a [Boblight](https://code.google.com/p/boblight/) display of the ["Adalight"](http://www.adafruit.com/product/461) type via a serial port. It was tested with an Arduino Pro connected to an LED strip using [LPD8806 chips](http://www.adafruit.com/product/306). The code running on the Arduino was [Adalights' LPD8806 LEDstream sketch](https://github.com/adafruit/Adalight/blob/master/Arduino/LEDstream_LPD8806/LEDstream_LPD8806.pde). The code was compiled and tested on a Windows 7 and Ubuntu 14.04 machine and may or may not work on other systems.
 It is in parts inspired by the live shader-editing tool [quint](https://gitorious.org/quint). So hats off to those guys...
 
 Please note that the tool was rather quickly hacked together for a party and obviously needs some heavy refactoring and improvements. Planned features are some audio input facilities, so e.g. the music spectrum can be used in the scripts and MIDI controller input for the dials/triggers for better interaction.
