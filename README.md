@@ -47,7 +47,7 @@ Scripts
 The render scripts are actually GLSL 1.20 fragment shaders. Those ".fs" script files are read from the "effects" directory and should have the extension ".fs" to be found and displayed in the menu.
 The dials A-C and the trigger button can be used in scripts via the float uniform variables "valueA", "valueB", "valueC" and "trigger". Dial values range from [0,1] and trigger [false,true].
 Also the uniforms "vec2 renderSize" (render area pixel resolution) and "float time" (application runtime in seconds) are available. A good example is "rect.fs" in the effects sub directory.
-<pre>
+```
 #version 120
 
 uniform vec2 renderSize;
@@ -67,7 +67,7 @@ void main() {
 	float b = l * valueC + trigger;
 	gl_FragColor = vec4(r, g, b, 1.0);
 }
-</pre>
+```
 
 FAQ
 ========
