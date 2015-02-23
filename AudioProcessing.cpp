@@ -1,56 +1,64 @@
 #include "AudioProcessing.h"
 
 
-//-------------------------------------------------------------------------------------------------
-
 ProcessingWorker::ProcessingWorker(QObject *parent)
 	: QObject(parent)
+	, m_doLevels(true)
 	, m_doBeatDetection(false)
-	, m_doFFT(true)
+	, m_doFFT(false)
 {
 	qRegisterMetaType< QVector<float> >("QVector<float>");
 }
 
-void ProcessingWorker::processAudioData(const QVector<float> & data, float timeus)
+void ProcessingWorker::enableLevelsData(bool enable)
 {
+	m_doLevels = enable;
+}
+
+void ProcessingWorker::enableBeatData(bool enable)
+{
+	m_doBeatDetection = enable;
+}
+
+void ProcessingWorker::enableFFTData(bool enable)
+{
+	m_doFFT = enable;
+}
+
+void ProcessingWorker::input(const QVector<float> & data, int channels, float timeus)
+{
+	if (m_doLevels)
+	{
+		QVector<float> levels = getMaximumLevels(data, channels);
+		emit levelData(levels, timeus);
+	}
 	if (m_doFFT)
 	{
+		QVector<float> processed;
+		if (m_doBeatDetection)
+		{
+		}
 	}
-	if (m_doBeatDetection)
-	{
+}
+
+QVector<float> ProcessingWorker::getMaximumLevels(const QVector<float> & data, int channels)
+{
+	QVector<float> maxLevels(channels, 0.0f);
+	const int frames = data.size() / channels;
+	for (int i = 0; i < frames; ++i) {
+		for (int j = 0; j < channels; ++j) {
+			qreal value = qAbs(data[j]);
+			maxLevels[j] = value > maxLevels[j] ? value : maxLevels[j];
+		}
 	}
+	return maxLevels;
+}
+
+QVector<float> ProcessingWorker::getSpectrum(const QVector<float> & /*data*/, int /*channels*/)
+{
+	return QVector<float>(1, 0.0f);
 }
 
 ProcessingWorker::~ProcessingWorker()
 {
-}
-
-//-------------------------------------------------------------------------------------------------
-
-AudioProcessing::AudioProcessing(QObject *parent)
-	: QObject(parent)
-	, m_worker(new ProcessingWorker())
-{
-	//register metatype so all signal/slot connections work
-	qRegisterMetaType< QVector<float> >("QVector<float>");
-	//do all possible connections to worker object
-	connect(&m_workerThread, &QThread::finished, m_worker, &QObject::deleteLater);
-	connect(this, SIGNAL(processAudioData(const QVector<float> & data, float timeus)), m_worker, SLOT(processAudioData(const QVector<float> & data, float timeus)));
-	//connect(m_worker, SIGNAL(audioDataProcessed(const QVector<float> &, float)), this, SIGNAL(audioDataCaptured(const QVector<float> &, float)));
-	//move worker object to thread and run thread
-	m_worker->moveToThread(&m_workerThread);
-	m_workerThread.start();
-}
-
-AudioProcessing::~AudioProcessing()
-{
-	m_workerThread.quit();
-	m_workerThread.wait();
-}
-
-void AudioProcessing::processAudioData(const QVector<float> & data, float timeus)
-{
-	//send data to worker thread for processing
-	QMetaObject::invokeMethod(m_worker, "processAudioData", Q_ARG(const QVector<float> &, data), Q_ARG(float, timeus));
-	//emit processAudioData(data, timeus);
 }

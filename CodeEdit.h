@@ -27,7 +27,7 @@ public:
     void statusAreaPaintEvent(QPaintEvent *event);
     int statusAreaHeight();
 
-    void setErrors(const QVector<Error> & errors);
+	void setErrors(const QVector<Error> & errors = QVector<Error>());
 
 protected:
     virtual void resizeEvent(QResizeEvent *e);

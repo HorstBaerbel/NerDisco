@@ -14,6 +14,7 @@ CodeEdit::CodeEdit(QWidget *parent)
     setTabStopWidth(4);
     setLineWrapMode(QTextEdit::NoWrap);
     setAcceptRichText(false);
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //add line numbers
     m_lineNumberArea = new QTextEditLineNumberArea(this);
     connect(this->document(), SIGNAL(blockCountChanged(int)), this, SLOT(updateEditorMargins(int)));

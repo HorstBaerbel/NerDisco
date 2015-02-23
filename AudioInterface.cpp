@@ -4,29 +4,11 @@
 #include <QBuffer>
 #include <QDebug>
 
-//-------------------------------------------------------------------------------------------------
-
-InterfaceWorker::InterfaceWorker(QObject *parent)
-	: QObject(parent)
-{
-    qRegisterMetaType< QVector<float> >("QVector<float>");
-}
-
-void InterfaceWorker::processAudioData(const QByteArray & buffer, const QAudioFormat & format)
-{
-	QVector<float> levels = AudioInterface::getBufferLevels(buffer, format);
-	emit audioDataProcessed(levels, AudioInterface::getDuration(buffer, format));
-}
-
-InterfaceWorker::~InterfaceWorker()
-{
-}
-
-//-------------------------------------------------------------------------------------------------
 
 AudioInterface::AudioInterface(QObject *parent)
 	: QObject(parent)
-	, m_worker(new InterfaceWorker())
+	, m_conversionWorker(new ConversionWorker())
+	, m_processingWorker(new ProcessingWorker())
     , m_audioInput(NULL)
     , m_inputDevice(NULL)
 	, m_capturing(false)
@@ -34,12 +16,18 @@ AudioInterface::AudioInterface(QObject *parent)
 {
 	//register metatype so all signal/slot connections work
     qRegisterMetaType< QVector<float> >("QVector<float>");
-	//do all possible connections to worker object
-	connect(&m_workerThread, &QThread::finished, m_worker, &QObject::deleteLater);
-	//connect(this, SIGNAL(processAudioData(const QByteArray &, const QAudioFormat &)), m_worker, SLOT(processAudioData(const QByteArray &, const QAudioFormat &)));
-	connect(m_worker, SIGNAL(audioDataProcessed(const QVector<float> &, float)), this, SIGNAL(audioDataCaptured(const QVector<float> &, float)));
-	//move worker object to thread and run thread
-	m_worker->moveToThread(&m_workerThread);
+	//do all possible connections to worker objects
+	connect(&m_workerThread, &QThread::finished, m_conversionWorker, &QObject::deleteLater);
+	connect(&m_workerThread, &QThread::finished, m_processingWorker, &QObject::deleteLater);
+	//build pseudo filter pipe
+	connect(m_conversionWorker, SIGNAL(output(const QVector<float> &, int, float)), m_processingWorker, SLOT(input(const QVector<float> &, int, float)));
+	//connect returning signals
+	connect(m_processingWorker, SIGNAL(levelData(const QVector<float> &, float)), this, SIGNAL(levelData(const QVector<float> &, float)));
+	connect(m_processingWorker, SIGNAL(fftData(const QVector<float> &, int, float)), this, SIGNAL(fftData(const QVector<float> &, int, float)));
+	connect(m_processingWorker, SIGNAL(beatData(float, bool)), this, SIGNAL(beatData(float, bool)));
+	//move worker objects to thread and run thread
+	m_conversionWorker->moveToThread(&m_workerThread);
+	m_processingWorker->moveToThread(&m_workerThread);
 	m_workerThread.start();
 }
 
@@ -185,119 +173,6 @@ QString AudioInterface::defaultOutputDeviceName()
 	return QAudioDeviceInfo::defaultOutputDevice().deviceName();
 }
 
-float AudioInterface::getDuration(const QByteArray & buffer, const QAudioFormat & format)
-{
-	if (!format.isValid())
-		return 0.0f;
-	if (format.codec() != "audio/pcm")
-		return 0.0f;
-	if (buffer.size() <= 0)
-		return 0.0f;
-	return (float)(format.durationForBytes(buffer.size()));
-}
-
-float AudioInterface::getPeakValue(const QAudioFormat& format)
-{
-	// Note: Only the most common sample formats are supported
-	if (!format.isValid())
-		return 0.0f;
-	if (format.codec() != "audio/pcm")
-		return 0.0f;
-
-	switch (format.sampleType()) {
-	case QAudioFormat::Unknown:
-		break;
-	case QAudioFormat::Float:
-		if (format.sampleSize() != 32) // other sample formats are not supported
-			return qreal(0);
-		return 1.00003f;
-	case QAudioFormat::SignedInt:
-		if (format.sampleSize() == 32)
-			return (float)INT_MAX;
-		if (format.sampleSize() == 16)
-			return (float)SHRT_MAX;
-		if (format.sampleSize() == 8)
-			return (float)CHAR_MAX;
-		break;
-	case QAudioFormat::UnSignedInt:
-		if (format.sampleSize() == 32)
-			return (float)UINT_MAX;
-		if (format.sampleSize() == 16)
-			return (float)USHRT_MAX;
-		if (format.sampleSize() == 8)
-			return (float)UCHAR_MAX;
-		break;
-	}
-	return 0.0f;
-}
-
-template <class T>
-QVector<float> getLevels(const T *buffer, int frames, int channels)
-{
-	QVector<float> max_values;
-	max_values.fill(0.0f, channels);
-
-	for (int i = 0; i < frames; ++i) {
-		for (int j = 0; j < channels; ++j) {
-			qreal value = qAbs((float)(buffer[i * channels + j]));
-			if (value > max_values.at(j))
-				max_values.replace(j, value);
-		}
-	}
-	return max_values;
-}
-
-QVector<float> AudioInterface::getBufferLevels(const QByteArray & buffer, const QAudioFormat & format)
-{
-	QVector<float> values;
-
-	if (!format.isValid() || format.byteOrder() != QAudioFormat::LittleEndian)
-		return values;
-	if (format.codec() != "audio/pcm")
-		return values;
-	if (buffer.size() <= 0)
-		return values;
-
-	const int frames = format.framesForBytes(buffer.size());
-	const int channelCount = format.channelCount();
-	values.fill(0.0f, channelCount);
-	float peak_value = getPeakValue(format);
-	if (qFuzzyCompare(peak_value, 0.0f))
-		return values;
-
-	switch (format.sampleType()) {
-	case QAudioFormat::Unknown:
-	case QAudioFormat::UnSignedInt:
-		if (format.sampleSize() == 32)
-			values = getLevels((quint32*)buffer.constData(), frames, channelCount);
-		if (format.sampleSize() == 16)
-			values = getLevels((quint16*)buffer.constData(), frames, channelCount);
-		if (format.sampleSize() == 8)
-			values = getLevels((quint8*)buffer.constData(), frames, channelCount);
-		for (int i = 0; i < values.size(); ++i)
-			values[i] = qAbs(values.at(i) - 0.5f * peak_value) / (0.5f * peak_value);
-		break;
-	case QAudioFormat::Float:
-		if (format.sampleSize() == 32) {
-			values = getLevels((float*)buffer.constData(), frames, channelCount);
-			for (int i = 0; i < values.size(); ++i)
-				values[i] /= peak_value;
-		}
-		break;
-	case QAudioFormat::SignedInt:
-		if (format.sampleSize() == 32)
-			values = getLevels((qint32*)buffer.constData(), frames, channelCount);
-		if (format.sampleSize() == 16)
-			values = getLevels((qint16*)buffer.constData(), frames, channelCount);
-		if (format.sampleSize() == 8)
-			values = getLevels((qint8*)buffer.constData(), frames, channelCount);
-		for (int i = 0; i < values.size(); ++i)
-			values[i] /= peak_value;
-		break;
-	}
-	return values;
-}
-
 void AudioInterface::inputDataReady()
 {
 	if (m_inputDevice)
@@ -308,8 +183,8 @@ void AudioInterface::inputDataReady()
 		if (m_inputDevice->bytesAvailable() > 0)
 		{
 			//send data to worker thread for processing
-			QMetaObject::invokeMethod(m_worker, "processAudioData", Q_ARG(const QByteArray &, m_inputDevice->readAll()), Q_ARG(const QAudioFormat &, m_audioInput->format()));
-			//emit processAudioData(m_inputDevice->readAll(), m_audioInput->format());
+			QMetaObject::invokeMethod(m_conversionWorker, "input", Q_ARG(const QByteArray &, m_inputDevice->readAll()), Q_ARG(const QAudioFormat &, m_audioInput->format()));
+			//emit output(m_inputDevice->readAll(), m_audioInput->format());
 		}
 		m_inputDevice->reset();
 	}

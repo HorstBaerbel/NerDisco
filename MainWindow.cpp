@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionAudioRecord, SIGNAL(triggered(bool)), this, SLOT(audioRecordTriggered(bool)));
 	connect(ui->actionAudioStop, SIGNAL(triggered()), this, SLOT(audioStopTriggered()));
 	connect(&m_audioInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(audioCaptureStateChanged(bool)));
-	connect(&m_audioInterface, SIGNAL(audioDataCaptured(const QVector<float>&, float)), this, SLOT(audioUpdateData(const QVector<float>&, float)));
+	connect(&m_audioInterface, SIGNAL(levelData(const QVector<float>&, float)), this, SLOT(audioUpdateLevels(const QVector<float>&, float)));
 	updateAudioDevices();
 	//set up the final preview
 	ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
@@ -52,8 +52,14 @@ MainWindow::MainWindow(QWidget *parent)
 	m_displayThread.setPortName(settings.portName());
 	m_displayThread.start();
 	//set up timer for grabbing the composite image
-	connect(&m_displayTimer, SIGNAL(timeout()), this, SLOT(updateCurrentImage()));
+	connect(&m_displayTimer, SIGNAL(timeout()), this, SLOT(updateDeckImages()));
 	m_displayTimer.start(settings.displayInterval());
+	//set up signal joiner that waits for both render windows being finished with rendering to grab their framebuffers
+	m_signalJoiner.addObjectToJoin(ui->widgetDeckA);
+	m_signalJoiner.addObjectToJoin(ui->widgetDeckB);
+	connect(ui->widgetDeckA, SIGNAL(renderingFinished()), &m_signalJoiner, SLOT(notify()));
+	connect(ui->widgetDeckB, SIGNAL(renderingFinished()), &m_signalJoiner, SLOT(notify()));
+	connect(&m_signalJoiner, SIGNAL(joined()), this, SLOT(grabDeckImages()));
 }
 
 MainWindow::~MainWindow()
@@ -182,7 +188,7 @@ void MainWindow::audioCaptureStateChanged(bool capturing)
 	ui->actionAudioRecord->setChecked(capturing);
 }
 
-void MainWindow::audioUpdateData(const QVector<float> & data, float timeus)
+void MainWindow::audioUpdateLevels(const QVector<float> & data, float timeus)
 {
     //qDebug() << "Audio data arrived" << timeus / 1000;
 	QImage image(ui->labelSpectrumImage->size(), QImage::Format_ARGB32);
@@ -205,6 +211,7 @@ void MainWindow::audioUpdateData(const QVector<float> & data, float timeus)
 		image.setPixel(x, value * image.height(), 0xFF0000FF);
 	}*/
 	ui->labelSpectrumImage->setPixmap(QPixmap::fromImage(image));
+	ui->labelSpectrumImage->update();
 }
 
 QImage MainWindow::currentImage() const
@@ -212,16 +219,30 @@ QImage MainWindow::currentImage() const
 	return m_currentImage;
 }
 
-QImage  MainWindow::realImage() const
+QImage MainWindow::realImage() const
 {
 	return m_realImage;
 }
 
-void MainWindow::updateCurrentImage()
+void MainWindow::updateDeckImages()
 {
+	//check if we're still waiting for one or both views to finish rendering
+	if (!m_signalJoiner.isJoining())
+	{
+		ui->widgetDeckA->grabFramebufferAfterSwap();
+		ui->widgetDeckB->grabFramebufferAfterSwap();
+		m_signalJoiner.start();
+		ui->widgetDeckA->render();
+		ui->widgetDeckB->render();
+	}
+}
+
+void MainWindow::grabDeckImages()
+{
+	m_signalJoiner.stop();
 	//grab images from the decks
-	QImage deckImageA = ui->widgetDeckA->grabFramebuffer();
-	QImage deckImageB = ui->widgetDeckB->grabFramebuffer();
+	QImage deckImageA = ui->widgetDeckA->getGrabbedFramebuffer();
+	QImage deckImageB = ui->widgetDeckA->getGrabbedFramebuffer();
 	//composite deck framebuffers into final image
 	QPainter painter(&m_currentImage);
 	painter.setCompositionMode(QPainter::CompositionMode_Source);
@@ -262,12 +283,14 @@ void MainWindow::updateCurrentImage()
 	//draw images in UI
 	ui->labelFinalImage->setPixmap(QPixmap::fromImage(m_currentImage));
 	ui->labelRealImage->setPixmap(QPixmap::fromImage(m_realImage.scaled(m_currentImage.size())));
+	//ui->labelFinalImage->update();
+	//ui->labelRealImage->update();
 }
 
 QStringList buildFileList(const QString & path)
 {
 	QStringList list;
-	QDirIterator it(path, QStringList() << "*.qml", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(path, QStringList() << "*.fs", QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		if (it.fileInfo().isDir())
 		{
@@ -292,7 +315,7 @@ void MainWindow::updateMenu()
 	{
 		ui->actionLoadDeckB->menu()->clear();
 	}
-	//find all qml files in the effects folder
+	//find all fs files in the effects folder
 	QStringList list = buildFileList("./effects");
 	if (list.size() > 0)
 	{
@@ -308,8 +331,8 @@ void MainWindow::updateMenu()
 			QString cleanName = entry;
 			cleanName = cleanName.remove("./effects");
 			QFileInfo info(cleanName);
-			//check if this is a QML file
-			if (info.suffix().toLower() == "qml")
+			//check if this is a fs file
+			if (info.suffix().toLower() == "fs")
 			{
 				//build menu actions
 				QAction * actionA = menuA->addAction(info.baseName());

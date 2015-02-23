@@ -1,13 +1,11 @@
 #pragma once
 
-#include <QVector>
 #include <QObject>
-#include <QThread>
-
+#include <QVector>
 //#include "kiss_fft\tools\kiss_fftr.h"
 
 
-//private worker class used in the interface
+//worker class used in the interface
 class ProcessingWorker : public QObject
 {
 	Q_OBJECT
@@ -16,35 +14,30 @@ public:
 	ProcessingWorker(QObject *parent = 0);
 	~ProcessingWorker();
 
-	void enableBeatDetection(bool enable = false);
-	void enableFFT(bool enable = true);
+	void enableLevelsData(bool enable = true);
+	void enableBeatData(bool enable = false);
+	void enableFFTData(bool enable = false);
 
 signals:
-	void fftResult(const QVector<float> & spectrum, float timeus);
-	void beatResult(float bpm, bool isBeat);
+	//Delivers audio levels for each channel.
+	void levelData(const QVector<float> & levels, float timeus);
+	//Delivers the FFT of the current audio data.
+	void fftData(const QVector<float> & spectrum, int channels, float timeus);
+	//Delivers beat information for the beat detection.
+	void beatData(float bpm, bool isBeat);
+
+	void output(const QVector<float> & data, int channels, float timeus);
 
 public slots:
-	void processAudioData(const QVector<float> & data, float timeus);
+	void input(const QVector<float> & data, int channels, float timeus);
 
 private:
+	//Get maximum levels for each channel
+	QVector<float> getMaximumLevels(const QVector<float> & data, int channels);
+	//Do the FFT for a bit of audio data
+	QVector<float> getSpectrum(const QVector<float> & data, int channels);
+
 	bool m_doFFT;
 	bool m_doBeatDetection;
-};
-
-class AudioProcessing : public QObject
-{
-	Q_OBJECT
-
-public:
-	AudioProcessing(QObject *parent);
-	~AudioProcessing();
-	
-signals:
-
-public slots:
-	void processAudioData(const QVector<float> & data, float timeus);
-
-private:
-	ProcessingWorker * m_worker;
-	QThread m_workerThread;
+	bool m_doLevels;
 };

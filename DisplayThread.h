@@ -15,6 +15,7 @@ public:
     ~DisplayThread();
 
     void setPortName(const QString &name);
+	void setBaudrate(int baudrate = 115200);
     void sendData(const QImage &displayImage, int m_waitTimeout = 100);
     void run();
 
@@ -25,6 +26,7 @@ signals:
 
 private:
     QString m_portName;
+	int m_baudrate;
     QImage m_displayImage;
     int m_waitTimeout;
     QMutex m_mutex;

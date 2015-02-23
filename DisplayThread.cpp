@@ -4,10 +4,12 @@
 #include <QtSerialPort/QSerialPort>
 #include <QTime>
 
-QT_USE_NAMESPACE
 
 DisplayThread::DisplayThread(QObject *parent)
-    : QThread(parent), m_waitTimeout(0), m_quit(false)
+    : QThread(parent)
+	, m_waitTimeout(0)
+	, m_quit(false)
+	, m_baudrate(QSerialPort::Baud115200)
 {
 }
 
@@ -25,6 +27,11 @@ void DisplayThread::setPortName(const QString &name)
     m_portName = name;
 }
 
+void DisplayThread::setBaudrate(int baudrate)
+{
+	m_baudrate = baudrate;
+}
+
 void DisplayThread::sendData(const QImage & image, int waitTimeout)
 {
     QMutexLocker locker(&m_mutex);
@@ -38,8 +45,10 @@ void DisplayThread::sendData(const QImage & image, int waitTimeout)
 
 void DisplayThread::run()
 {
-    QString currentPortName;
+	QString currentPortName = m_portName;
     bool currentPortNameChanged = false;
+	int currentBaudrate = m_baudrate;
+	bool currentBaudrateChanged = false;
     QSerialPort serial;
     QByteArray data;
 
@@ -49,6 +58,10 @@ void DisplayThread::run()
             currentPortName = m_portName;
             currentPortNameChanged = true;
         }
+		if (currentBaudrate != m_baudrate) {
+			currentBaudrate = m_baudrate;
+			currentBaudrateChanged = true;
+		}
         //set up display parameters
         Settings & settings = Settings::getInstance();
         const unsigned int count = settings.displayWidth() * settings.displayHeight();
@@ -123,7 +136,7 @@ void DisplayThread::run()
                 return;
             }
             //set up serial port
-            serial.setBaudRate(QSerialPort::Baud115200);
+            serial.setBaudRate(currentBaudrate);
             serial.setDataBits(QSerialPort::Data8);
             serial.setParity(QSerialPort::NoParity);
             serial.setStopBits(QSerialPort::OneStop);
@@ -131,6 +144,11 @@ void DisplayThread::run()
             serial.setBreakEnabled(false);
             currentPortNameChanged = false;
         }
+		if (currentBaudrateChanged)
+		{
+			serial.setBaudRate(currentBaudrate);
+			currentBaudrateChanged = false;
+		}
         if (serial.isOpen() && serial.isWritable())
         {
             // write request

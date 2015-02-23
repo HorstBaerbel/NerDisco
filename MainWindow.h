@@ -3,6 +3,7 @@
 #include "Deck.h"
 #include "DisplayThread.h"
 #include "AudioInterface.h"
+#include "SignalJoiner.h"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -21,7 +22,9 @@ public:
     ~MainWindow();
 
 protected slots:
-    void updateCurrentImage();
+    void updateDeckImages();
+	void grabDeckImages();
+
     void updateMenu();
     void updateSettingsFromUi();
     void updateAudioDevices();
@@ -31,7 +34,7 @@ protected slots:
     void audioRecordTriggered(bool checked);
     void audioStopTriggered();
     void audioCaptureStateChanged(bool capturing);
-    void audioUpdateData(const QVector<float> & data, float timeus);
+    void audioUpdateLevels(const QVector<float> & data, float timeus);
 
     void loadDeckA(bool checked = false);
     void saveDeckA(bool checked = false);
@@ -50,11 +53,10 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    Deck * m_deckA;
-    Deck * m_deckB;
     QTimer m_displayTimer;
     QImage m_currentImage;
     QImage m_realImage;
     DisplayThread m_displayThread;
     AudioInterface m_audioInterface;
+	SignalJoiner m_signalJoiner;
 };

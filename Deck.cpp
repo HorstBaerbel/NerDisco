@@ -2,7 +2,6 @@
 #include "ui_Deck.h"
 #include "Settings.h"
 
-#include <QtQml/QQmlContext>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -12,8 +11,8 @@ Deck::Deck(QWidget *parent)
     , ui(new Ui::CodeDeck)
     , m_liveView(new LiveView())
     , m_codeEdit(new CodeEdit())
-    , m_scriptComponent(NULL)
     , m_scriptTime(QTime::currentTime())
+	, m_errorExp("\\b(ERROR|Error|error)\\b:\\s?(\\d+):\\s?(\\d+):\\s?(.*)\\n")
 {
     ui->setupUi(this);
     m_deckName = ui->groupBox->title();
@@ -31,8 +30,12 @@ Deck::Deck(QWidget *parent)
     connect(ui->dialC, SIGNAL(valueChanged(int)), this, SLOT(valueCChanged(int)));
     connect(ui->pushButtonTrigger, SIGNAL(pressed()), this, SLOT(triggerPressed()));
     connect(ui->pushButtonTrigger, SIGNAL(released()), this, SLOT(triggerReleased()));
-    //when the script in the QML changes, we get notified, so we can update its values
-    connect(m_liveView, SIGNAL(renderScriptChanged()), this, SLOT(updateScriptValues()));
+	//set up regular expression for error parsing
+	m_errorExp.setMinimal(true);
+    //when the script changes either sucessfully or has errors, we get notified
+	connect(m_liveView, SIGNAL(fragmentScriptChanged()), this, SLOT(scriptCompiledOk()));
+	connect(m_liveView, SIGNAL(fragmentScriptErrors(const QString &)), this, SLOT(scriptHasErrors(const QString &)));
+	connect(m_liveView, SIGNAL(renderingFinished()), this, SIGNAL(renderingFinished()));
     //when the script is being modified, we keep track of that in the GUI
     connect(m_codeEdit->document(), SIGNAL(modificationChanged(bool)), this, SLOT(scriptModified(bool)));
     //when the script is edited a timer is started to wait a bit before updating the script
@@ -47,15 +50,11 @@ Deck::Deck(QWidget *parent)
     //reset elapsed time
     m_scriptTime.start();
     //load default script
-    loadScript(":/effects/default.qml");
+    loadScript(":/effects/default.fs");
 }
 
 Deck::~Deck()
 {
-    //delete the component again
-    delete m_scriptComponent;
-    //delete GUI
-    delete ui;
 }
 
 bool Deck::loadScript(const QString & path)
@@ -111,7 +110,7 @@ bool Deck::saveAsScript(const QString & path)
     if (filePath.isEmpty())
     {
         QString startName = m_currentScriptPath.startsWith(":/") ? QFileInfo(m_currentScriptPath).fileName() : m_currentScriptPath;
-        filePath = QFileDialog::getSaveFileName(this, tr("Save current script as"), startName, tr("QML files (*.qml)"));
+        filePath = QFileDialog::getSaveFileName(this, tr("Save current script as"), startName, tr("Fragment shader files (*.fs)"));
     }
     if (!filePath.isEmpty())
     {
@@ -138,40 +137,8 @@ void Deck::updateScriptFromText()
     {
         //store new current text
         m_currentText = m_codeEdit->toPlainText();
-        //create component if needed
-        if (m_scriptComponent == NULL)
-        {
-            m_scriptComponent = new QQmlComponent(m_liveView->quickView()->engine());
-        }
-        //try to compile the text to QML component and check errors
-        m_scriptComponent->setData("import QtQuick 2.0\n" + m_currentText.toUtf8(), QUrl());
-        QList<QQmlError> scriptErrors = m_scriptComponent->errors();
-        //free QML component. we will re-create it later, because setData does not seem to work twice...
-        delete m_scriptComponent;
-        m_scriptComponent = NULL;
-        //check if any errors occured
-        if (scriptErrors.size() > 0)
-        {
-            //convert errors so we can display them in code editor
-            QVector<CodeEdit::Error> errors;
-            foreach(const QQmlError & error, scriptErrors)
-            {
-                CodeEdit::Error newError;
-                newError.line = error.line() - 1; //we subtract 1 because we added "import QtQuick 2.0\n" at the start...
-                newError.column = error.column();
-                newError.message = error.description();
-                errors.append(newError);
-            }
-            //send to code editor
-            m_codeEdit->setErrors(errors);
-        }
-        else
-        {
-            //send script text to the view
-            m_liveView->setRenderScript(m_currentText);
-            //clear errors in code editor
-            m_codeEdit->setErrors(QVector<CodeEdit::Error>());
-        }
+		//send script to live view to compile it
+		m_liveView->setFragmentScript(m_currentText.toLocal8Bit());
     }
 }
 
@@ -187,47 +154,82 @@ void Deck::scriptModified(bool modified)
     ui->groupBox->setTitle(m_deckName + " (" + m_currentScriptPath + ")" + (modified ? "*" : ""));
 }
 
+void Deck::scriptCompiledOk()
+{
+	m_codeEdit->setErrors();
+	updateScriptValues();
+}
+
+void Deck::scriptHasErrors(const QString & errors)
+{
+	//parse errors
+	QVector<CodeEdit::Error> list;
+	CodeEdit::Error error;
+	error.line = 0;
+	error.column = 0;
+	error.message = "Unknown script error";
+	if (m_errorExp.indexIn(errors) >= 0)
+	{
+		error.line = m_errorExp.cap(3).toInt() + 1;
+		error.column = 0;
+		error.message = m_errorExp.cap(4);
+	}
+	list.append(error);
+	m_codeEdit->setErrors(list);
+}
+
 void Deck::updateScriptValues()
 {
     //update properties in new active script
-    m_liveView->setRenderScriptProperty("time", (double)m_scriptTime.elapsed() / 1000.0);
-    m_liveView->setRenderScriptProperty("valueA", (double)ui->dialA->value() / 100.0);
-    m_liveView->setRenderScriptProperty("valueB", (double)ui->dialB->value() / 100.0);
-    m_liveView->setRenderScriptProperty("valueC", (double)ui->dialC->value() / 100.0);
-    m_liveView->setRenderScriptProperty("trigger", ui->pushButtonTrigger->isDown());
+    m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0);
+	m_liveView->setFragmentScriptProperty("valueA", (float)ui->dialA->value() / 100.0);
+	m_liveView->setFragmentScriptProperty("valueB", (float)ui->dialB->value() / 100.0);
+	m_liveView->setFragmentScriptProperty("valueC", (float)ui->dialC->value() / 100.0);
+	m_liveView->setFragmentScriptProperty("trigger", ui->pushButtonTrigger->isDown());
 }
 
-QImage Deck::grabFramebuffer()
+void Deck::render()
 {
-    return m_liveView->grabFramebuffer();
+	updateScriptValues();
+	m_liveView->render();
+}
+
+void Deck::grabFramebufferAfterSwap()
+{
+	m_liveView->grabFramebufferAfterSwap();
+}
+
+QImage Deck::getGrabbedFramebuffer()
+{
+	return m_liveView->getGrabbedFramebuffer();
 }
 
 void Deck::updateTime()
 {
-    m_liveView->setRenderScriptProperty("time", (double)m_scriptTime.elapsed() / 1000.0);
+	m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0);
 }
 
 void Deck::valueAChanged(int value)
 {
-    m_liveView->setRenderScriptProperty("valueA", (double)value / 100.0);
+	m_liveView->setFragmentScriptProperty("valueA", (float)value / 100.0);
 }
 
 void Deck::valueBChanged(int value)
 {
-    m_liveView->setRenderScriptProperty("valueB", (double)value / 100.0);
+	m_liveView->setFragmentScriptProperty("valueB", (float)value / 100.0);
 }
 
 void Deck::valueCChanged(int value)
 {
-    m_liveView->setRenderScriptProperty("valueC", (double)value / 100.0);
+	m_liveView->setFragmentScriptProperty("valueC", (float)value / 100.0);
 }
 
 void Deck::triggerPressed()
 {
-    m_liveView->setRenderScriptProperty("trigger", true);
+	m_liveView->setFragmentScriptProperty("trigger", true);
 }
 
 void Deck::triggerReleased()
 {
-    m_liveView->setRenderScriptProperty("trigger", false);
+	m_liveView->setFragmentScriptProperty("trigger", false);
 }

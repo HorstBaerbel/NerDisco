@@ -1,7 +1,7 @@
 NerDisco
 ========
 
-Is a simple VJ tool leveraging Qts' QML/JavaScript libraries to provide live-editing functions and is meant to be connected to a [Boblight](https://code.google.com/p/boblight/) display of the ["Adalight"](http://www.adafruit.com/product/461) type via a serial port. It was tested with an Arduino Pro connected to an LEDstrip using [LPD8806 chips](http://www.adafruit.com/product/306). The code running on the Arduino was [Adalights' LPD8806 LEDstream sketch](https://github.com/adafruit/Adalight/blob/master/Arduino/LEDstream_LPD8806/LEDstream_LPD8806.pde). The code was compiled and tested on a Windows 7 and Ubuntu 14.04 machine and may or may not work on other systems.
+Is a simple VJ tool leveraging OpenGL GLSL to provide live-editing functions and is meant to be connected to a [Boblight](https://code.google.com/p/boblight/) display of the ["Adalight"](http://www.adafruit.com/product/461) type via a serial port. It was tested with an Arduino Pro connected to an LEDstrip using [LPD8806 chips](http://www.adafruit.com/product/306). The code running on the Arduino was [Adalights' LPD8806 LEDstream sketch](https://github.com/adafruit/Adalight/blob/master/Arduino/LEDstream_LPD8806/LEDstream_LPD8806.pde). The code was compiled and tested on a Windows 7 and Ubuntu 14.04 machine and may or may not work on other systems.
 It is in parts inspired by the live shader-editing tool [quint](https://gitorious.org/quint). So hats off to those guys...
 
 Please note that the tool was rather quickly hacked together for a party and obviously needs some heavy refactoring and improvements. Planned features are some audio input facilities, so e.g. the music spectrum can be used in the scripts and MIDI controller input for the dials/triggers for better interaction.
@@ -44,14 +44,28 @@ Overview
 Scripts
 ========
 
-QML script are read from the "effects" directory and should have the extension ".qml" to be found and displayed in the menu.
-The dials A-C and the trigger button can be used in scripts via the variables valueA, valueB, valueC and trigger. Dial values range from [0,1] and trigger [false,true].
+The render scripts are actually GLSL 1.20 fragment shaders. Those ".fs" script files are read from the "effects" directory and should have the extension ".fs" to be found and displayed in the menu.
+The dials A-C and the trigger button can be used in scripts via the float uniform variables "valueA", "valueB", "valueC" and "trigger". Dial values range from [0,1] and trigger [false,true].
+Also the uniforms "vec2 renderSize" (render area pixel resolution) and "float time" (application runtime in seconds) are available. A good example is "rect.fs" in the effects sub directory.
 <pre>
-Item {
-	//define variables and default values
-	property real valueA: 0.0
-	property bool trigger: false
-	//now do something with x and y
+#version 120
+
+uniform vec2 renderSize;
+uniform float time;
+uniform float valueA;
+uniform float valueB;
+uniform float valueC;
+uniform float trigger;
+
+varying vec2 texcoordVar;
+
+void main() {
+	float l = texcoordVar.x > 0.2+0.1*sin(time) ? (texcoordVar.x < 0.8+0.2*sin(0.88*time+1) ? 1 : 0) : 0;
+	l = texcoordVar.y > 0.2+0.1*sin(0.69*time) ? (texcoordVar.y < 0.8+0.2*sin(0.45*time) ? l : 0) : 0;
+	float r = l * valueA + trigger;
+	float g = l * valueB + trigger;
+	float b = l * valueC + trigger;
+	gl_FragColor = vec4(r, g, b, 1.0);
 }
 </pre>
 
