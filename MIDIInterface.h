@@ -2,7 +2,6 @@
 
 #include <QObject>
 #include <QThread>
-#include <QMutex>
 #include <QString>
 #include <QVector>
 #include <QStringList>
@@ -26,20 +25,10 @@ public:
 	QStringList inputDeviceNames() const;
 	QString defaultInputDeviceName() const;
 
-	/// @brief Connect slot to be called when a MIDI message arrives on a specific controller.
-	/// @param controller Controller number to watch.
-	/// @param receiver Object that will receive the signal.
-	/// @param slot Slot that will receive the notification. The signature must be void slot(const QByteArray & data, const QString & userData)
-	/// @param userData Optional. User data that will be passed to the slot.
-	void connectToControllerMessage(unsigned char controller, QObject * receiver, const char * slot, const QString & userData = QString());
-	/// @brief Disconnect a receiving slot from all messages.
-	/// @param receiver Object to disconnect.
-	/// @param slot Slot to disconnect.
-	void disconnectFromControllerMessage(QObject * receiver, const char * slot);
-
 signals:
 	void captureDeviceChanged(const QString & name);
 	void captureStateChanged(bool capturing);
+	void midiControlMessage(double deltaTime, unsigned char controller, const QByteArray & data);
 
 protected slots:
 	void inputDeviceChanged(const QString & deviceName);
@@ -50,14 +39,4 @@ private:
 	RtMidiIn * m_midiIn;
 	MIDIWorker * m_midiWorker;
 	QThread m_workerThread;
-	QMutex m_mutex;
-
-	struct Receiver
-	{
-		unsigned char controller;
-		QObject * object;
-		const char * slot;
-		QString userData;
-	};
-	QVector<Receiver> m_registeredReceivers;
 };

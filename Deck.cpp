@@ -181,10 +181,10 @@ void Deck::scriptHasErrors(const QString & errors)
 void Deck::updateScriptValues()
 {
     //update properties in new active script
-    m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0);
-	m_liveView->setFragmentScriptProperty("valueA", (float)ui->dialA->value() / 100.0);
-	m_liveView->setFragmentScriptProperty("valueB", (float)ui->dialB->value() / 100.0);
-	m_liveView->setFragmentScriptProperty("valueC", (float)ui->dialC->value() / 100.0);
+    m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0f);
+	m_liveView->setFragmentScriptProperty("valueA", (float)ui->dialA->value() / 100.0f);
+	m_liveView->setFragmentScriptProperty("valueB", (float)ui->dialB->value() / 100.0f);
+	m_liveView->setFragmentScriptProperty("valueC", (float)ui->dialC->value() / 100.0f);
 	m_liveView->setFragmentScriptProperty("trigger", ui->pushButtonTrigger->isDown());
 }
 
@@ -211,28 +211,28 @@ void Deck::updateTime()
 
 void Deck::setValue(const QString & controlName, float value)
 {
-	if (controlName == "valueA")
+	if (controlName == ui->dialA->objectName())
 	{
 		if (ui->dialA->value() != value * 100.0f)
 		{
 			ui->dialA->setValue(value * 100.0f);
 		}
 	}
-	else if (controlName == "valueB")
+	else if (controlName == ui->dialB->objectName())
 	{
 		if (ui->dialB->value() != value * 100.0f)
 		{
 			ui->dialB->setValue(value * 100.0f);
 		}
 	}
-	else if (controlName == "valueC")
+	else if (controlName == ui->dialC->objectName())
 	{
 		if (ui->dialC->value() != value * 100.0f)
 		{
 			ui->dialC->setValue(value * 100.0f);
 		}
 	}
-	else if (controlName == "trigger")
+	else if (controlName == ui->pushButtonTrigger->objectName())
 	{
 		if (ui->pushButtonTrigger->isDown() != value > 0.0f)
 		{
@@ -245,31 +245,31 @@ void Deck::valueAChanged(int value)
 {
 	const float fvalue = (float)value / 100.0;
 	m_liveView->setFragmentScriptProperty("valueA", fvalue);
-	emit valueChanged("valueA", fvalue);
+	emit valueChanged(ui->dialC->objectName(), fvalue);
 }
 
 void Deck::valueBChanged(int value)
 {
 	const float fvalue = (float)value / 100.0;
 	m_liveView->setFragmentScriptProperty("valueB", fvalue);
-	emit valueChanged("valueB", fvalue);
+	emit valueChanged(ui->dialB->objectName(), fvalue);
 }
 
 void Deck::valueCChanged(int value)
 {
 	const float fvalue = (float)value / 100.0;
 	m_liveView->setFragmentScriptProperty("valueC", fvalue);
-	emit valueChanged("valueC", fvalue);
+	emit valueChanged(ui->dialC->objectName(), fvalue);
 }
 
 void Deck::triggerPressed()
 {
 	m_liveView->setFragmentScriptProperty("trigger", 1.0f);
-	emit valueChanged("trigger", 1.0f);
+	emit valueChanged(ui->pushButtonTrigger->objectName(), 1.0f);
 }
 
 void Deck::triggerReleased()
 {
 	m_liveView->setFragmentScriptProperty("trigger", 1.0f);
-	emit valueChanged("trigger", 0.0f);
+	emit valueChanged(ui->pushButtonTrigger->objectName(), 0.0f);
 }

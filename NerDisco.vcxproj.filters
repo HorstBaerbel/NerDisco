@@ -204,6 +204,15 @@
     <ClCompile Include="Release\moc_MIDIWorker.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="MIDIControlMapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_MIDIControlMapper.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_MIDIControlMapper.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CodeEdit.h">
@@ -255,6 +264,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="MIDIWorker.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MIDIControlMapper.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

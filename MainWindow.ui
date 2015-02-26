@@ -449,7 +449,8 @@
     <addaction name="actionMidiDevices"/>
     <addaction name="actionMidiStart"/>
     <addaction name="actionMidiStop"/>
-    <addaction name="actionMidiStartMapping"/>
+    <addaction name="actionMidiLearnMapping"/>
+    <addaction name="actionStoreLearnedConnection"/>
    </widget>
    <addaction name="menuSettings"/>
    <addaction name="menuDeckA"/>
@@ -560,7 +561,7 @@
     <string>Stop</string>
    </property>
   </action>
-  <action name="actionMidiStartMapping">
+  <action name="actionMidiLearnMapping">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -568,7 +569,15 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Map control to MIDI</string>
+    <string>Learn MIDI-&gt;control mapping</string>
+   </property>
+  </action>
+  <action name="actionStoreLearnedConnection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Store learned connection</string>
    </property>
   </action>
  </widget>

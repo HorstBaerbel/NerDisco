@@ -13,7 +13,6 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindow)
-	, m_midiMapMode(false)
 {
 	ui->setupUi(this);
 	//showFullScreen();
@@ -33,7 +32,15 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(&m_midiInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
 	updateMidiDevices();
 	//connect slot to start the midi mapping process
-	connect(ui->actionMidiStartMapping, SIGNAL(triggered()), this, SLOT(midiMappingToggled()));
+	connect(ui->actionMidiLearnMapping, SIGNAL(triggered(bool)), this, SLOT(midiLearnMappingToggled(bool)));
+	connect(ui->actionStoreLearnedConnection, SIGNAL(triggered()), this, SLOT(midiStoreLearnedConnection()));
+	connect(&m_midiMapper, SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
+	connect(&m_midiInterface, SIGNAL(midiControlMessage(double, unsigned char, const QByteArray &)), &m_midiMapper, SLOT(midiControlMessage(double, unsigned char, const QByteArray &)));
+	connect(ui->widgetDeckA, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
+	connect(ui->widgetDeckB, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
+	connect(this, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
+	connect(ui->horizontalSliderCrossfade, SIGNAL(valueChanged(int)), this, SLOT(crossFaderValueChanged(int)));
+
 	//set up the final preview
 	ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
 	ui->labelRealImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
@@ -311,19 +318,56 @@ void MainWindow::midiStopTriggered()
 void MainWindow::midiCaptureStateChanged(bool capturing)
 {
 	ui->actionMidiStart->setChecked(capturing);
-	ui->actionMidiStartMapping->setEnabled(capturing);
+	ui->actionMidiLearnMapping->setEnabled(capturing);
 }
 
-void MainWindow::midiMappingToggled()
+//-------------------------------------------------------------------------------------------------
+
+void MainWindow::midiLearnMappingToggled(bool checked)
 {
-	if (ui->actionMidiStartMapping->isChecked())
+	if (m_midiMapper.isLearnMode())
 	{
-		if (m_midiInterface.isCapturing())
-		{
-		}
+		//stop midi mapping mode
+		m_midiMapper.setLearnMode(false);
+		ui->actionMidiLearnMapping->setChecked(false);
 	}
 	else
 	{
+		//start midi mapping mode
+		if (m_midiInterface.isCapturing())
+		{
+			//connect slots to detect value changes in decks
+			m_midiMapper.setLearnMode(true);
+			ui->actionMidiLearnMapping->setChecked(true);
+		}
+	}
+}
+
+void MainWindow::midiLearnedConnectionStateChanged(bool valid)
+{
+	ui->actionStoreLearnedConnection->setEnabled(m_midiMapper.isLearnMode() && valid);
+}
+
+void MainWindow::midiStoreLearnedConnection()
+{
+	m_midiMapper.storeLearnedConnection();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void MainWindow::crossFaderValueChanged(int value)
+{
+	emit valueChanged(ui->horizontalSliderCrossfade->objectName(), (float)value / 100.0f);
+}
+
+void MainWindow::setValue(const QString & controlName, float value)
+{
+	if (controlName == ui->horizontalSliderCrossfade->objectName())
+	{
+		if (ui->horizontalSliderCrossfade->value() != value * 100.0f)
+		{
+			ui->horizontalSliderCrossfade->setValue(value * 100.0f);
+		}
 	}
 }
 

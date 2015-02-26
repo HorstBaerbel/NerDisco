@@ -65,48 +65,7 @@ QString MIDIInterface::defaultInputDeviceName() const
 	return m_midiWorker->defaultInputDeviceName();
 }
 
-void MIDIInterface::connectToControllerMessage(unsigned char controller, QObject * receiver, const char * slot, const QString & userData)
-{
-	//sanity checks
-	if (receiver != NULL && slot != NULL)
-	{
-		QMutexLocker locker(&m_mutex);
-		//check if entry is already in list
-		Receiver newEntry;
-		newEntry.controller = controller;
-		newEntry.object = receiver;
-		newEntry.slot = slot;
-		newEntry.userData = userData;
-		bool found = false;
-		for (int i = 0; i < m_registeredReceivers.size(); ++i)
-		{
-			if (m_registeredReceivers.at(i).controller == controller && m_registeredReceivers.at(i).object == receiver && m_registeredReceivers.at(i).slot == slot)
-			{
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-		{
-			//add receiver to list
-			m_registeredReceivers.append(newEntry);
-		}
-	}
-}
-
-void MIDIInterface::disconnectFromControllerMessage(QObject * receiver, const char * slot)
-{
-	QMutexLocker locker(&m_mutex);
-	for (int i = 0; i < m_registeredReceivers.size(); ++i)
-	{
-		if (m_registeredReceivers.at(i).object == receiver && (slot == NULL || m_registeredReceivers.at(i).slot == slot))
-		{
-			m_registeredReceivers.removeAt(i);
-		}
-	}
-}
-
-void MIDIInterface::messageReceived(double /*deltaTime*/, const QByteArray & message)
+void MIDIInterface::messageReceived(double deltaTime, const QByteArray & message)
 {
 	if (message.size() >= 3)
 	{
@@ -115,19 +74,10 @@ void MIDIInterface::messageReceived(double /*deltaTime*/, const QByteArray & mes
 		const unsigned char type = message.at(0);
 		if ((type & 0xF0) == 0xB0)
 		{
-			QMutexLocker locker(&m_mutex);
 			//split data
 			const unsigned char controller = message.at(1);
 			const QByteArray data = message.mid(2);
-			//check if the controller is registered
-			foreach(const Receiver & receiver, m_registeredReceivers)
-			{
-				//if controller is registered, invoke slot
-				if (receiver.controller == controller)
-				{
-					QMetaObject::invokeMethod(receiver.object, receiver.slot, Q_ARG(const QByteArray &, data), Q_ARG(const QString &, receiver.userData));
-				}
-			}
+			emit midiControlMessage(deltaTime, controller, data);
 		}
 	}
 }
