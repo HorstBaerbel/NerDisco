@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QMutex>
 
+#include "MIDIControlConnection.h"
+
 
 /// @brief This class can map MIDI control messages to QObject slots.
 /// When adding connections manually through addConnection() the slot can have an arbitrary name, 
@@ -62,18 +64,10 @@ signals:
 	void learnedConnectionStateChanged(bool valid);
 
 private:
-	struct Connection
-	{
-		unsigned char controller;
-		QObject * object;
-		QString slot;
-		QString controlName;
-	};
-	QVector<Connection> m_connections;
-
 	mutable QMutex m_mutex;
+	QVector<MIDIControlConnection> m_connections;
 	bool m_learnMode;
-	Connection m_learnConnection;
+	MIDIControlConnection m_learnConnection;
 	bool m_learnedGuiSide;
 	bool m_learnedMidiSide;
 };

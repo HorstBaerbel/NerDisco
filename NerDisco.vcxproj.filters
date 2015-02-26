@@ -213,6 +213,9 @@
     <ClCompile Include="Release\moc_MIDIControlMapper.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="MIDIControlConnection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CodeEdit.h">
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_SettingsDialog.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MIDIControlConnection.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

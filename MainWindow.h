@@ -27,7 +27,7 @@ protected slots:
     void updateDeckImages();
 	void grabDeckImages();
 
-    void updateMenu();
+	void updateEffectMenu();
     void updateSettingsFromUi();
     void updateAudioDevices();
 	void updateMidiDevices();

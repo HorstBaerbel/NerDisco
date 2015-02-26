@@ -7,11 +7,8 @@ MIDIControlMapper::MIDIControlMapper(QObject * parent)
 	, m_learnMode(false)
 	, m_learnedGuiSide(false)
 	, m_learnedMidiSide(false)
+	, m_learnConnection(0, NULL, "aetValue", "")
 {
-	m_learnConnection.object = NULL;
-	m_learnConnection.slot = "setValue";
-	m_learnConnection.controlName = "";
-	m_learnConnection.controller = 0;
 }
 
 void MIDIControlMapper::guiControlChanged(const QString & controlName, float /*value*/)
@@ -21,9 +18,9 @@ void MIDIControlMapper::guiControlChanged(const QString & controlName, float /*v
 	{
 		if (sender())
 		{
-			m_learnConnection.object = sender();
-			m_learnConnection.slot = "setValue";
-			m_learnConnection.controlName = controlName;
+			m_learnConnection.m_object = sender();
+			m_learnConnection.m_slot = "setValue";
+			m_learnConnection.m_controlName = controlName;
 			if (!m_learnedGuiSide)
 			{
 				m_learnedGuiSide = true;
@@ -38,7 +35,7 @@ void MIDIControlMapper::midiControlMessage(double /*deltaTime*/, unsigned char c
 	QMutexLocker locker(&m_mutex);
 	if (m_learnMode)
 	{
-		m_learnConnection.controller = controller;
+		m_learnConnection.m_controller = controller;
 		if (!m_learnedMidiSide)
 		{
 			m_learnedMidiSide = true;
@@ -49,7 +46,7 @@ void MIDIControlMapper::midiControlMessage(double /*deltaTime*/, unsigned char c
 		{
 			//this does not take into account LSB/MSB-values, but we'll leave it like this for now...
 			const float value = (float)data.at(0) / 127.0f;
-			QMetaObject::invokeMethod(m_learnConnection.object, m_learnConnection.slot.toLatin1(), Q_ARG(const QString &, m_learnConnection.controlName), Q_ARG(float, value));
+			QMetaObject::invokeMethod(m_learnConnection.m_object, m_learnConnection.m_slot.toLatin1(), Q_ARG(const QString &, m_learnConnection.m_controlName), Q_ARG(float, value));
 		}
 	}
 	else
@@ -57,13 +54,13 @@ void MIDIControlMapper::midiControlMessage(double /*deltaTime*/, unsigned char c
 		if (data.size() > 0)
 		{
 			//find connection in the list
-			foreach(const Connection & connection, m_connections)
+			foreach(const MIDIControlConnection & connection, m_connections)
 			{
-				if (connection.controller == controller)
+				if (connection.m_controller == controller)
 				{
 					//this does not take into account LSB/MSB-values, but we'll leave it like this for now...
 					const float value = (float)data.at(0) / 127.0f;
-					QMetaObject::invokeMethod(connection.object, connection.slot.toLatin1(), Q_ARG(const QString &, connection.controlName), Q_ARG(float, value));
+					QMetaObject::invokeMethod(connection.m_object, connection.m_slot.toLatin1(), Q_ARG(const QString &, connection.m_controlName), Q_ARG(float, value));
 				}
 			}
 		}
@@ -74,10 +71,11 @@ void MIDIControlMapper::addConnection(QObject * object, const QString & slot, co
 {
 	QMutexLocker locker(&m_mutex);
 	//check if connection is already in the list
+	MIDIControlConnection newConnnection(controller, object, slot, controlName);
 	bool found = false;
-	foreach(const Connection & connection, m_connections)
+	foreach(const MIDIControlConnection & connection, m_connections)
 	{
-		if (connection.object == object && connection.slot == slot && connection.controlName == controlName && connection.controller == controller)
+		if (connection == newConnnection)
 		{
 			found = true;
 			break;
@@ -86,11 +84,6 @@ void MIDIControlMapper::addConnection(QObject * object, const QString & slot, co
 	if (!found)
 	{
 		//add connection to list
-		Connection newConnnection;
-		newConnnection.object = object;
-		newConnnection.slot = slot;
-		newConnnection.controlName = controlName;
-		newConnnection.controller = controller;
 		m_connections.append(newConnnection);
 	}
 }
@@ -106,10 +99,10 @@ void MIDIControlMapper::setLearnMode(bool learn)
 	QMutexLocker locker(&m_mutex);
 	if (m_learnMode != learn)
 	{
-		m_learnConnection.object = NULL;
-		m_learnConnection.slot = "setValue";
-		m_learnConnection.controlName = "";
-		m_learnConnection.controller = 0;
+		m_learnConnection.m_object = NULL;
+		m_learnConnection.m_slot = "setValue";
+		m_learnConnection.m_controlName = "";
+		m_learnConnection.m_controller = 0;
 		m_learnedGuiSide = false;
 		m_learnedMidiSide = false;
 		m_learnMode = learn;
@@ -129,12 +122,12 @@ void MIDIControlMapper::storeLearnedConnection()
 	if (m_learnMode && m_learnedGuiSide && m_learnedMidiSide)
 	{
 		//store connection
-		addConnection(m_learnConnection.object, m_learnConnection.slot, m_learnConnection.controlName, m_learnConnection.controller);
+		addConnection(m_learnConnection.m_object, m_learnConnection.m_slot, m_learnConnection.m_controlName, m_learnConnection.m_controller);
 		//clear connection for next round
-		m_learnConnection.object = NULL;
-		m_learnConnection.slot = "setValue";
-		m_learnConnection.controlName = "";
-		m_learnConnection.controller = 0;
+		m_learnConnection.m_object = NULL;
+		m_learnConnection.m_slot = "setValue";
+		m_learnConnection.m_controlName = "";
+		m_learnConnection.m_controller = 0;
 		m_learnedGuiSide = false;
 		m_learnedMidiSide = false;
 		emit learnedConnectionStateChanged(false);

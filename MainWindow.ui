@@ -451,6 +451,7 @@
     <addaction name="actionMidiStop"/>
     <addaction name="actionMidiLearnMapping"/>
     <addaction name="actionStoreLearnedConnection"/>
+    <addaction name="actionClearMidiConnections"/>
    </widget>
    <addaction name="menuSettings"/>
    <addaction name="menuDeckA"/>
@@ -578,6 +579,14 @@
    </property>
    <property name="text">
     <string>Store learned connection</string>
+   </property>
+  </action>
+  <action name="actionClearMidiConnections">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Clear MIDI connections</string>
    </property>
   </action>
  </widget>

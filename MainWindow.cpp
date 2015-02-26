@@ -36,11 +36,11 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionStoreLearnedConnection, SIGNAL(triggered()), this, SLOT(midiStoreLearnedConnection()));
 	connect(&m_midiMapper, SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
 	connect(&m_midiInterface, SIGNAL(midiControlMessage(double, unsigned char, const QByteArray &)), &m_midiMapper, SLOT(midiControlMessage(double, unsigned char, const QByteArray &)));
+	//connect method that signal when GUI controls change
 	connect(ui->widgetDeckA, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
 	connect(ui->widgetDeckB, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
 	connect(this, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
 	connect(ui->horizontalSliderCrossfade, SIGNAL(valueChanged(int)), this, SLOT(crossFaderValueChanged(int)));
-
 	//set up the final preview
 	ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
 	ui->labelRealImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(showSettings()));
 	connect(ui->actionBeenden, SIGNAL(triggered()), this, SLOT(exitApplication()));
 	//update the menu showing the effect files
-	updateMenu();
+	updateEffectMenu();
 	//set up serial display sending thread
 	m_displayThread.setPortName(settings.portName());
 	m_displayThread.start();
@@ -461,7 +461,7 @@ QStringList buildFileList(const QString & path)
 	return list;
 }
 
-void MainWindow::updateMenu()
+void MainWindow::updateEffectMenu()
 {
 	//clear entries from deck a and b
 	if (ui->actionLoadDeckA->menu())
@@ -519,7 +519,7 @@ void MainWindow::saveDeckA(bool /*checked*/)
 {
 	if (ui->widgetDeckA->saveScript())
 	{
-		updateMenu();
+		updateEffectMenu();
 	}
 }
 
@@ -527,7 +527,7 @@ void MainWindow::saveAsDeckA(bool /*checked*/)
 {
 	if (ui->widgetDeckA->saveAsScript())
 	{
-		updateMenu();
+		updateEffectMenu();
 	}
 }
 
@@ -544,7 +544,7 @@ void MainWindow::saveDeckB(bool /*checked*/)
 {
 	if (ui->widgetDeckB->saveScript())
 	{
-		updateMenu();
+		updateEffectMenu();
 	}
 }
 
@@ -552,7 +552,7 @@ void MainWindow::saveAsDeckB(bool /*checked*/)
 {
 	if (ui->widgetDeckB->saveAsScript())
 	{
-		updateMenu();
+		updateEffectMenu();
 	}
 }
 
