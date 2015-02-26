@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(&m_midiInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
 	updateMidiDevices();
 	//connect slot to start the midi mapping process
-	connect(ui->actionMidiLearnMapping, SIGNAL(triggered(bool)), this, SLOT(midiLearnMappingToggled(bool)));
+	connect(ui->actionMidiLearnMapping, SIGNAL(triggered()), this, SLOT(midiLearnMappingToggled()));
 	connect(ui->actionStoreLearnedConnection, SIGNAL(triggered()), this, SLOT(midiStoreLearnedConnection()));
 	connect(&m_midiMapper, SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
 	connect(&m_midiInterface, SIGNAL(midiControlMessage(double, unsigned char, const QByteArray &)), &m_midiMapper, SLOT(midiControlMessage(double, unsigned char, const QByteArray &)));
@@ -327,7 +327,7 @@ void MainWindow::midiCaptureStateChanged(bool capturing)
 
 //-------------------------------------------------------------------------------------------------
 
-void MainWindow::midiLearnMappingToggled(bool checked)
+void MainWindow::midiLearnMappingToggled()
 {
 	if (m_midiMapper.isLearnMode())
 	{
@@ -342,8 +342,8 @@ void MainWindow::midiLearnMappingToggled(bool checked)
 		{
 			//connect slots to detect value changes in decks
 			m_midiMapper.setLearnMode(true);
-			ui->actionMidiLearnMapping->setChecked(true);
 		}
+		ui->actionMidiLearnMapping->setChecked(m_midiInterface.isCapturing());
 	}
 }
 

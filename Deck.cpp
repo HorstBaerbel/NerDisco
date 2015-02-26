@@ -46,7 +46,7 @@ Deck::Deck(QWidget *parent)
     //set up timer for updating the time property
     Settings & settings = Settings::getInstance();
     connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
-    m_updateTimer.start(settings.displayInterval()*0.95);
+    m_updateTimer.start(settings.displayInterval());
     //reset elapsed time
     m_scriptTime.start();
     //load default script
@@ -234,10 +234,15 @@ void Deck::setValue(const QString & controlName, float value)
 	}
 	else if (controlName == ui->pushButtonTrigger->objectName())
 	{
-		if (ui->pushButtonTrigger->isDown() != value > 0.0f)
+		if (value <= 0.0f)
 		{
-			ui->pushButtonTrigger->setDown(value > 0.0f);
+			triggerReleased();
 		}
+		else
+		{
+			triggerPressed();
+		}
+		ui->pushButtonTrigger->setDown(value > 0.0f);
 	}
 }
 
@@ -270,6 +275,6 @@ void Deck::triggerPressed()
 
 void Deck::triggerReleased()
 {
-	m_liveView->setFragmentScriptProperty("trigger", 1.0f);
+	m_liveView->setFragmentScriptProperty("trigger", 0.0f);
 	emit valueChanged(ui->pushButtonTrigger->objectName(), 0.0f);
 }

@@ -69,7 +69,7 @@ void MIDIInterface::messageReceived(double deltaTime, const QByteArray & message
 {
 	if (message.size() >= 3)
 	{
-		qDebug() << "MIDI message" << message;
+		//qDebug() << "MIDI message" << message;
 		//check if it is a controller message
 		const unsigned char type = message.at(0);
 		if ((type & 0xF0) == 0xB0)

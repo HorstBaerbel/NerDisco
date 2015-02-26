@@ -44,7 +44,7 @@ protected slots:
 	void midiStartTriggered(bool checked);
 	void midiStopTriggered();
 	void midiCaptureStateChanged(bool capturing);
-	void midiLearnMappingToggled(bool checked);
+	void midiLearnMappingToggled();
 	void midiStoreLearnedConnection();
 	void midiLearnedConnectionStateChanged(bool valid);
 
