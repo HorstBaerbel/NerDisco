@@ -6,10 +6,11 @@
 
 
 DisplayThread::DisplayThread(QObject *parent)
-    : QThread(parent)
+	: QThread(parent)
 	, m_waitTimeout(0)
 	, m_quit(false)
 	, m_baudrate(QSerialPort::Baud115200)
+	, m_sendData(false)
 {
 }
 
@@ -22,21 +23,39 @@ DisplayThread::~DisplayThread()
     wait();
 }
 
+void DisplayThread::setSendData(bool sendData)
+{
+	QMutexLocker locker(&m_mutex);
+	m_sendData = sendData;
+	if (!isRunning())
+		start();
+	else
+		m_condition.wakeOne();
+}
+
 void DisplayThread::setPortName(const QString &name)
 {
     m_portName = name;
+	if (!isRunning())
+		start();
+	else
+		m_condition.wakeOne();
 }
 
 void DisplayThread::setBaudrate(int baudrate)
 {
 	m_baudrate = baudrate;
+	if (!isRunning())
+		start();
+	else
+		m_condition.wakeOne();
 }
 
 void DisplayThread::sendData(const QImage & image, int waitTimeout)
 {
     QMutexLocker locker(&m_mutex);
-    this->m_waitTimeout = waitTimeout;
-    this->m_displayImage = image;
+    m_waitTimeout = waitTimeout;
+    m_displayImage = image;
     if (!isRunning())
         start();
     else
@@ -46,9 +65,10 @@ void DisplayThread::sendData(const QImage & image, int waitTimeout)
 void DisplayThread::run()
 {
 	QString currentPortName = m_portName;
-    bool currentPortNameChanged = false;
+    bool currentPortNameChanged = true;
 	int currentBaudrate = m_baudrate;
 	bool currentBaudrateChanged = false;
+	bool sendData = m_sendData;
     QSerialPort serial;
     QByteArray data;
 
@@ -61,6 +81,10 @@ void DisplayThread::run()
 		if (currentBaudrate != m_baudrate) {
 			currentBaudrate = m_baudrate;
 			currentBaudrateChanged = true;
+		}
+		if (sendData != m_sendData) {
+			sendData = m_sendData;
+			emit sendingData(sendData);
 		}
         //set up display parameters
         Settings & settings = Settings::getInstance();
@@ -126,30 +150,37 @@ void DisplayThread::run()
                 direction = -direction;
             }
         }
-        //open serial port
-        if (currentPortNameChanged) {
+        //open new serial port device
+        if (currentPortNameChanged)
+		{
+			//close old port down
             serial.close();
             serial.setPortName(currentPortName);
-
-            if (!serial.open(QIODevice::ReadWrite)) {
+			emit portOpened(false);
+			//try opening
+            if (!serial.open(QIODevice::ReadWrite))
+			{
                 emit error(tr("Can't open %1, error code %2").arg(m_portName).arg(serial.error()));
-                return;
             }
-            //set up serial port
-            serial.setBaudRate(currentBaudrate);
-            serial.setDataBits(QSerialPort::Data8);
-            serial.setParity(QSerialPort::NoParity);
-            serial.setStopBits(QSerialPort::OneStop);
-            //serial.setFlowControl(QSerialPort::HardwareControl);
-            serial.setBreakEnabled(false);
-            currentPortNameChanged = false;
+			else
+			{
+				//set up serial port
+				serial.setBaudRate(currentBaudrate);
+				serial.setDataBits(QSerialPort::Data8);
+				serial.setParity(QSerialPort::NoParity);
+				serial.setStopBits(QSerialPort::OneStop);
+				//serial.setFlowControl(QSerialPort::HardwareControl);
+				serial.setBreakEnabled(false);
+				currentPortNameChanged = false;
+				emit portOpened(true);
+			}
         }
 		if (currentBaudrateChanged)
 		{
 			serial.setBaudRate(currentBaudrate);
 			currentBaudrateChanged = false;
 		}
-        if (serial.isOpen() && serial.isWritable())
+		if (sendData && serial.isOpen() && serial.isWritable())
         {
             // write request
             serial.write(data);

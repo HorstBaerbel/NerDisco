@@ -65,6 +65,10 @@ MainWindow::MainWindow(QWidget *parent)
 	//update the menu showing the effect files
 	updateEffectMenu();
 	//set up serial display sending thread
+	connect(ui->actionDisplayStart, SIGNAL(triggered(bool)), this, SLOT(displayStartSending(bool)));
+	connect(ui->actionDisplayStop, SIGNAL(triggered()), this, SLOT(displayStopSending()));
+	connect(&m_displayThread, SIGNAL(portOpened(bool)), this, SLOT(displayPortStatusChanged(bool)));
+	connect(&m_displayThread, SIGNAL(sendingData(bool)), this, SLOT(displaySendStatusChanged(bool)));
 	m_displayThread.setPortName(settings.portName());
 	m_displayThread.start();
 	//set up timer for grabbing the composite image
@@ -369,6 +373,29 @@ void MainWindow::setValue(const QString & controlName, float value)
 			ui->horizontalSliderCrossfade->setValue(value * 100.0f);
 		}
 	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void MainWindow::displayStartSending(bool checked)
+{
+	m_displayThread.setSendData(checked);
+}
+
+void MainWindow::displayStopSending()
+{
+	m_displayThread.setSendData(false);
+}
+
+void MainWindow::displayPortStatusChanged(bool opened)
+{
+	ui->actionDisplayStart->setEnabled(opened);
+	ui->actionDisplayStop->setEnabled(opened);
+}
+
+void MainWindow::displaySendStatusChanged(bool sending)
+{
+	ui->actionDisplayStart->setChecked(sending);
 }
 
 //-------------------------------------------------------------------------------------------------

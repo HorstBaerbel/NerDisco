@@ -48,6 +48,11 @@ protected slots:
 	void midiStoreLearnedConnection();
 	void midiLearnedConnectionStateChanged(bool valid);
 
+	void displayStartSending(bool checked);
+	void displayStopSending();
+	void displayPortStatusChanged(bool opened);
+	void displaySendStatusChanged(bool sending);
+
     void loadDeckA(bool checked = false);
     void saveDeckA(bool checked = false);
     void saveAsDeckA(bool checked = false);
