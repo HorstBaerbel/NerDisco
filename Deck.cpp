@@ -206,30 +206,70 @@ QImage Deck::getGrabbedFramebuffer()
 
 void Deck::updateTime()
 {
-	m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0);
+	m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0f);
+}
+
+void Deck::setValue(const QString & controlName, float value)
+{
+	if (controlName == "valueA")
+	{
+		if (ui->dialA->value() != value * 100.0f)
+		{
+			ui->dialA->setValue(value * 100.0f);
+		}
+	}
+	else if (controlName == "valueB")
+	{
+		if (ui->dialB->value() != value * 100.0f)
+		{
+			ui->dialB->setValue(value * 100.0f);
+		}
+	}
+	else if (controlName == "valueC")
+	{
+		if (ui->dialC->value() != value * 100.0f)
+		{
+			ui->dialC->setValue(value * 100.0f);
+		}
+	}
+	else if (controlName == "trigger")
+	{
+		if (ui->pushButtonTrigger->isDown() != value > 0.0f)
+		{
+			ui->pushButtonTrigger->setDown(value > 0.0f);
+		}
+	}
 }
 
 void Deck::valueAChanged(int value)
 {
-	m_liveView->setFragmentScriptProperty("valueA", (float)value / 100.0);
+	const float fvalue = (float)value / 100.0;
+	m_liveView->setFragmentScriptProperty("valueA", fvalue);
+	emit valueChanged("valueA", fvalue);
 }
 
 void Deck::valueBChanged(int value)
 {
-	m_liveView->setFragmentScriptProperty("valueB", (float)value / 100.0);
+	const float fvalue = (float)value / 100.0;
+	m_liveView->setFragmentScriptProperty("valueB", fvalue);
+	emit valueChanged("valueB", fvalue);
 }
 
 void Deck::valueCChanged(int value)
 {
-	m_liveView->setFragmentScriptProperty("valueC", (float)value / 100.0);
+	const float fvalue = (float)value / 100.0;
+	m_liveView->setFragmentScriptProperty("valueC", fvalue);
+	emit valueChanged("valueC", fvalue);
 }
 
 void Deck::triggerPressed()
 {
-	m_liveView->setFragmentScriptProperty("trigger", true);
+	m_liveView->setFragmentScriptProperty("trigger", 1.0f);
+	emit valueChanged("trigger", 1.0f);
 }
 
 void Deck::triggerReleased()
 {
-	m_liveView->setFragmentScriptProperty("trigger", false);
+	m_liveView->setFragmentScriptProperty("trigger", 1.0f);
+	emit valueChanged("trigger", 0.0f);
 }

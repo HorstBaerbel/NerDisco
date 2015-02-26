@@ -53,14 +53,12 @@ void AudioInterface::setCaptureState(bool capturing)
 	//check if the capture state changed
 	if (m_capturing != capturing)
 	{
-		qDebug() << "AudioInterface capture state changed";
 		m_capturing = capturing;
 		//check if we want to start or stop capturing
 		if (m_capturing)
 		{
 			if (m_audioInput)
 			{
-				qDebug() << "Starting capture";
 				//create buffer receiving data
 				m_inputDevice = new QBuffer(this);
 				m_inputDevice->open(QIODevice::ReadWrite);
@@ -75,7 +73,6 @@ void AudioInterface::setCaptureState(bool capturing)
 		{
 			if (m_audioInput)
 			{
-				qDebug() << "Stopping capture";
 				m_audioInput->stop();
 				m_inputDevice->close();
 				m_inputDevice->disconnect(this);
@@ -86,12 +83,11 @@ void AudioInterface::setCaptureState(bool capturing)
 	}
 }
 
-void AudioInterface::setCurrentInputDevice(const QString & inputName)
+void AudioInterface::setCurrentCaptureDevice(const QString & inputName)
 {
 	//check if the audio device changed
 	if (m_currentInputDeviceName != inputName)
 	{
-		qDebug() << "AudioInterface device name change";
 		m_currentInputDeviceName = inputName;
 		//if the current device is running, stop it
 		if (m_audioInput && m_audioInput->state() == QAudio::ActiveState)
@@ -134,13 +130,8 @@ void AudioInterface::setCurrentInputDevice(const QString & inputName)
 				}
 			}
 		}
-		emit inputDeviceChanged(m_currentInputDeviceName);
+		emit captureDeviceChanged(m_currentInputDeviceName);
 	}
-}
-
-QString AudioInterface::currentInputDevice() const
-{
-	return m_currentInputDeviceName;
 }
 
 QStringList AudioInterface::inputDeviceNames()

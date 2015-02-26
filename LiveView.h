@@ -34,6 +34,7 @@ public:
 	/// @brief Set parameter in fragment shader.
 	void setFragmentScriptProperty(const QString & name, const QVector2D & value);
 	void setFragmentScriptProperty(const QString & name, const QVector3D & value);
+	void setFragmentScriptProperty(const QString & name, const QVector4D & value);
 	void setFragmentScriptProperty(const QString & name, float value);
 	void setFragmentScriptProperty(const QString & name, double value);
 	void setFragmentScriptProperty(const QString & name, unsigned int value);
@@ -73,6 +74,7 @@ private:
 	bool m_renderRequested;
 	QMap<QString, QVector2D> m_shaderValues2d;
 	QMap<QString, QVector3D> m_shaderValues3d;
+	QMap<QString, QVector4D> m_shaderValues4d;
 	QMap<QString, float> m_shaderValuesf;
 	QMap<QString, unsigned int> m_shaderValuesui;
 	QMap<QString, int> m_shaderValuesi;

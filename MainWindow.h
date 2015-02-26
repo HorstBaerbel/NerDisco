@@ -4,6 +4,7 @@
 #include "DisplayThread.h"
 #include "AudioInterface.h"
 #include "SignalJoiner.h"
+#include "MIDIInterface.h"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -28,6 +29,7 @@ protected slots:
     void updateMenu();
     void updateSettingsFromUi();
     void updateAudioDevices();
+	void updateMidiDevices();
 
     void audioInputDeviceSelected();
     void audioInputDeviceChanged(const QString & name);
@@ -35,6 +37,13 @@ protected slots:
     void audioStopTriggered();
     void audioCaptureStateChanged(bool capturing);
     void audioUpdateLevels(const QVector<float> & data, float timeus);
+
+	void midiInputDeviceSelected();
+	void midiInputDeviceChanged(const QString & name);
+	void midiStartTriggered(bool checked);
+	void midiStopTriggered();
+	void midiCaptureStateChanged(bool capturing);
+	void midiMappingToggled();
 
     void loadDeckA(bool checked = false);
     void saveDeckA(bool checked = false);
@@ -59,4 +68,6 @@ private:
     DisplayThread m_displayThread;
     AudioInterface m_audioInterface;
 	SignalJoiner m_signalJoiner;
+	MIDIInterface m_midiInterface;
+	bool m_midiMapMode;
 };

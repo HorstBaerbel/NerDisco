@@ -17,9 +17,7 @@ public:
 	AudioInterface(QObject *parent = 0);
 	~AudioInterface();
 
-	QString currentInputDevice() const;
-	void setCurrentInputDevice(const QString & inputName);
-
+	void setCurrentCaptureDevice(const QString & inputName);
 	void setCaptureState(bool capturing);
 
 	static QStringList inputDeviceNames();
@@ -29,7 +27,7 @@ public:
 	static QString defaultOutputDeviceName();
 
 signals:
-	void inputDeviceChanged(const QString & name);
+	void captureDeviceChanged(const QString & name);
 	void captureStateChanged(bool capturing);
 
 	//Delivers audio levels for each channel.

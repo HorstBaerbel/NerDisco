@@ -13,18 +13,27 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindow)
+	, m_midiMapMode(false)
 {
 	ui->setupUi(this);
 	//showFullScreen();
 	//retrieve settings
 	Settings & settings = Settings::getInstance();
 	//update audio devices
-	connect(&m_audioInterface, SIGNAL(inputDeviceChanged(const QString &)), this, SLOT(audioInputDeviceChanged(const QString &)));
+	connect(&m_audioInterface, SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(audioInputDeviceChanged(const QString &)));
 	connect(ui->actionAudioRecord, SIGNAL(triggered(bool)), this, SLOT(audioRecordTriggered(bool)));
 	connect(ui->actionAudioStop, SIGNAL(triggered()), this, SLOT(audioStopTriggered()));
 	connect(&m_audioInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(audioCaptureStateChanged(bool)));
 	connect(&m_audioInterface, SIGNAL(levelData(const QVector<float>&, float)), this, SLOT(audioUpdateLevels(const QVector<float>&, float)));
 	updateAudioDevices();
+	//update midi devices
+	connect(&m_midiInterface, SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
+	connect(ui->actionMidiStart, SIGNAL(triggered(bool)), this, SLOT(midiStartTriggered(bool)));
+	connect(ui->actionMidiStop, SIGNAL(triggered()), this, SLOT(midiStopTriggered()));
+	connect(&m_midiInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
+	updateMidiDevices();
+	//connect slot to start the midi mapping process
+	connect(ui->actionMidiStartMapping, SIGNAL(triggered()), this, SLOT(midiMappingToggled()));
 	//set up the final preview
 	ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
 	ui->labelRealImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
@@ -92,6 +101,8 @@ void MainWindow::exitApplication()
 	close();
 }
 
+//-------------------------------------------------------------------------------------------------
+
 void MainWindow::updateAudioDevices()
 {
 	Settings & settings = Settings::getInstance();
@@ -105,12 +116,12 @@ void MainWindow::updateAudioDevices()
 	}
 	//add default device
 	QMenu * deviceMenu = new QMenu(this);
-    QAction * selected = NULL;
 	QAction * action = deviceMenu->addAction(tr("None"));
 	action->setCheckable(true);
 	deviceMenu->addAction(action);
 	connect(action, SIGNAL(triggered()), this, SLOT(audioInputDeviceSelected()));
 	//add actual devices
+	QAction * selected = action;
 	QStringList inputDevices = AudioInterface::inputDeviceNames();
 	for (int i = 0; i < inputDevices.size(); ++i)
 	{
@@ -119,7 +130,7 @@ void MainWindow::updateAudioDevices()
 		deviceMenu->addAction(action);
 		connect(action, SIGNAL(triggered()), this, SLOT(audioInputDeviceSelected()));
 		//if this is the active audio device, select it
-		if (inputDevices.at(i) == settings.inputAudioDeviceName())
+		if (inputDevices.at(i) == settings.audioInputDeviceName())
 		{
 			selected = action;
 		}
@@ -138,24 +149,22 @@ void MainWindow::audioInputDeviceSelected()
 	QAction * action = qobject_cast<QAction*>(sender());
 	if (action)
 	{
-		qDebug() << "Device selected" << action->text();
 		m_audioInterface.setCaptureState(false);
 		if (action->text() == tr("None"))
 		{
-			m_audioInterface.setCurrentInputDevice("");
+			m_audioInterface.setCurrentCaptureDevice("");
 		}
 		else
 		{
-			m_audioInterface.setCurrentInputDevice(action->text());
+			m_audioInterface.setCurrentCaptureDevice(action->text());
 		}
 		Settings & settings = Settings::getInstance();
-		settings.setInputAudioDeviceName(action->text());
+		settings.setAudioInputDeviceName(action->text());
 	}
 }
 
 void MainWindow::audioInputDeviceChanged(const QString & name)
 {
-	qDebug() << "Device changed" << name;
 	//disable buttons if not audio device selected
 	ui->actionAudioRecord->setEnabled(name != "");
 	ui->actionAudioStop->setEnabled(name != "");
@@ -172,19 +181,16 @@ void MainWindow::audioInputDeviceChanged(const QString & name)
 
 void MainWindow::audioRecordTriggered(bool checked)
 {
-	qDebug() << "Record triggered";
 	m_audioInterface.setCaptureState(checked);
 }
 
 void MainWindow::audioStopTriggered()
 {
-	qDebug() << "Stop triggered";
 	m_audioInterface.setCaptureState(false);
 }
 
 void MainWindow::audioCaptureStateChanged(bool capturing)
 {
-	qDebug() << "Capture state changed" << capturing;
 	ui->actionAudioRecord->setChecked(capturing);
 }
 
@@ -213,6 +219,115 @@ void MainWindow::audioUpdateLevels(const QVector<float> & data, float timeus)
 	ui->labelSpectrumImage->setPixmap(QPixmap::fromImage(image));
 	ui->labelSpectrumImage->update();
 }
+
+//-------------------------------------------------------------------------------------------------
+
+void MainWindow::updateMidiDevices()
+{
+	Settings & settings = Settings::getInstance();
+	//clear old menu
+	QMenu * oldMenu = ui->actionMidiDevices->menu();
+	if (oldMenu)
+	{
+		oldMenu->setParent(NULL);
+		delete oldMenu;
+		ui->actionMidiDevices->setMenu(NULL);
+	}
+	//add default device
+	QMenu * deviceMenu = new QMenu(this);
+	QAction * action = deviceMenu->addAction(tr("None"));
+	action->setCheckable(true);
+	deviceMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(midiInputDeviceSelected()));
+	//add actual devices
+	QAction * selected = action;
+	QStringList midiDevices = m_midiInterface.inputDeviceNames();
+	for (int i = 0; i < midiDevices.size(); ++i)
+	{
+		action = deviceMenu->addAction(midiDevices.at(i));
+		action->setCheckable(true);
+		deviceMenu->addAction(action);
+		connect(action, SIGNAL(triggered()), this, SLOT(midiInputDeviceSelected()));
+		//if this is the active midi device, select it
+		if (midiDevices.at(i) == settings.midiInputDeviceName())
+		{
+			selected = action;
+		}
+	}
+	//add menu to UI
+	ui->actionMidiDevices->setMenu(deviceMenu);
+	//now select action
+	if (selected)
+	{
+		action->trigger();
+	}
+}
+
+void MainWindow::midiInputDeviceSelected()
+{
+	QAction * action = qobject_cast<QAction*>(sender());
+	if (action)
+	{
+		m_midiInterface.setCaptureState(false);
+		if (action->text() == tr("None"))
+		{
+			m_midiInterface.setCurrentCaptureDevice("");
+		}
+		else
+		{
+			m_midiInterface.setCurrentCaptureDevice(action->text());
+		}
+		Settings & settings = Settings::getInstance();
+		settings.setMidiInputDeviceName(action->text());
+	}
+}
+
+void MainWindow::midiInputDeviceChanged(const QString & name)
+{
+	//disable buttons if not audio device selected
+	ui->actionMidiStart->setEnabled(name != "");
+	ui->actionMidiStop->setEnabled(name != "");
+	//check which action to select
+	QMenu * menu = ui->actionMidiDevices->menu();
+	if (menu && menu->actions().size() > 0)
+	{
+		foreach(QAction * action, menu->actions())
+		{
+			action->setChecked(action->text() == name || (action->text() == tr("None") && name == ""));
+		}
+	}
+}
+
+void MainWindow::midiStartTriggered(bool checked)
+{
+	m_midiInterface.setCaptureState(checked);
+}
+
+void MainWindow::midiStopTriggered()
+{
+	m_midiInterface.setCaptureState(false);
+}
+
+void MainWindow::midiCaptureStateChanged(bool capturing)
+{
+	ui->actionMidiStart->setChecked(capturing);
+	ui->actionMidiStartMapping->setEnabled(capturing);
+}
+
+void MainWindow::midiMappingToggled()
+{
+	if (ui->actionMidiStartMapping->isChecked())
+	{
+		if (m_midiInterface.isCapturing())
+		{
+		}
+	}
+	else
+	{
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
 
 QImage MainWindow::currentImage() const
 {
@@ -283,8 +398,6 @@ void MainWindow::grabDeckImages()
 	//draw images in UI
 	ui->labelFinalImage->setPixmap(QPixmap::fromImage(m_currentImage));
 	ui->labelRealImage->setPixmap(QPixmap::fromImage(m_realImage.scaled(m_currentImage.size())));
-	//ui->labelFinalImage->update();
-	//ui->labelRealImage->update();
 }
 
 QStringList buildFileList(const QString & path)

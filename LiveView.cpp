@@ -141,6 +141,7 @@ void LiveView::paintGL()
 		//set all uniforms stored in the maps
 		setShaderUniformsFromMap(m_shaderProgram, m_shaderValues2d);
 		setShaderUniformsFromMap(m_shaderProgram, m_shaderValues3d);
+		setShaderUniformsFromMap(m_shaderProgram, m_shaderValues4d);
 		setShaderUniformsFromMap(m_shaderProgram, m_shaderValuesf);
 		setShaderUniformsFromMap(m_shaderProgram, m_shaderValuesui);
 		setShaderUniformsFromMap(m_shaderProgram, m_shaderValuesi);
@@ -290,6 +291,11 @@ void LiveView::setFragmentScriptProperty(const QString & name, const QVector2D &
 void LiveView::setFragmentScriptProperty(const QString & name, const QVector3D & value)
 {
 	m_shaderValues3d[name] = value;
+}
+
+void LiveView::setFragmentScriptProperty(const QString & name, const QVector4D & value)
+{
+	m_shaderValues4d[name] = value;
 }
 
 void LiveView::setFragmentScriptProperty(const QString & name, float value)

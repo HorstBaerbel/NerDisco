@@ -35,6 +35,18 @@ public:
 signals:
 	/// @brief render() was called and rendering and the asynchronous buffer swap have finished.
 	void renderingFinished();
+	/// @brief The value of a control in the deck has changed and the new value is sent.
+	/// @param controlName Name of control that has changed.
+	/// @param value New value in the range [0,1].
+	/// @note The name of the control can be used in void setValue(const QString & which, float value) to set a value.
+	void valueChanged(const QString & controlName, float value);
+
+public slots:
+	/// @brief Change the value of a control in the deck.
+	/// @param controlName Name of control to change.
+	/// @param value New value in the range [0,1].
+	/// @note The name of the control is tha same as in the signal void valueChanged(const QString & controlName, float value).
+	void setValue(const QString & controlName, float value);
 
 private slots:
     void scriptModified(bool modified);
@@ -46,6 +58,7 @@ private slots:
 
 	void updateScriptValues();
     void updateTime();
+
     void valueAChanged(int value);
     void valueBChanged(int value);
     void valueCChanged(int value);

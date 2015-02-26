@@ -20,7 +20,8 @@ Settings::Settings()
     m_displayBrightness = m_settings->value("DisplayBrightness", 0.0f).toFloat();
     m_displayContrast = m_settings->value("DisplayContrast", 1.0f).toFloat();
     m_audioSinkName = m_settings->value("AudioSinkName").toString();
-    m_inputAudioDeviceName = m_settings->value("InputAudioDeviceName").toString();
+    m_audioInputDeviceName = m_settings->value("AudioInputDeviceName").toString();
+	m_midiInputDeviceName = m_settings->value("MidiInputDeviceName").toString();
 }
 
 Settings::~Settings()
@@ -43,7 +44,8 @@ void Settings::save()
     m_settings->setValue("DisplayBrightness", m_displayBrightness);
     m_settings->setValue("DisplayContrast", m_displayContrast);
     m_settings->setValue("AudioSinkName", m_audioSinkName);
-    m_settings->setValue("InputAudioDeviceName", m_inputAudioDeviceName);
+    m_settings->setValue("AudioInputDeviceName", m_audioInputDeviceName);
+	m_settings->setValue("MidiInputDeviceName", m_midiInputDeviceName);
     m_settings->sync();
 }
 
@@ -182,12 +184,23 @@ void Settings::setDisplayContrast(float contrast)
     m_displayContrast = contrast;
 }
 
-QString Settings::inputAudioDeviceName() const
+QString Settings::audioInputDeviceName() const
 {
-    return m_inputAudioDeviceName;
+    return m_audioInputDeviceName;
 }
 
-void Settings::setInputAudioDeviceName(const QString & name)
+void Settings::setAudioInputDeviceName(const QString & name)
 {
-    m_inputAudioDeviceName = name;
+    m_audioInputDeviceName = name;
 }
+
+QString Settings::midiInputDeviceName() const
+{
+	return m_midiInputDeviceName;
+}
+
+void Settings::setMidiInputDeviceName(const QString & name)
+{
+	m_midiInputDeviceName = name;
+}
+

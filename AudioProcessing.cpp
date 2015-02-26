@@ -1,4 +1,5 @@
 #include "AudioProcessing.h"
+//#include "kiss_fft\tools\kiss_fftr.h"
 
 
 ProcessingWorker::ProcessingWorker(QObject *parent)
@@ -56,6 +57,7 @@ QVector<float> ProcessingWorker::getMaximumLevels(const QVector<float> & data, i
 
 QVector<float> ProcessingWorker::getSpectrum(const QVector<float> & /*data*/, int /*channels*/)
 {
+
 	return QVector<float>(1, 0.0f);
 }
 

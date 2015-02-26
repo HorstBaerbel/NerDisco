@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>NerDisco 0.5b</string>
+   <string>NerDisco 0.6b</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
@@ -442,10 +442,20 @@
     <addaction name="actionDisplayStart"/>
     <addaction name="actionDisplayStop"/>
    </widget>
+   <widget class="QMenu" name="menuMidi">
+    <property name="title">
+     <string>MIDI</string>
+    </property>
+    <addaction name="actionMidiDevices"/>
+    <addaction name="actionMidiStart"/>
+    <addaction name="actionMidiStop"/>
+    <addaction name="actionMidiStartMapping"/>
+   </widget>
    <addaction name="menuSettings"/>
    <addaction name="menuDeckA"/>
    <addaction name="menuDeckB"/>
    <addaction name="menuAudio"/>
+   <addaction name="menuMidi"/>
    <addaction name="menuDisplay"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -524,6 +534,41 @@
   <action name="actionAudioDevices">
    <property name="text">
     <string>Device</string>
+   </property>
+  </action>
+  <action name="actionMidiDevices">
+   <property name="text">
+    <string>Device</string>
+   </property>
+  </action>
+  <action name="actionMidiStart">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionMidiStop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionMidiStartMapping">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Map control to MIDI</string>
    </property>
   </action>
  </widget>

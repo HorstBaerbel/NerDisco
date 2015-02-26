@@ -2,7 +2,6 @@
 
 #include <QObject>
 #include <QVector>
-//#include "kiss_fft\tools\kiss_fftr.h"
 
 
 //worker class used in the interface
