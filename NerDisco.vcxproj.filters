@@ -55,6 +55,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="RtMidi">
+      <UniqueIdentifier>{cecd81e2-4620-4ce5-ae15-5fea52d0c54b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CodeEdit.cpp">
@@ -216,6 +219,9 @@
     <ClCompile Include="MIDIControlConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rtmidi\RtMidi.cpp">
+      <Filter>RtMidi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CodeEdit.h">
@@ -322,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="MIDIControlConnection.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rtmidi\RtMidi.h">
+      <Filter>RtMidi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
