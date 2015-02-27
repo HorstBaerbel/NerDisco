@@ -111,7 +111,7 @@ void LiveView::initializeGL()
 template <class T>
 void setShaderUniformsFromMap(QOpenGLShaderProgram * shaderProgram, const T & t)
 {
-	auto iter = t.cbegin();
+    typename T::const_iterator iter = t.cbegin();
 	while (iter != t.cend())
 	{
 		shaderProgram->setUniformValue(iter.key().toLocal8Bit().constData(), iter.value());
