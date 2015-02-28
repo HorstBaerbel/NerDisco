@@ -1,5 +1,7 @@
 #include "SignalJoiner.h"
 
+#include <stdexcept>
+
 
 SignalJoiner::~SignalJoiner()
 {
@@ -13,7 +15,7 @@ void SignalJoiner::addObjectToJoin(QObject * object)
 	QMutexLocker locker(&m_listMutex);
 	if (!m_waitList.isEmpty())
 	{
-		throw std::exception("Can not add objects while joiner is running!");
+        throw std::runtime_error("Can not add objects while joiner is running!");
 	}
 	if (!m_objectList.contains(object))
 	{
@@ -26,7 +28,7 @@ void SignalJoiner::removeObjectToJoin(QObject * object)
 	QMutexLocker locker(&m_listMutex);
 	if (!m_waitList.isEmpty())
 	{
-		throw std::exception("Can not remove objects while joiner is running!");
+        throw std::runtime_error("Can not remove objects while joiner is running!");
 	}
 	if (m_objectList.indexOf(object) != -1)
 	{
@@ -40,7 +42,7 @@ void SignalJoiner::start()
 	QMutexLocker locker(&m_listMutex);
 	if (m_objectList.isEmpty())
 	{
-		throw std::exception("Object list empty. Add objects to join first!");
+        throw std::runtime_error("Object list empty. Add objects to join first!");
 	}
 	m_waitList = m_objectList;
 }
