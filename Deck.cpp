@@ -250,7 +250,7 @@ void Deck::valueAChanged(int value)
 {
 	const float fvalue = (float)value / 100.0;
 	m_liveView->setFragmentScriptProperty("valueA", fvalue);
-	emit valueChanged(ui->dialC->objectName(), fvalue);
+	emit valueChanged(ui->dialA->objectName(), fvalue);
 }
 
 void Deck::valueBChanged(int value)
