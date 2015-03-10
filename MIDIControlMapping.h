@@ -8,28 +8,34 @@
 #include "MIDIControlConnection.h"
 
 
-/// @brief This class can map MIDI control messages to QObject slots.
-/// When adding connections manually through addConnection() the slot can have an arbitrary name, 
-/// but must have the sginature "void ...(const QString & controlName, float value);"
-/// If the connection is learned via guiControlChanged(), make sure your QObject has a slot 
-/// with the EXACT signature "void setValue(const QString & controlName, float value);".
-/// All values range from from [0.0f,1.0f]. Buttons send 0.0f for disabled and 1.0f for enabled.
-class MIDIControlMapper: public QObject
+/// @brief This class can map MIDI control messages to I_MIDIControl objects.
+/// Just derive from I_MIDIControl and add the object using registerMIDIControlObject().
+class MIDIControlMapping : public QObject
 {
 	Q_OBJECT
 
 public:
-	MIDIControlMapper(QObject * parent = NULL);
+	MIDIControlMapping(QObject * parent = NULL);
+
+	/// @brief Register a GUI object in the mapper for loading a mapping and doing the actual mapping.
+	/// @param object GUI object to register that implements the I_MIDIControl interface.
+	/// @note Call this directly after setting up the UI and before loading or using a mapping for all controls you want to use!
+	void registerMIDIControlObject(I_MIDIControl * object);
+
+	QDomElement toXML() const;
+	MIDIControlMapping & fromXML(const QDomNode & node);
 
 public slots:
-	/// @brief The value of a control in the gui has changed and the new value is sent.
-	/// @param controlName Name of control that has changed.
-	/// @param value New value in the range [0,1].
-	/// @note Here the sender() object will be determined automagically. To make sure connections are working,
-    ///       the calling object MUST have a slot "void setValue(const QString & controlName, float value);"!
-	void guiControlChanged(const QString & controlName, float value);
+	/// @brief The MIDI device name changed. Set a new one.
+	/// @param deviceName New MIDI device name.
+	void setMidiDevice(const QString & deviceName);
 
-	/// @brief Notify the class the a new MIDI message was received.
+	/// @brief The value of a control in the gui has changed and the new value is sent.
+	/// @param control The control the signal is coming from.
+	/// @param value New value.
+	void controlChanged(I_MIDIControl * control, float value);
+
+	/// @brief Notify the class that a new MIDI message was received.
 	/// @param deltaTime Delta time to last event.
 	/// @param controller MIDI controller identifier.
 	/// @param data Message data.
@@ -37,10 +43,8 @@ public slots:
 
 	/// @brief Add a manual connection from a MIDI control message to a QObject slot.
 	/// @param object Object via which the control can be changed.
-	/// @param slot Slot to change values of control. Must have the signature "void slot(const QString & controlName, float value);"!
-	/// @param controlName Name of control that has changed.
 	/// @param controller MIDI controller identifier.
-	void addConnection(QObject * object, const QString & slot, const QString & controlName, unsigned char controller);
+	void addConnection(I_MIDIControl * object, unsigned char controller);
 
 	/// @brief Remove all current connections.
 	void clearConnections();
@@ -65,6 +69,8 @@ signals:
 
 private:
 	mutable QMutex m_mutex;
+	QVector<I_MIDIControl*> m_controls;
+	QString m_deviceName;
 	QVector<MIDIControlConnection> m_connections;
 	bool m_learnMode;
 	MIDIControlConnection m_learnConnection;

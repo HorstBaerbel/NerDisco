@@ -13,6 +13,7 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindow)
+	, m_midiInterface(MIDIInterface::getInstance())
 {
 	ui->setupUi(this);
 	//showFullScreen();
@@ -26,21 +27,17 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(&m_audioInterface, SIGNAL(levelData(const QVector<float>&, float)), this, SLOT(audioUpdateLevels(const QVector<float>&, float)));
 	updateAudioDevices();
 	//update midi devices
-	connect(&m_midiInterface, SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
+	connect(m_midiInterface->getDeviceInterface(), SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
 	connect(ui->actionMidiStart, SIGNAL(triggered(bool)), this, SLOT(midiStartTriggered(bool)));
 	connect(ui->actionMidiStop, SIGNAL(triggered()), this, SLOT(midiStopTriggered()));
-	connect(&m_midiInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
+	connect(m_midiInterface->getDeviceInterface(), SIGNAL(captureStateChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
 	updateMidiDevices();
 	//connect slot to start the midi mapping process
 	connect(ui->actionMidiLearnMapping, SIGNAL(triggered()), this, SLOT(midiLearnMappingToggled()));
 	connect(ui->actionStoreLearnedConnection, SIGNAL(triggered()), this, SLOT(midiStoreLearnedConnection()));
-	connect(&m_midiMapper, SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
-	connect(&m_midiInterface, SIGNAL(midiControlMessage(double, unsigned char, const QByteArray &)), &m_midiMapper, SLOT(midiControlMessage(double, unsigned char, const QByteArray &)));
+	connect(m_midiInterface->getControlMapping(), SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
 	//connect method that signal when GUI controls change
-	connect(ui->widgetDeckA, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
-	connect(ui->widgetDeckB, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
-	connect(this, SIGNAL(valueChanged(const QString &, float)), &m_midiMapper, SLOT(guiControlChanged(const QString &, float)));
-	connect(ui->horizontalSliderCrossfade, SIGNAL(valueChanged(int)), this, SLOT(crossFaderValueChanged(int)));
+	m_midiInterface->getControlMapping()->registerMIDIControlObject(ui->horizontalSliderCrossfade);
 	//set up the final preview
 	ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
 	ui->labelRealImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
@@ -252,7 +249,7 @@ void MainWindow::updateMidiDevices()
 	connect(action, SIGNAL(triggered()), this, SLOT(midiInputDeviceSelected()));
 	//add actual devices
 	QAction * selected = action;
-	QStringList midiDevices = m_midiInterface.inputDeviceNames();
+	QStringList midiDevices = m_midiInterface->getDeviceInterface()->inputDeviceNames();
 	for (int i = 0; i < midiDevices.size(); ++i)
 	{
 		action = deviceMenu->addAction(midiDevices.at(i));
@@ -279,14 +276,14 @@ void MainWindow::midiInputDeviceSelected()
 	QAction * action = qobject_cast<QAction*>(sender());
 	if (action)
 	{
-		m_midiInterface.setCaptureState(false);
+		m_midiInterface->getDeviceInterface()->setCaptureState(false);
 		if (action->text() == tr("None"))
 		{
-			m_midiInterface.setCurrentCaptureDevice("");
+			m_midiInterface->getDeviceInterface()->setCurrentCaptureDevice("");
 		}
 		else
 		{
-			m_midiInterface.setCurrentCaptureDevice(action->text());
+			m_midiInterface->getDeviceInterface()->setCurrentCaptureDevice(action->text());
 		}
 		Settings & settings = Settings::getInstance();
 		settings.setMidiInputDeviceName(action->text());
@@ -311,12 +308,12 @@ void MainWindow::midiInputDeviceChanged(const QString & name)
 
 void MainWindow::midiStartTriggered(bool checked)
 {
-	m_midiInterface.setCaptureState(checked);
+	m_midiInterface->getDeviceInterface()->setCaptureState(checked);
 }
 
 void MainWindow::midiStopTriggered()
 {
-	m_midiInterface.setCaptureState(false);
+	m_midiInterface->getDeviceInterface()->setCaptureState(false);
 }
 
 void MainWindow::midiCaptureStateChanged(bool capturing)
@@ -329,50 +326,32 @@ void MainWindow::midiCaptureStateChanged(bool capturing)
 
 void MainWindow::midiLearnMappingToggled()
 {
-	if (m_midiMapper.isLearnMode())
+	if (m_midiInterface->getControlMapping()->isLearnMode())
 	{
 		//stop midi mapping mode
-		m_midiMapper.setLearnMode(false);
+		m_midiInterface->getControlMapping()->setLearnMode(false);
 		ui->actionMidiLearnMapping->setChecked(false);
 	}
 	else
 	{
 		//start midi mapping mode
-		if (m_midiInterface.isCapturing())
+		if (m_midiInterface->getDeviceInterface()->isCapturing())
 		{
 			//connect slots to detect value changes in decks
-			m_midiMapper.setLearnMode(true);
+			m_midiInterface->getControlMapping()->setLearnMode(true);
 		}
-		ui->actionMidiLearnMapping->setChecked(m_midiInterface.isCapturing());
+		ui->actionMidiLearnMapping->setChecked(m_midiInterface->getDeviceInterface()->isCapturing());
 	}
 }
 
 void MainWindow::midiLearnedConnectionStateChanged(bool valid)
 {
-	ui->actionStoreLearnedConnection->setEnabled(m_midiMapper.isLearnMode() && valid);
+	ui->actionStoreLearnedConnection->setEnabled(m_midiInterface->getControlMapping()->isLearnMode() && valid);
 }
 
 void MainWindow::midiStoreLearnedConnection()
 {
-	m_midiMapper.storeLearnedConnection();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void MainWindow::crossFaderValueChanged(int value)
-{
-	emit valueChanged(ui->horizontalSliderCrossfade->objectName(), (float)value / 100.0f);
-}
-
-void MainWindow::setValue(const QString & controlName, float value)
-{
-	if (controlName == ui->horizontalSliderCrossfade->objectName())
-	{
-		if (ui->horizontalSliderCrossfade->value() != value * 100.0f)
-		{
-			ui->horizontalSliderCrossfade->setValue(value * 100.0f);
-		}
-	}
+	m_midiInterface->getControlMapping()->storeLearnedConnection();
 }
 
 //-------------------------------------------------------------------------------------------------

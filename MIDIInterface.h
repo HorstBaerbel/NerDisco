@@ -1,42 +1,43 @@
 #pragma once
 
-#include <QObject>
-#include <QThread>
-#include <QString>
-#include <QVector>
-#include <QStringList>
+#include "MIDIDeviceInterface.h"
+#include "MIDIControlMapping.h"
 
-class RtMidiIn;
-class MIDIWorker;
+#include <memory>
+#include <mutex>
 
 
-class MIDIInterface : public QObject
+/// @brief Singleton class holding a MIDI interface for one device, consisting of a device interface and a mapper.
+/// This is based on this (Version 3): http://silviuardelean.ro/2012/06/05/few-singleton-approaches/
+/// and should be reasonably thread safe.
+class MIDIInterface
 {
-	Q_OBJECT
-
 public:
-	MIDIInterface(QObject *parent = 0);
+	/// brief Shared pointer of MIDIInterface object.
+	typedef std::shared_ptr<MIDIInterface> SPtr;
+
+	/// @brief Retrieve or create and instance of the MIDI interface.
+	/// @return Shared pointer to MIDI interface.
+	/// @note This also creates a MIDIDeviceInterface and MIDIControlMapping and connects the two.
+	static SPtr & getInstance();
+
+	/// @brief Retrieve MIDI device interface.
+	/// @return Pointer to MIDI device interface object.
+	MIDIDeviceInterface * getDeviceInterface();
+
+	/// @brief Retrieve MIDI control mapping.
+	/// @return Pointer to MIDI control mapping object.
+	MIDIControlMapping * getControlMapping();
+
+	/// @Destructor. We delete the QObjects here.
 	~MIDIInterface();
 
-	void setCurrentCaptureDevice(const QString & inputName);
-	void setCaptureState(bool capture);
-	bool isCapturing() const;
-
-	QStringList inputDeviceNames() const;
-	QString defaultInputDeviceName() const;
-
-signals:
-	void captureDeviceChanged(const QString & name);
-	void captureStateChanged(bool capturing);
-	void midiControlMessage(double deltaTime, unsigned char controller, const QByteArray & data);
-
-protected slots:
-	void inputDeviceChanged(const QString & deviceName);
-	void inputStateChanged(bool capturing);
-	void messageReceived(double deltaTime, const QByteArray & message);
-
 private:
-	RtMidiIn * m_midiIn;
-	MIDIWorker * m_midiWorker;
-	QThread m_workerThread;
+	MIDIInterface();
+	MIDIInterface(MIDIInterface & mi);
+	MIDIInterface & operator=(const MIDIInterface & mi);
+
+	static std::mutex s_mutex;
+	MIDIDeviceInterface * m_interface;
+	MIDIControlMapping * m_mapping;
 };

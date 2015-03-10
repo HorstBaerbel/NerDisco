@@ -32,7 +32,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSliderCrossfade">
+       <widget class="QtMIDISlider" name="horizontalSliderCrossfade">
         <property name="maximum">
          <number>100</number>
         </property>
@@ -596,6 +596,11 @@
    <extends>QWidget</extends>
    <header>Deck.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QtMIDISlider</class>
+   <extends>QSlider</extends>
+   <header>QtMIDISlider.h</header>
   </customwidget>
  </customwidgets>
  <resources>
