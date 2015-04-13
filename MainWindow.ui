@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>NerDisco 0.6b</string>
+   <string>NerDisco 0.7b</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
@@ -32,7 +32,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QtMIDISlider" name="horizontalSliderCrossfade">
+       <widget class="QSlider" name="horizontalSliderCrossfade">
         <property name="maximum">
          <number>100</number>
         </property>
@@ -49,9 +49,6 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="topMargin">
-         <number>0</number>
-        </property>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
@@ -81,312 +78,309 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox_4">
-        <property name="title">
-         <string>LED display</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
-           <property name="bottomMargin">
-            <number>0</number>
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="title">
+            <string>LED display</string>
            </property>
-           <item>
-            <layout class="QGridLayout" name="gridLayout">
-             <item row="1" column="1">
-              <widget class="QLabel" name="labelRealImage">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="scaledContents">
-                <bool>true</bool>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="labelFinalImage">
-               <property name="text">
-                <string notr="true"/>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>LED image</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>Combined image</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <item row="1" column="1">
-              <layout class="QHBoxLayout" name="horizontalLayout_9">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_17">
-                 <property name="text">
-                  <string>-1</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_8">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_18">
-                 <property name="text">
-                  <string>+1</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="3" column="1">
-              <layout class="QHBoxLayout" name="horizontalLayout_8">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_15">
-                 <property name="text">
-                  <string>0.5</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_16">
-                 <property name="text">
-                  <string>2</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="5" column="1">
-              <layout class="QHBoxLayout" name="horizontalLayout_7">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_13">
-                 <property name="text">
-                  <string>1.5</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_6">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_14">
-                 <property name="text">
-                  <string>3.5</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="4" column="1">
-              <widget class="QSlider" name="horizontalSliderGamma">
-               <property name="minimum">
-                <number>150</number>
-               </property>
-               <property name="maximum">
-                <number>350</number>
-               </property>
-               <property name="pageStep">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>220</number>
-               </property>
-               <property name="sliderPosition">
-                <number>220</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="invertedAppearance">
-                <bool>false</bool>
-               </property>
-               <property name="invertedControls">
-                <bool>false</bool>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksBelow</enum>
-               </property>
-               <property name="tickInterval">
-                <number>10</number>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Display gamma</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSlider" name="horizontalSliderBrightness">
-               <property name="minimum">
-                <number>-50</number>
-               </property>
-               <property name="maximum">
-                <number>50</number>
-               </property>
-               <property name="pageStep">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="invertedAppearance">
-                <bool>false</bool>
-               </property>
-               <property name="invertedControls">
-                <bool>false</bool>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksBelow</enum>
-               </property>
-               <property name="tickInterval">
-                <number>10</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Contrast</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QSlider" name="horizontalSliderContrast">
-               <property name="minimum">
-                <number>-50</number>
-               </property>
-               <property name="maximum">
-                <number>50</number>
-               </property>
-               <property name="pageStep">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="invertedAppearance">
-                <bool>false</bool>
-               </property>
-               <property name="invertedControls">
-                <bool>false</bool>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksBelow</enum>
-               </property>
-               <property name="tickInterval">
-                <number>10</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Brightness</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+              <item>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="1" column="1">
+                 <widget class="QLabel" name="labelRealImage">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="labelFinalImage">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string notr="true"/>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>LED image</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>Combined image</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_2">
+                <item row="1" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_17">
+                    <property name="text">
+                     <string>-1</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_8">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>+1</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_15">
+                    <property name="text">
+                     <string>0.5</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_7">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_16">
+                    <property name="text">
+                     <string>2</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="5" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>1.5</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_14">
+                    <property name="text">
+                     <string>3.5</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QSlider" name="horizontalSliderGamma">
+                  <property name="minimum">
+                   <number>150</number>
+                  </property>
+                  <property name="maximum">
+                   <number>350</number>
+                  </property>
+                  <property name="pageStep">
+                   <number>10</number>
+                  </property>
+                  <property name="value">
+                   <number>220</number>
+                  </property>
+                  <property name="sliderPosition">
+                   <number>220</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="invertedAppearance">
+                   <bool>false</bool>
+                  </property>
+                  <property name="invertedControls">
+                   <bool>false</bool>
+                  </property>
+                  <property name="tickPosition">
+                   <enum>QSlider::TicksBelow</enum>
+                  </property>
+                  <property name="tickInterval">
+                   <number>10</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_12">
+                  <property name="text">
+                   <string>Display gamma</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QSlider" name="horizontalSliderBrightness">
+                  <property name="minimum">
+                   <number>0</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="pageStep">
+                   <number>10</number>
+                  </property>
+                  <property name="value">
+                   <number>50</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="invertedAppearance">
+                   <bool>false</bool>
+                  </property>
+                  <property name="invertedControls">
+                   <bool>false</bool>
+                  </property>
+                  <property name="tickPosition">
+                   <enum>QSlider::TicksBelow</enum>
+                  </property>
+                  <property name="tickInterval">
+                   <number>10</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>Contrast</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QSlider" name="horizontalSliderContrast">
+                  <property name="minimum">
+                   <number>0</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>1</number>
+                  </property>
+                  <property name="pageStep">
+                   <number>10</number>
+                  </property>
+                  <property name="value">
+                   <number>50</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="invertedAppearance">
+                   <bool>false</bool>
+                  </property>
+                  <property name="invertedControls">
+                   <bool>false</bool>
+                  </property>
+                  <property name="tickPosition">
+                   <enum>QSlider::TicksBelow</enum>
+                  </property>
+                  <property name="tickInterval">
+                   <number>10</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>Brightness</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -408,24 +402,35 @@
     <property name="title">
      <string>DeckA</string>
     </property>
+    <widget class="QMenu" name="menuSettingsDeckA">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+    </widget>
     <addaction name="actionLoadDeckA"/>
     <addaction name="actionSaveDeckA"/>
     <addaction name="actionSaveAsDeckA"/>
+    <addaction name="menuSettingsDeckA"/>
    </widget>
    <widget class="QMenu" name="menuDeckB">
     <property name="title">
      <string>DeckB</string>
     </property>
+    <widget class="QMenu" name="menuSettingsDeckB">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+    </widget>
     <addaction name="actionLoadDeckB"/>
     <addaction name="actionSaveDeckB"/>
     <addaction name="actionSaveAsDeckB"/>
+    <addaction name="menuSettingsDeckB"/>
    </widget>
-   <widget class="QMenu" name="menuSettings">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>Datei</string>
     </property>
-    <addaction name="actionOptions"/>
-    <addaction name="actionBeenden"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAudio">
     <property name="title">
@@ -437,8 +442,39 @@
    </widget>
    <widget class="QMenu" name="menuDisplay">
     <property name="title">
-     <string>Display</string>
+     <string>LED Display</string>
     </property>
+    <widget class="QMenu" name="menuDisplaySettings">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <widget class="QMenu" name="menuDisplayScanlineDirection">
+      <property name="title">
+       <string>Scanline direction</string>
+      </property>
+      <addaction name="actionConstantLeftRight"/>
+      <addaction name="actionConstantRightLeft"/>
+      <addaction name="actionAlternatingStartLeft"/>
+      <addaction name="actionAlternatingStartRight"/>
+     </widget>
+     <widget class="QMenu" name="menuFlipDisplay">
+      <property name="title">
+       <string>Flip display</string>
+      </property>
+      <addaction name="actionDisplayFlipHorizontal"/>
+      <addaction name="actionDisplayFlipVertical"/>
+     </widget>
+     <widget class="QMenu" name="menuDisplayBaudrate">
+      <property name="title">
+       <string>Baud rate</string>
+      </property>
+     </widget>
+     <addaction name="menuDisplayBaudrate"/>
+     <addaction name="menuDisplayScanlineDirection"/>
+     <addaction name="menuFlipDisplay"/>
+    </widget>
+    <addaction name="actionDisplaySerialPort"/>
+    <addaction name="menuDisplaySettings"/>
     <addaction name="actionDisplayStart"/>
     <addaction name="actionDisplayStop"/>
    </widget>
@@ -453,7 +489,7 @@
     <addaction name="actionStoreLearnedConnection"/>
     <addaction name="actionClearMidiConnections"/>
    </widget>
-   <addaction name="menuSettings"/>
+   <addaction name="menuFile"/>
    <addaction name="menuDeckA"/>
    <addaction name="menuDeckB"/>
    <addaction name="menuAudio"/>
@@ -466,7 +502,7 @@
     <string>Options...</string>
    </property>
   </action>
-  <action name="actionBeenden">
+  <action name="actionExit">
    <property name="text">
     <string>Exit</string>
    </property>
@@ -524,11 +560,17 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Start</string>
    </property>
   </action>
   <action name="actionDisplayStop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>
@@ -589,6 +631,104 @@
     <string>Clear MIDI connections</string>
    </property>
   </action>
+  <action name="actionDisplaySerialPort">
+   <property name="text">
+    <string>Serial port</string>
+   </property>
+  </action>
+  <action name="actionDisplayFlipHorizontal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Horizontal</string>
+   </property>
+  </action>
+  <action name="actionDisplayFlipVertical">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Vertical</string>
+   </property>
+  </action>
+  <action name="actionConstantLeftRight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Constant left-&gt;right</string>
+   </property>
+  </action>
+  <action name="actionConstantRightLeft">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Constant right-&gt;left</string>
+   </property>
+  </action>
+  <action name="actionAlternatingStartLeft">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Alternating, start left</string>
+   </property>
+  </action>
+  <action name="actionAlternatingStartRight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Alternating, start right</string>
+   </property>
+  </action>
+  <action name="actionDisplayResolution">
+   <property name="text">
+    <string>Resolution</string>
+   </property>
+  </action>
+  <action name="actionDisplayUpdateInterval">
+   <property name="text">
+    <string>Update interval</string>
+   </property>
+  </action>
+  <action name="actionDkfjbg">
+   <property name="text">
+    <string>dkfjbg</string>
+   </property>
+  </action>
+  <action name="actionDjhfkdjfhg">
+   <property name="text">
+    <string>djhfkdjfhg</string>
+   </property>
+  </action>
+  <action name="action57600">
+   <property name="text">
+    <string>57600</string>
+   </property>
+  </action>
+  <action name="action115200">
+   <property name="text">
+    <string>115200</string>
+   </property>
+  </action>
+  <action name="action232000">
+   <property name="text">
+    <string>230400</string>
+   </property>
+  </action>
+  <action name="actionSdfsdf">
+   <property name="text">
+    <string>sdfsdf</string>
+   </property>
+  </action>
+  <action name="actionSdf">
+   <property name="text">
+    <string>sdf</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -596,11 +736,6 @@
    <extends>QWidget</extends>
    <header>Deck.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QtMIDISlider</class>
-   <extends>QSlider</extends>
-   <header>QtMIDISlider.h</header>
   </customwidget>
  </customwidgets>
  <resources>

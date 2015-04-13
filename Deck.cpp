@@ -1,41 +1,56 @@
 #include "Deck.h"
 #include "ui_Deck.h"
-#include "Settings.h"
+#include "ParameterQtConnect.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
 
 
 Deck::Deck(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::CodeDeck)
-    , m_liveView(new LiveView())
-    , m_codeEdit(new CodeEdit())
-    , m_scriptTime(QTime::currentTime())
+	: QWidget(parent)
+	, ui(new Ui::CodeDeck)
+	, m_liveView(new LiveView())
+	, m_codeEdit(new CodeEdit())
+	, m_scriptTime(QTime::currentTime())
+	, m_scriptModified(false)
 	, m_errorExp("\\b(ERROR|Error|error)\\b:\\s?(\\d+):\\s?(\\d+):\\s?(.*)\\n")
 	, m_midiInterface(MIDIInterface::getInstance())
+	, updateInterval("updateInterval", 50, 20, 100)
+	, previewWidth("previewWidth", 128, 64, 256)
+	, previewHeight("previewHeight", 72, 36, 144)
+	, valueA("valueA", 0, 0, 100)
+	, valueB("valueB", 0, 0, 100)
+	, valueC("valueC", 0, 0, 100)
+	, valueD("valueD", 0, 0, 100)
+	, triggerA("triggerA", false)
+	, triggerB("triggerB", false)
 {
     ui->setupUi(this);
-    m_deckName = ui->groupBox->title();
+	QHBoxLayout * deckLayout = (QHBoxLayout*)ui->groupBox->layout();
+	//deckLayout->setAlignment(Qt::AlignHCenter);
     //insert code editor
-    ((QVBoxLayout*)ui->groupBox->layout())->insertWidget(0, m_codeEdit);
+	deckLayout->insertWidget(0, m_codeEdit);
     //insert live editor
-    QHBoxLayout * viewLayout = new QHBoxLayout;
-    viewLayout->setMargin(0);
-    viewLayout->setSpacing(0);
-    ((QVBoxLayout*)ui->groupBox->layout())->insertLayout(1, viewLayout);
-    viewLayout->addWidget(m_liveView);
-    //connect signals from dials
-	connect(ui->dialA, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)));
-	connect(ui->dialB, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)));
-	connect(ui->dialC, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)));
-    connect(ui->trigger, SIGNAL(pressed()), this, SLOT(buttonChanged()));
-	connect(ui->trigger, SIGNAL(released()), this, SLOT(buttonChanged()));
-	//register controls in MIDI interface
-	m_midiInterface->getControlMapping()->registerMIDIControlObject(ui->dialA);
-	m_midiInterface->getControlMapping()->registerMIDIControlObject(ui->dialB);
-	m_midiInterface->getControlMapping()->registerMIDIControlObject(ui->dialC);
-	m_midiInterface->getControlMapping()->registerMIDIControlObject(ui->trigger);
+	deckLayout->insertWidget(1, m_liveView);
+	m_liveView->setFixedSize(previewWidth, previewHeight);
+    //connect signals from dials to parameters
+	connectParameter(valueA, ui->valueA);
+	connectParameter(valueB, ui->valueB);
+	connectParameter(valueC, ui->valueC);
+	connectParameter(valueD, ui->valueD);
+	connectParameter(triggerA, ui->triggerA);
+	connectParameter(triggerB, ui->triggerB);
+	//connect other parameters to functions
+	connect(updateInterval.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setUpdateInterval(int)));
+	connect(previewWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setPreviewWidth(int)));
+	connect(previewHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setPreviewHeight(int)));
+	//register parameters in MIDI interface
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueA.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueB.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueC.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueD.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerA.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter());
 	//set up regular expression for error parsing
 	m_errorExp.setMinimal(true);
     //when the script changes either sucessfully or has errors, we get notified
@@ -50,9 +65,8 @@ Deck::Deck(QWidget *parent)
     connect(&m_editTimer, SIGNAL(timeout()), this, SLOT(updateScriptFromText()));
     m_editTimer.setSingleShot(true);
     //set up timer for updating the time property
-    Settings & settings = Settings::getInstance();
     connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
-    m_updateTimer.start(settings.displayInterval());
+	m_updateTimer.start(updateInterval);
     //reset elapsed time
     m_scriptTime.start();
     //load default script
@@ -61,6 +75,97 @@ Deck::Deck(QWidget *parent)
 
 Deck::~Deck()
 {
+}
+
+void Deck::toXML(QDomElement & parent) const
+{
+	//try to find element in document
+	QDomNodeList children = parent.elementsByTagName("Deck");
+	for (int i = 0; i < children.size(); ++i)
+	{
+		QDomElement child = children.at(i).toElement();
+		if (!child.isNull() && child.attribute("name") == objectName())
+		{
+			//remove child from document, we'll re-add it
+			parent.removeChild(child);
+			break;
+		}
+	}
+	//(re)add the new element
+	QDomElement element = parent.ownerDocument().createElement("Deck");
+	element.setAttribute("name", objectName());
+	element.setAttribute("currentText", m_currentText);
+	element.setAttribute("scriptModified", m_scriptModified);
+	element.setAttribute("currentScriptPath", m_currentScriptPath);
+	updateInterval.toXML(element);
+	valueA.toXML(element);
+	valueB.toXML(element);
+	valueC.toXML(element);
+	valueD.toXML(element);
+	triggerA.toXML(element);
+	triggerB.toXML(element);
+	parent.appendChild(element);
+}
+
+Deck & Deck::fromXML(const QDomElement & parent)
+{
+	//try to find element in document
+	QDomNodeList decks = parent.elementsByTagName("Deck");
+	if (decks.isEmpty())
+	{
+		throw std::runtime_error("No deck settings found!");
+	}
+	//try to find object name in children
+	for (int j = 0; j < decks.size(); ++j)
+	{
+		QDomElement child = decks.at(j).toElement();
+		if (!child.isNull() && child.attribute("name") == objectName())
+		{
+			//found. read and apply settings
+ 			loadScript(child.attribute("currentScriptPath"));
+			m_codeEdit->setPlainText(child.attribute("currentText"));
+			scriptModified(child.attribute("scriptModified", "0").toUInt());
+			updateInterval.fromXML(child);
+			valueA.fromXML(child);
+			valueB.fromXML(child);
+			valueC.fromXML(child);
+			valueD.fromXML(child);
+			triggerA.fromXML(child);
+			triggerB.fromXML(child);
+			return *this;
+		}
+	}
+	throw std::runtime_error("No settings found for deck!");
+}
+
+void Deck::setDeckName(const QString & name)
+{
+	setObjectName(name);
+	//register parameters in MIDI interface
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueA.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueB.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueC.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueD.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerA.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter());
+}
+
+void Deck::setUpdateInterval(int interval)
+{
+	m_updateTimer.setInterval(interval);
+	updateInterval = interval;
+}
+
+void Deck::setPreviewWidth(int width)
+{
+	m_liveView->setFixedSize(width, previewHeight);
+	previewWidth = width;
+}
+
+void Deck::setPreviewHeight(int height)
+{
+	m_liveView->setFixedSize(previewWidth, height);
+	previewHeight = height;
 }
 
 bool Deck::loadScript(const QString & path)
@@ -76,7 +181,7 @@ bool Deck::loadScript(const QString & path)
         {
             m_currentScriptPath = QDir::current().relativeFilePath(path);
         }
-        ui->groupBox->setTitle(m_deckName + " (" + m_currentScriptPath + ")");
+		ui->groupBox->setTitle(objectName() + " (" + m_currentScriptPath + ")");
         return true;
     }
     return false;
@@ -93,6 +198,7 @@ bool Deck::saveScript()
             QByteArray data(m_codeEdit->toPlainText().toUtf8());
             if (file.write(data) == data.size())
             {
+				m_scriptModified = false;
                 m_codeEdit->document()->setModified(false);
                 return true;
             }
@@ -126,10 +232,11 @@ bool Deck::saveAsScript(const QString & path)
             QByteArray data(m_codeEdit->toPlainText().toUtf8());
             if (file.write(data) == data.size())
             {
+				m_scriptModified = false;
                 m_codeEdit->document()->setModified(false);
                 //make path relative
                 m_currentScriptPath = QDir::current().relativeFilePath(filePath);
-                ui->groupBox->setTitle(m_deckName + " (" + m_currentScriptPath + ")");
+				ui->groupBox->setTitle(objectName() + " (" + m_currentScriptPath + ")");
                 return true;
             }
         }
@@ -152,12 +259,13 @@ void Deck::scriptTextChanged()
 {
     //user has edited the text. stop timer and start it again to wait a second before updating the script
     m_editTimer.stop();
-    m_editTimer.start(500);
+    m_editTimer.start(1000);
 }
 
 void Deck::scriptModified(bool modified)
 {
-    ui->groupBox->setTitle(m_deckName + " (" + m_currentScriptPath + ")" + (modified ? "*" : ""));
+	m_scriptModified = modified;
+	ui->groupBox->setTitle(objectName() + " (" + m_currentScriptPath + ")" + (m_scriptModified ? "*" : ""));
 }
 
 void Deck::scriptCompiledOk()
@@ -188,10 +296,12 @@ void Deck::updateScriptValues()
 {
     //update properties in new active script
     m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0f);
-	m_liveView->setFragmentScriptProperty("valueA", (float)ui->dialA->value() / 100.0f);
-	m_liveView->setFragmentScriptProperty("valueB", (float)ui->dialB->value() / 100.0f);
-	m_liveView->setFragmentScriptProperty("valueC", (float)ui->dialC->value() / 100.0f);
-	m_liveView->setFragmentScriptProperty("trigger", ui->trigger->isDown());
+	m_liveView->setFragmentScriptProperty(valueA.name(), valueA.normalizedValue());
+	m_liveView->setFragmentScriptProperty(valueB.name(), valueB.normalizedValue());
+	m_liveView->setFragmentScriptProperty(valueC.name(), valueC.normalizedValue());
+	m_liveView->setFragmentScriptProperty(valueD.name(), valueD.normalizedValue());
+	m_liveView->setFragmentScriptProperty(triggerA.name(), triggerA.normalizedValue());
+	m_liveView->setFragmentScriptProperty(triggerB.name(), triggerB.normalizedValue());
 }
 
 void Deck::render()
@@ -215,21 +325,21 @@ void Deck::updateTime()
 	m_liveView->setFragmentScriptProperty("time", (float)m_scriptTime.elapsed() / 1000.0f);
 }
 
-void Deck::sliderChanged(int value)
+void Deck::parameterChanged(NodeBase * parameter)
 {
-	const QString objectName = sender()->objectName();
-	const float fvalue = (float)value / 100.0;
-	m_liveView->setFragmentScriptProperty(objectName, fvalue);
-}
-
-void Deck::buttonChanged()
-{
-	const QString objectName = sender()->objectName();
-	if (qobject_cast<QAbstractButton *>(sender()))
+	if (dynamic_cast<ParameterBool*>(parameter))
 	{
-		QAbstractButton * button = qobject_cast<QAbstractButton *>(sender());
-		const float value = button->isDown() ? 1.0f : 0.0f;
-		m_liveView->setFragmentScriptProperty(objectName, value);
+		ParameterBool * p = dynamic_cast<ParameterBool*>(parameter);
+		m_liveView->setFragmentScriptProperty(p->name(), *p);
+	}
+	else if (dynamic_cast<ParameterInt*>(parameter))
+	{
+		ParameterInt * p = dynamic_cast<ParameterInt*>(parameter);
+		m_liveView->setFragmentScriptProperty(p->name(), p->normalizedValue());
+	}
+	else if (dynamic_cast<ParameterFloat*>(parameter))
+	{
+		ParameterFloat * p = dynamic_cast<ParameterFloat*>(parameter);
+		m_liveView->setFragmentScriptProperty(p->name(), p->normalizedValue());
 	}
 }
-

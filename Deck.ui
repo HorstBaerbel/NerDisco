@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>651</width>
-    <height>538</height>
+    <width>444</width>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,91 +19,128 @@
      <property name="title">
       <string>Deck</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
       <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <property name="horizontalSpacing">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="verticalSpacing">
+        <property name="leftMargin">
          <number>0</number>
         </property>
-        <item row="1" column="0">
-         <widget class="QtMIDIDial" name="dialA">
-          <property name="maximum">
-           <number>100</number>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0">
+          <property name="horizontalSpacing">
+           <number>6</number>
           </property>
-          <property name="notchesVisible">
-           <bool>true</bool>
+          <property name="verticalSpacing">
+           <number>0</number>
           </property>
-         </widget>
+          <item row="2" column="0">
+           <widget class="QDial" name="valueA">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="notchesVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDial" name="valueB">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="notchesVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QDial" name="valueC">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="notchesVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>valueC</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>valueB</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>valueA</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QDial" name="valueD">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="notchesVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>valueD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item row="1" column="1">
-         <widget class="QtMIDIDial" name="dialB">
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="notchesVisible">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QtMIDIDial" name="dialC">
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="notchesVisible">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QtMIDIButton" name="trigger">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>C</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>trigger</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>B</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>A</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-          </property>
-         </widget>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QPushButton" name="triggerA">
+            <property name="text">
+             <string>triggerA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="triggerB">
+            <property name="text">
+             <string>triggerB</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -112,18 +149,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QtMIDIDial</class>
-   <extends>QDial</extends>
-   <header>QtMIDIDial.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QtMIDIButton</class>
-   <extends>QPushButton</extends>
-   <header>QtMIDIButton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

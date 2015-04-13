@@ -28,7 +28,7 @@
     <PlatformToolSet>v120</PlatformToolSet>
     <OutputDirectory>release\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <IntermediateDirectory>release\</IntermediateDirectory>
     <PrimaryOutput>nerdisco</PrimaryOutput>
@@ -37,7 +37,7 @@
     <PlatformToolSet>v120</PlatformToolSet>
     <OutputDirectory>release\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <IntermediateDirectory>release\</IntermediateDirectory>
     <PrimaryOutput>nerdisco</PrimaryOutput>
@@ -46,7 +46,7 @@
     <PlatformToolSet>v120</PlatformToolSet>
     <OutputDirectory>debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>nerdisco</PrimaryOutput>
@@ -55,7 +55,7 @@
     <PlatformToolSet>v120</PlatformToolSet>
     <OutputDirectory>debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>nerdisco</PrimaryOutput>
@@ -107,17 +107,17 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;UNICODE;WIN32;QT_NO_DEBUG;QT_QUICK_LIB;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_NETWORK_LIB;QT_SERIALPORT_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;QT_OPENGL_LIB;QT_XML_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;UNICODE;WIN32;NDEBUG;QT_NO_DEBUG;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_NETWORK_LIB;QT_SERIALPORT_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_XML_LIB;QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;qtmain.lib;Qt5Core.lib;Qt5Multimedia.lib;Qt5Widgets.lib;Qt5Network.lib;Qt5SerialPort.lib;Qt5Gui.lib;Qt5OpenGL.lib;Qt5Xml.lib</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;shell32.lib;qtmain.lib;Qt5Core.lib;Qt5Multimedia.lib;Qt5Widgets.lib;Qt5Network.lib;Qt5SerialPort.lib;Qt5Gui.lib;Qt5OpenGL.lib;Qt5Xml.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -148,17 +148,17 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB;QT_NO_DEBUG;QT_QUICK_LIB;QT_SERIALPORT_LIB;QT_WIDGETS_LIB;UNICODE;UNICODE;WIN32;WIN32;WIN64;QT_OPENGL_LIB;QT_XML_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;UNICODE;WIN32;WIN64;NDEBUG;QT_NO_DEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB;QT_SERIALPORT_LIB;QT_WIDGETS_LIB;QT_OPENGL_LIB;QT_XML_LIB;QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;qtmain.lib;Qt5Core.lib;Qt5Multimedia.lib;Qt5Widgets.lib;Qt5Network.lib;Qt5SerialPort.lib;Qt5Gui.lib;Qt5OpenGL.lib;Qt5Xml.lib</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;shell32.lib;qtmain.lib;Qt5Core.lib;Qt5Multimedia.lib;Qt5Widgets.lib;Qt5Network.lib;Qt5SerialPort.lib;Qt5Gui.lib;Qt5OpenGL.lib;Qt5Xml.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27"  /SUBSYSTEM:WINDOWS %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -190,17 +190,17 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;UNICODE;WIN32;QT_QUICK_LIB;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_NETWORK_LIB;QT_SERIALPORT_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_XML_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;UNICODE;WIN32;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_NETWORK_LIB;QT_SERIALPORT_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_XML_LIB;QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;qtmaind.lib;Qt5Cored.lib;Qt5Multimediad.lib;Qt5Widgetsd.lib;Qt5Networkd.lib;Qt5SerialPortd.lib;Qt5Guid.lib;Qt5OpenGLd.lib;Qt5Xmld.lib</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;shell32.lib;qtmaind.lib;Qt5Cored.lib;Qt5Multimediad.lib;Qt5Widgetsd.lib;Qt5Networkd.lib;Qt5SerialPortd.lib;Qt5Guid.lib;Qt5OpenGLd.lib;Qt5Xmld.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -230,17 +230,17 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB;QT_QUICK_LIB;QT_SERIALPORT_LIB;QT_WIDGETS_LIB;UNICODE;UNICODE;WIN32;WIN32;WIN64;QT_OPENGL_LIB;QT_XML_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;__WINDOWS_MM__;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB;QT_SERIALPORT_LIB;QT_WIDGETS_LIB;UNICODE;WIN32;WIN64;QT_OPENGL_LIB;QT_XML_LIB;QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;qtmaind.lib;Qt5Cored.lib;Qt5Multimediad.lib;Qt5Widgetsd.lib;Qt5Networkd.lib;Qt5SerialPortd.lib;Qt5Guid.lib;Qt5OpenGLd.lib;Qt5Xmld.lib</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;winmm.lib;shell32.lib;qtmaind.lib;Qt5Cored.lib;Qt5Multimediad.lib;Qt5Widgetsd.lib;Qt5Networkd.lib;Qt5SerialPortd.lib;Qt5Guid.lib;Qt5OpenGLd.lib;Qt5Xmld.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27"  /SUBSYSTEM:WINDOWS %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -266,7 +266,6 @@
     <ClCompile Include="AudioProcessing.cpp" />
     <ClCompile Include="AudioInterface.cpp" />
     <ClCompile Include="CodeEdit.cpp" />
-    <ClCompile Include="ColorOperations.cpp" />
     <ClCompile Include="Debug\moc_AudioConversion.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -287,6 +286,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_DisplayImageConverter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_DisplayThread.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -299,15 +302,35 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Debug\moc_MIDIControlMapping.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Debug\moc_MIDIDeviceInterface.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_MIDIParameterMapping.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_MIDIWorker.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_NodeBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_NodeEnum.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_NodeQString.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_NodeRanged.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ParameterScanlineDirection.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -323,15 +346,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Debug\moc_QtMIDIDial.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_QtMIDISlider.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_SettingsDialog.cpp">
+    <ClCompile Include="Debug\moc_QtSpinBoxAction.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -355,18 +370,27 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ImageOperations.cpp" />
+    <ClCompile Include="DisplayImageConverter.cpp" />
     <ClCompile Include="LiveView.cpp" />
     <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MIDIControlConnection.cpp" />
+    <ClCompile Include="MIDIParameterConnection.cpp" />
     <ClCompile Include="MIDIDeviceInterface.cpp" />
-    <ClCompile Include="MIDIControlMapping.cpp" />
+    <ClCompile Include="MIDIParameterMapping.cpp" />
     <ClCompile Include="MIDIInterface.cpp" />
     <ClCompile Include="MIDIWorker.cpp" />
     <ClCompile Include="NerDisco.cpp" />
+    <ClCompile Include="NodeBase.cpp" />
+    <ClCompile Include="NodeEnum.cpp" />
+    <ClCompile Include="NodeQString.cpp" />
+    <ClCompile Include="ParameterQtConnect.cpp" />
+    <ClCompile Include="ParameterScanlineDirection.cpp" />
+    <ClCompile Include="Release\moc_NodeBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="QtMIDIButton.cpp" />
-    <ClCompile Include="QtMIDIDial.cpp" />
-    <ClCompile Include="QtMIDISlider.cpp" />
-    <ClCompile Include="Release\moc_MIDIControlMapping.cpp">
+    <ClCompile Include="Release\moc_DisplayImageConverter.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -374,7 +398,27 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Release\moc_MIDIParameterMapping.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Release\moc_MIDIWorker.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_NodeEnum.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_NodeQString.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_NodeRanged.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ParameterScanlineDirection.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -382,11 +426,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Release\moc_QtMIDIDial.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Release\moc_QtMIDISlider.cpp">
+    <ClCompile Include="Release\moc_QtSpinBoxAction.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -400,6 +440,8 @@
     </ClCompile>
     <ClCompile Include="rtmidi\RtMidi.cpp" />
     <ClCompile Include="SignalJoiner.cpp" />
+    <ClCompile Include="QtSpinBoxAction.cpp" />
+    <ClCompile Include="NodeRanged.cpp" />
     <ClCompile Include="SwapThread.cpp" />
     <ClCompile Include="QTextEditLineNumberArea.cpp" />
     <ClCompile Include="QTextEditStatusArea.cpp" />
@@ -443,39 +485,33 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Release\moc_SettingsDialog.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="SettingsDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="SignalJoiner.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SignalJoiner.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing SignalJoiner.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SignalJoiner.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing SignalJoiner.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
     <CustomBuild Include="AudioInterface.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing AudioInterface.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing AudioInterface.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing AudioInterface.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing AudioInterface.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -488,12 +524,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="CodeEdit.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing CodeEdit.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing CodeEdit.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing CodeEdit.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing CodeEdit.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -509,46 +545,46 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing AudioProcessing.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing AudioProcessing.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing AudioProcessing.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing AudioProcessing.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
     <CustomBuild Include="AudioConversion.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing AudioConversion.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing AudioConversion.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing AudioConversion.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing AudioConversion.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
     <ClInclude Include="ColorOperations.h" />
     <CustomBuild Include="Deck.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing Deck.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing Deck.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing Deck.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing Deck.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -561,12 +597,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="DisplayThread.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing DisplayThread.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing DisplayThread.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing DisplayThread.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing DisplayThread.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -579,12 +615,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="LiveView.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing LiveView.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing LiveView.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing LiveView.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing LiveView.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -597,12 +633,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="MainWindow.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing MainWindow.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MainWindow.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing MainWindow.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MainWindow.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -615,12 +651,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="QTextEditLineNumberArea.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing QTextEditLineNumberArea.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing QTextEditLineNumberArea.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing QTextEditLineNumberArea.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing QTextEditLineNumberArea.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -633,12 +669,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="QTextEditStatusArea.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing QTextEditStatusArea.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing QTextEditStatusArea.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing QTextEditStatusArea.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing QTextEditStatusArea.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -652,24 +688,23 @@
     </CustomBuild>
     <ClInclude Include="GeneratedFiles\ui_Deck.h" />
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
-    <ClInclude Include="GeneratedFiles\ui_SettingsDialog.h" />
     <CustomBuild Include="SwapThread.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SwapThread.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing SwapThread.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SwapThread.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing SwapThread.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
     <CustomBuild Include="MIDIDeviceInterface.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -693,76 +728,59 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing MIDIWorker.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MIDIWorker.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing MIDIWorker.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MIDIWorker.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB  "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
-    <CustomBuild Include="MIDIControlMapping.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing MIDIControlMapping.h...</Message>
+    <CustomBuild Include="MIDIParameterMapping.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing MIDIParameterMapping.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MIDIControlMapping.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MIDIParameterMapping.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing MIDIControlMapping.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing MIDIParameterMapping.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MIDIControlMapping.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MIDIParameterMapping.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
+    <ClInclude Include="ImageOperations.h" />
     <ClInclude Include="I_MIDIControl.h" />
-    <ClInclude Include="MIDIControlConnection.h" />
-    <CustomBuild Include="QtMIDISlider.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing QtMIDISlider.h...</Message>
+    <CustomBuild Include="DisplayImageConverter.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing DisplayImageConverter.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing QtMIDISlider.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing DisplayImageConverter.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing QtMIDISlider.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing DisplayImageConverter.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing QtMIDISlider.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing DisplayImageConverter.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
-    <CustomBuild Include="QtMIDIDial.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing QtMIDIDial.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing QtMIDIDial.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing QtMIDIDial.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing QtMIDIDial.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
-    </CustomBuild>
+    <ClInclude Include="MIDIParameterConnection.h" />
     <CustomBuild Include="QtMIDIButton.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing QtMIDIButton.h...</Message>
@@ -782,26 +800,144 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
     <ClInclude Include="MIDIInterface.h" />
-    <ClInclude Include="rtmidi\RtMidi.h" />
-    <ClInclude Include="Settings.h" />
-    <CustomBuild Include="SettingsDialog.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SettingsDialog.h...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing SettingsDialog.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SettingsDialog.h...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing SettingsDialog.h...</Message>
+    <CustomBuild Include="QtSpinBoxAction.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing QtSpinBoxAction.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing QtSpinBoxAction.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing QtSpinBoxAction.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing QtSpinBoxAction.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+    </CustomBuild>
+    <CustomBuild Include="NodeBase.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing NodeBase.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing NodeBase.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing NodeBase.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing NodeBase.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Parameters.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Command>
+    </CustomBuild>
+    <CustomBuild Include="NodeQString.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing NodeQString.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing NodeQString.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing NodeQString.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing NodeQString.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+    </CustomBuild>
+    <CustomBuild Include="NodeEnum.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing NodeEnum.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing NodeEnum.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing NodeEnum.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing NodeEnum.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+    </CustomBuild>
+    <ClInclude Include="NodeFilter.h" />
+    <ClInclude Include="ParameterQtConnect.h" />
+    <CustomBuild Include="ParameterScanlineDirection.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ParameterScanlineDirection.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing ParameterScanlineDirection.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ParameterScanlineDirection.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing ParameterScanlineDirection.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="ParameterT.h" />
+    <CustomBuild Include="NodeRanged.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing NodeRanged.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing NodeRanged.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing NodeRanged.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_SERIALPORT_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing NodeRanged.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -D__WINDOWS_MM__ -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_SERIALPORT_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_XML_LIB "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSerialPort" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtOpenGL" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtXml"</Command>
+    </CustomBuild>
+    <ClInclude Include="rtmidi\RtMidi.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Deck.ui">
@@ -824,25 +960,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="MainWindow.ui">
-      <FileType>Document</FileType>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Uic%27ing %(Identity)...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="SettingsDialog.ui">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
@@ -924,7 +1041,7 @@
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="x64" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

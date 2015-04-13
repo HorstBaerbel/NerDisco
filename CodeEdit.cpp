@@ -3,6 +3,7 @@
 #include "QTextEditStatusArea.h"
 #include "ColorOperations.h"
 
+#include <QColor>
 #include <QScrollBar>
 #include <QTextBlock>
 #include <QAbstractTextDocumentLayout>
@@ -165,6 +166,21 @@ void CodeEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
 }
 
 //----- overpainting --------------------------------------------------
+
+QColor mix(const QColor& c1, const QColor& c2, qreal t)
+{
+	if (t <= 0.0)
+		return c1;
+	if (t >= 1.0)
+		return c2;
+	if (std::isnan(t))
+		return c1;
+	qreal r = mix(c1.redF(), c2.redF(), t);
+	qreal g = mix(c1.greenF(), c2.greenF(), t);
+	qreal b = mix(c1.blueF(), c2.blueF(), t);
+	qreal a = mix(c1.alphaF(), c2.alphaF(), t);
+	return QColor::fromRgbF(r, g, b, a);
+}
 
 void CodeEdit::paintEvent(QPaintEvent *e)
 {

@@ -2,6 +2,7 @@
 
 #include "LiveView.h"
 #include "CodeEdit.h"
+#include "Parameters.h"
 #include "MIDIInterface.h"
 
 #include <QWidget>
@@ -16,6 +17,26 @@ class Deck : public QWidget
 
 public:
     explicit Deck(QWidget *parent = 0);
+
+	/// @brief Save the current settings to an XML document.
+	/// @param parent The paren element to write the settings to.
+	void toXML(QDomElement & parent) const;
+	/// @brief Read current settings from XML document.
+	/// @param parent The parent element to load the settings from.
+	Deck & fromXML(const QDomElement & parent);
+
+	void setDeckName(const QString & name);
+
+	ParameterInt updateInterval;
+	ParameterInt previewWidth;
+	ParameterInt previewHeight;
+
+	ParameterInt valueA;
+	ParameterInt valueB;
+	ParameterInt valueC;
+	ParameterInt valueD;
+	ParameterBool triggerA;
+	ParameterBool triggerB;
 
     bool loadScript(const QString & path);
     bool saveScript();
@@ -38,6 +59,11 @@ signals:
 	void renderingFinished();
 
 private slots:
+	void setUpdateInterval(int interval);
+	void setPreviewWidth(int width);
+	void setPreviewHeight(int height);
+	void parameterChanged(NodeBase * parameter);
+
     void scriptModified(bool modified);
     void scriptTextChanged();
     void updateScriptFromText();
@@ -48,9 +74,6 @@ private slots:
 	void updateScriptValues();
     void updateTime();
 
-	void sliderChanged(int value);
-	void buttonChanged();
-
 private:
     Ui::CodeDeck *ui;
     LiveView * m_liveView;
@@ -59,10 +82,9 @@ private:
     QTime m_scriptTime;
 
     QString m_currentText;
+	bool m_scriptModified;
     QTimer m_editTimer;
 	QRegExp m_errorExp;
-
-    QString m_deckName;
     QString m_currentScriptPath;
 
 	MIDIInterface::SPtr m_midiInterface;

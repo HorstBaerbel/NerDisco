@@ -1,107 +1,296 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "SettingsDialog.h"
-#include "Settings.h"
-#include "ColorOperations.h"
+#include "ImageOperations.h"
+#include "QtSpinBoxAction.h"
+#include "ParameterQtConnect.h"
 
 #include <QPainter>
 #include <QDir>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindow)
 	, m_midiInterface(MIDIInterface::getInstance())
+	, previewInterval("previewInterval", 33, 20, 100)
+	, previewWidth("previewWidth", 128, 32, 256)
+	, previewHeight("previewHeight", 72, 18, 148)
+	, displayInterval("displayInterval", 50, 20, 100)
+	, displayWidth("displayWidth", 32, 16, 64)
+	, displayHeight("displayHeight", 16, 8, 32)
+	, displayBrightness("displayBrightness", 0.0f, -1.0f, 1.0f)
+	, displayContrast("displayContrast", 0.0f, -1.0f, 1.0f)
+	, displayGamma("displayGamma", 2.2f, 1.5f, 3.5f)
+	, crossFadeValue("displayGamma", 0.0f, 0.0f, 1.0f)
 {
 	ui->setupUi(this);
-	//showFullScreen();
-	//retrieve settings
-	Settings & settings = Settings::getInstance();
+	ui->widgetDeckA->setDeckName("DeckA");
+	ui->widgetDeckB->setDeckName("DeckB");
+	//connect preview gamma/brightness/contrast/crossfade slider to parameter and register for MIDI interaction
+	connectParameter(crossFadeValue, ui->horizontalSliderCrossfade);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(crossFadeValue.GetSharedParameter());
+	connectParameter(displayBrightness, ui->horizontalSliderBrightness);
+	connectParameter(displayContrast, ui->horizontalSliderContrast);
+	connectParameter(displayGamma, ui->horizontalSliderGamma);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(displayBrightness.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(displayContrast.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(displayGamma.GetSharedParameter());
 	//update audio devices
-	connect(&m_audioInterface, SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(audioInputDeviceChanged(const QString &)));
+	connect(m_audioInterface.captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(audioInputDeviceChanged(const QString &)));
 	connect(ui->actionAudioRecord, SIGNAL(triggered(bool)), this, SLOT(audioRecordTriggered(bool)));
 	connect(ui->actionAudioStop, SIGNAL(triggered()), this, SLOT(audioStopTriggered()));
-	connect(&m_audioInterface, SIGNAL(captureStateChanged(bool)), this, SLOT(audioCaptureStateChanged(bool)));
+	connect(m_audioInterface.capturing.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(audioCaptureStateChanged(bool)));
 	connect(&m_audioInterface, SIGNAL(levelData(const QVector<float>&, float)), this, SLOT(audioUpdateLevels(const QVector<float>&, float)));
 	updateAudioDevices();
 	//update midi devices
-	connect(m_midiInterface->getDeviceInterface(), SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
+	connect(m_midiInterface->getDeviceInterface()->captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
 	connect(ui->actionMidiStart, SIGNAL(triggered(bool)), this, SLOT(midiStartTriggered(bool)));
 	connect(ui->actionMidiStop, SIGNAL(triggered()), this, SLOT(midiStopTriggered()));
-	connect(m_midiInterface->getDeviceInterface(), SIGNAL(captureStateChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
+	connect(m_midiInterface->getDeviceInterface()->capturing.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(midiCaptureStateChanged(bool)));
 	updateMidiDevices();
 	//connect slot to start the midi mapping process
 	connect(ui->actionMidiLearnMapping, SIGNAL(triggered()), this, SLOT(midiLearnMappingToggled()));
 	connect(ui->actionStoreLearnedConnection, SIGNAL(triggered()), this, SLOT(midiStoreLearnedConnection()));
-	connect(m_midiInterface->getControlMapping(), SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
-	//connect method that signal when GUI controls change
-	m_midiInterface->getControlMapping()->registerMIDIControlObject(ui->horizontalSliderCrossfade);
-	//set up the final preview
-	ui->labelFinalImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
-	ui->labelRealImage->setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
-	//setup preview gamma/brighness/contrast
-	ui->horizontalSliderGamma->setValue(settings.displayGamma() * 100.0f);
-	ui->horizontalSliderBrightness->setValue(settings.displayBrightness() * 50.0f);
-	ui->horizontalSliderContrast->setValue((settings.displayContrast() - 1.0f) * 50.0f);
-	//connect preview gamma/brighness/contrast slider to update slot
-	connect(ui->horizontalSliderGamma, SIGNAL(valueChanged(int)), this, SLOT(updateSettingsFromUi()));
-	connect(ui->horizontalSliderBrightness, SIGNAL(valueChanged(int)), this, SLOT(updateSettingsFromUi()));
-	connect(ui->horizontalSliderContrast, SIGNAL(valueChanged(int)), this, SLOT(updateSettingsFromUi()));
-	//allocate images
-	m_currentImage = QImage(settings.frameBufferWidth(), settings.frameBufferHeight(), QImage::Format_ARGB32);
-	m_realImage = QImage(settings.displayWidth(), settings.displayHeight(), QImage::Format_ARGB32);
+	connect(m_midiInterface->getParameterMapping(), SIGNAL(learnedConnectionStateChanged(bool)), this, SLOT(midiLearnedConnectionStateChanged(bool)));
 	//connect menu actions
 	connect(ui->actionSaveDeckA, SIGNAL(triggered()), this, SLOT(saveDeckA()));
 	connect(ui->actionSaveAsDeckA, SIGNAL(triggered()), this, SLOT(saveAsDeckA()));
 	connect(ui->actionSaveDeckB, SIGNAL(triggered()), this, SLOT(saveDeckB()));
 	connect(ui->actionSaveAsDeckB, SIGNAL(triggered()), this, SLOT(saveAsDeckB()));
-	connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(showSettings()));
-	connect(ui->actionBeenden, SIGNAL(triggered()), this, SLOT(exitApplication()));
+	connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
 	//update the menu showing the effect files
 	updateEffectMenu();
+	//connect the parameters in the decks to parameters here
+	connectParameter(ui->widgetDeckA->updateInterval, previewInterval);
+	connectParameter(ui->widgetDeckA->previewWidth, previewWidth);
+	connectParameter(ui->widgetDeckA->previewHeight, previewHeight);
+	connectParameter(ui->widgetDeckA->updateInterval, previewInterval);
+	connectParameter(ui->widgetDeckB->previewWidth, previewWidth);
+	connectParameter(ui->widgetDeckB->previewHeight, previewHeight);
+	updateDeckMenu();
+	//connect parameters for preview resolution here
+	connect(previewWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFramebufferWidth(int)));
+	connect(previewHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFramebufferHeight(int)));
+	//connect parameters in the image converter to parameters here
+	connectParameter(m_displayImageConverter.crossfadeValue, crossFadeValue);
+	connectParameter(m_displayImageConverter.displayBrightness, displayBrightness);
+	connectParameter(m_displayImageConverter.displayContrast, displayContrast);
+	connectParameter(m_displayImageConverter.displayGamma, displayGamma);
+	connectParameter(m_displayImageConverter.displayWidth, displayWidth);
+	connectParameter(m_displayImageConverter.displayHeight, displayHeight);
+	connect(&m_displayImageConverter, SIGNAL(previewImageChanged(const QImage &)), this, SLOT(updatePreview(const QImage &)));
+	connect(&m_displayImageConverter, SIGNAL(displayImageChanged(const QImage &)), this, SLOT(updateDisplay(const QImage &)));
 	//set up serial display sending thread
+	updateDisplayMenu();
+	connectParameter(m_displayThread.displayWidth, displayWidth);
+	connectParameter(m_displayThread.displayHeight, displayHeight);
+	connectParameter(m_displayThread.displayInterval, displayInterval);
+	connectParameter(m_displayThread.flipHorizontal, ui->actionDisplayFlipHorizontal);
+	connectParameter(m_displayThread.flipVertical, ui->actionDisplayFlipVertical);
+	connectParameter(m_displayThread.sending, ui->actionDisplayStart);	
 	connect(ui->actionDisplayStart, SIGNAL(triggered(bool)), this, SLOT(displayStartSending(bool)));
 	connect(ui->actionDisplayStop, SIGNAL(triggered()), this, SLOT(displayStopSending()));
 	connect(&m_displayThread, SIGNAL(portOpened(bool)), this, SLOT(displayPortStatusChanged(bool)));
-	connect(&m_displayThread, SIGNAL(sendingData(bool)), this, SLOT(displaySendStatusChanged(bool)));
-	m_displayThread.setPortName(settings.portName());
+	connect(m_displayThread.sending.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(displaySendStatusChanged(bool)));
 	m_displayThread.start();
-	//set up timer for grabbing the composite image
-	connect(&m_displayTimer, SIGNAL(timeout()), this, SLOT(updateDeckImages()));
-	m_displayTimer.start(settings.displayInterval());
+	//retrieve settings from XML for all components
+	loadSettings();
 	//set up signal joiner that waits for both render windows being finished with rendering to grab their framebuffers
 	m_signalJoiner.addObjectToJoin(ui->widgetDeckA);
 	m_signalJoiner.addObjectToJoin(ui->widgetDeckB);
 	connect(ui->widgetDeckA, SIGNAL(renderingFinished()), &m_signalJoiner, SLOT(notify()));
 	connect(ui->widgetDeckB, SIGNAL(renderingFinished()), &m_signalJoiner, SLOT(notify()));
 	connect(&m_signalJoiner, SIGNAL(joined()), this, SLOT(grabDeckImages()));
+	//set up timer for grabbing the composite image
+	connect(&m_displayTimer, SIGNAL(timeout()), this, SLOT(updateDeckImages()));
+	m_displayTimer.start(displayInterval);
 }
 
 MainWindow::~MainWindow()
 {
 	//stop display refresh and audio capturing
 	m_displayTimer.stop();
-	m_audioInterface.setCaptureState(false);
-	//save settings
-	Settings::getInstance().save();
+	m_audioInterface.capturing = false;
+	//save settings to XML
+	saveSettings();
 	delete ui;
 }
 
-void MainWindow::showSettings()
+void MainWindow::toXML(QDomElement & parent) const
 {
-	SettingsDialog dialog;
-	dialog.exec();
+	//try to find element in document
+	QDomElement element = parent.firstChildElement("General");
+	if (element.isNull())
+	{
+		//add the new element
+		element = parent.ownerDocument().createElement("General");
+		parent.appendChild(element);
+	}
+	previewWidth.toXML(element);
+	previewHeight.toXML(element);
+	displayInterval.toXML(element);
+	displayWidth.toXML(element);
+	displayHeight.toXML(element);
+	displayBrightness.toXML(element);
+	displayContrast.toXML(element);
+	displayGamma.toXML(element);
+	crossFadeValue.toXML(element);
 }
 
-void MainWindow::updateSettingsFromUi()
+MainWindow & MainWindow::fromXML(const QDomElement & parent)
 {
-	//update settings from ui
-	Settings & settings = Settings::getInstance();
-	settings.setDisplayGamma(ui->horizontalSliderGamma->value() / 100.0f);
-	settings.setDisplayBrightness(ui->horizontalSliderBrightness->value() / 50.0f);
-	settings.setDisplayContrast(ui->horizontalSliderContrast->value() / 50.0f + 1.0f);
+	//try to find element in document
+	QDomElement element = parent.firstChildElement("General");
+	if (element.isNull())
+	{
+		throw std::runtime_error("No general settings found!");
+	}
+	//read settings from element
+	previewWidth.fromXML(element);
+	previewHeight.fromXML(element);
+	displayInterval.fromXML(element);
+	displayWidth.fromXML(element);
+	displayHeight.fromXML(element);
+	displayBrightness.fromXML(element);
+	displayContrast.fromXML(element);
+	displayGamma.fromXML(element);
+	crossFadeValue.fromXML(element);
+	return *this;
+}
+
+void MainWindow::loadSettings(const QString & fileName)
+{
+	QDomDocument doc("NerDisco");
+	QFile file(fileName);
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QString errorMessage;
+		if (doc.setContent(&file, &errorMessage))
+		{
+			QDomElement root = doc.documentElement();
+			try
+			{
+				m_displayImageConverter.fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				m_displayThread.fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				m_audioInterface.fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				m_midiInterface->getDeviceInterface()->fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				m_midiInterface->getParameterMapping()->fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				ui->widgetDeckA->fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				ui->widgetDeckB->fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+			try
+			{
+				fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(fileName).arg(e.what()));
+			}
+		}
+		else
+		{
+			QMessageBox::information(this, tr("Failed to read settings"), tr("Error reading \"%1\": %2. Using default settings.").arg(fileName).arg(errorMessage));
+		}
+		file.close();
+	}
+	else
+	{
+		QMessageBox::information(this, tr("Failed to read settings"), tr("Failed to open \"%1\". Using default settings.").arg(fileName));
+	}
+}
+
+void MainWindow::saveSettings(const QString & fileName)
+{
+	QDomDocument doc("NerDisco");
+	QFile file(fileName);
+	if (file.open(QIODevice::ReadWrite))
+	{
+		//try reading the file. if this fails, we don't care, we'll fill it now...
+		QDomElement root;
+		if (doc.setContent(&file))
+		{
+			root = doc.documentElement();
+		}
+		if (root.isNull())
+		{
+			//failed reading the file. create and add root node.
+			root = doc.createElement("NerDisco");
+			doc.appendChild(root);
+		}
+		//now store everything in root element
+		try
+		{
+			m_displayImageConverter.toXML(root);
+			m_displayThread.toXML(root);
+			m_audioInterface.toXML(root);
+			m_midiInterface->getDeviceInterface()->toXML(root);
+			m_midiInterface->getParameterMapping()->toXML(root);
+			ui->widgetDeckA->toXML(root);
+			ui->widgetDeckB->toXML(root);
+			toXML(root);
+			file.resize(0);
+			file.reset();
+			file.write(doc.toByteArray());
+		}
+		catch (std::runtime_error e)
+		{
+			QMessageBox::information(this, tr("Failed to save settings"), tr("Error while saving settings to \"%1\". %2").arg(fileName).arg(e.what()));
+		}
+		file.close();
+	}
+	else
+	{
+		QMessageBox::information(this, tr("Failed to save settings"), tr("Failed to open \"%1\". Using default settings.").arg(fileName));
+	}
 }
 
 void MainWindow::exitApplication()
@@ -111,9 +300,30 @@ void MainWindow::exitApplication()
 
 //-------------------------------------------------------------------------------------------------
 
+void MainWindow::setFramebufferWidth(int width)
+{
+	if (previewWidth != width)
+	{
+		previewWidth = width;
+		ui->labelFinalImage->setFixedSize(previewWidth, previewHeight);
+		ui->labelRealImage->setFixedSize(previewWidth, previewHeight);
+	}
+}
+
+void MainWindow::setFramebufferHeight(int height)
+{
+	if (previewHeight != height)
+	{
+		previewHeight = height;
+		ui->labelFinalImage->setFixedSize(previewWidth, previewHeight);
+		ui->labelRealImage->setFixedSize(previewWidth, previewHeight);
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void MainWindow::updateAudioDevices()
 {
-	Settings & settings = Settings::getInstance();
 	//clear old menu
 	QMenu * oldMenu = ui->actionAudioDevices->menu();
 	if (oldMenu)
@@ -129,7 +339,6 @@ void MainWindow::updateAudioDevices()
 	deviceMenu->addAction(action);
 	connect(action, SIGNAL(triggered()), this, SLOT(audioInputDeviceSelected()));
 	//add actual devices
-	QAction * selected = action;
 	QStringList inputDevices = AudioInterface::inputDeviceNames();
 	for (int i = 0; i < inputDevices.size(); ++i)
 	{
@@ -138,18 +347,10 @@ void MainWindow::updateAudioDevices()
 		deviceMenu->addAction(action);
 		connect(action, SIGNAL(triggered()), this, SLOT(audioInputDeviceSelected()));
 		//if this is the active audio device, select it
-		if (inputDevices.at(i) == settings.audioInputDeviceName())
-		{
-			selected = action;
-		}
+		action->setChecked(inputDevices.at(i) == m_audioInterface.captureDevice);
 	}
 	//add menu to UI
 	ui->actionAudioDevices->setMenu(deviceMenu);
-	//now select action
-	if (selected)
-	{
-		action->trigger();
-	}
 }
 
 void MainWindow::audioInputDeviceSelected()
@@ -157,17 +358,15 @@ void MainWindow::audioInputDeviceSelected()
 	QAction * action = qobject_cast<QAction*>(sender());
 	if (action)
 	{
-		m_audioInterface.setCaptureState(false);
+		m_audioInterface.capturing = false;
 		if (action->text() == tr("None"))
 		{
-			m_audioInterface.setCurrentCaptureDevice("");
+			m_audioInterface.captureDevice = "";
 		}
 		else
 		{
-			m_audioInterface.setCurrentCaptureDevice(action->text());
+			m_audioInterface.captureDevice = action->text();
 		}
-		Settings & settings = Settings::getInstance();
-		settings.setAudioInputDeviceName(action->text());
 	}
 }
 
@@ -189,12 +388,12 @@ void MainWindow::audioInputDeviceChanged(const QString & name)
 
 void MainWindow::audioRecordTriggered(bool checked)
 {
-	m_audioInterface.setCaptureState(checked);
+	m_audioInterface.capturing = checked;
 }
 
 void MainWindow::audioStopTriggered()
 {
-	m_audioInterface.setCaptureState(false);
+	m_audioInterface.capturing = false;
 }
 
 void MainWindow::audioCaptureStateChanged(bool capturing)
@@ -202,7 +401,7 @@ void MainWindow::audioCaptureStateChanged(bool capturing)
 	ui->actionAudioRecord->setChecked(capturing);
 }
 
-void MainWindow::audioUpdateLevels(const QVector<float> & data, float timeus)
+void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/)
 {
     //qDebug() << "Audio data arrived" << timeus / 1000;
 	QImage image(ui->labelSpectrumImage->size(), QImage::Format_ARGB32);
@@ -232,7 +431,6 @@ void MainWindow::audioUpdateLevels(const QVector<float> & data, float timeus)
 
 void MainWindow::updateMidiDevices()
 {
-	Settings & settings = Settings::getInstance();
 	//clear old menu
 	QMenu * oldMenu = ui->actionMidiDevices->menu();
 	if (oldMenu)
@@ -248,7 +446,6 @@ void MainWindow::updateMidiDevices()
 	deviceMenu->addAction(action);
 	connect(action, SIGNAL(triggered()), this, SLOT(midiInputDeviceSelected()));
 	//add actual devices
-	QAction * selected = action;
 	QStringList midiDevices = m_midiInterface->getDeviceInterface()->inputDeviceNames();
 	for (int i = 0; i < midiDevices.size(); ++i)
 	{
@@ -257,18 +454,10 @@ void MainWindow::updateMidiDevices()
 		deviceMenu->addAction(action);
 		connect(action, SIGNAL(triggered()), this, SLOT(midiInputDeviceSelected()));
 		//if this is the active midi device, select it
-		if (midiDevices.at(i) == settings.midiInputDeviceName())
-		{
-			selected = action;
-		}
+		action->setChecked(midiDevices.at(i) == m_midiInterface->getDeviceInterface()->captureDevice);
 	}
 	//add menu to UI
 	ui->actionMidiDevices->setMenu(deviceMenu);
-	//now select action
-	if (selected)
-	{
-		action->trigger();
-	}
 }
 
 void MainWindow::midiInputDeviceSelected()
@@ -276,17 +465,15 @@ void MainWindow::midiInputDeviceSelected()
 	QAction * action = qobject_cast<QAction*>(sender());
 	if (action)
 	{
-		m_midiInterface->getDeviceInterface()->setCaptureState(false);
+		m_midiInterface->getDeviceInterface()->capturing = false;
 		if (action->text() == tr("None"))
 		{
-			m_midiInterface->getDeviceInterface()->setCurrentCaptureDevice("");
+			m_midiInterface->getDeviceInterface()->captureDevice = "";
 		}
 		else
 		{
-			m_midiInterface->getDeviceInterface()->setCurrentCaptureDevice(action->text());
+			m_midiInterface->getDeviceInterface()->captureDevice = action->text();
 		}
-		Settings & settings = Settings::getInstance();
-		settings.setMidiInputDeviceName(action->text());
 	}
 }
 
@@ -308,12 +495,12 @@ void MainWindow::midiInputDeviceChanged(const QString & name)
 
 void MainWindow::midiStartTriggered(bool checked)
 {
-	m_midiInterface->getDeviceInterface()->setCaptureState(checked);
+	m_midiInterface->getDeviceInterface()->capturing = checked;
 }
 
 void MainWindow::midiStopTriggered()
 {
-	m_midiInterface->getDeviceInterface()->setCaptureState(false);
+	m_midiInterface->getDeviceInterface()->capturing = false;
 }
 
 void MainWindow::midiCaptureStateChanged(bool capturing)
@@ -326,44 +513,141 @@ void MainWindow::midiCaptureStateChanged(bool capturing)
 
 void MainWindow::midiLearnMappingToggled()
 {
-	if (m_midiInterface->getControlMapping()->isLearnMode())
+	if (m_midiInterface->getParameterMapping()->learnMode)
 	{
 		//stop midi mapping mode
-		m_midiInterface->getControlMapping()->setLearnMode(false);
+		m_midiInterface->getParameterMapping()->learnMode = false;
 		ui->actionMidiLearnMapping->setChecked(false);
 	}
 	else
 	{
 		//start midi mapping mode
-		if (m_midiInterface->getDeviceInterface()->isCapturing())
+		if (m_midiInterface->getDeviceInterface()->capturing)
 		{
 			//connect slots to detect value changes in decks
-			m_midiInterface->getControlMapping()->setLearnMode(true);
+			m_midiInterface->getParameterMapping()->learnMode = true;
 		}
-		ui->actionMidiLearnMapping->setChecked(m_midiInterface->getDeviceInterface()->isCapturing());
+		ui->actionMidiLearnMapping->setChecked(m_midiInterface->getDeviceInterface()->capturing);
 	}
 }
 
 void MainWindow::midiLearnedConnectionStateChanged(bool valid)
 {
-	ui->actionStoreLearnedConnection->setEnabled(m_midiInterface->getControlMapping()->isLearnMode() && valid);
+	ui->actionStoreLearnedConnection->setEnabled(m_midiInterface->getParameterMapping()->learnMode && valid);
 }
 
 void MainWindow::midiStoreLearnedConnection()
 {
-	m_midiInterface->getControlMapping()->storeLearnedConnection();
+	m_midiInterface->getParameterMapping()->storeLearnedConnection();
 }
 
 //-------------------------------------------------------------------------------------------------
 
+void MainWindow::updateDisplayMenu()
+{
+	//clear old menu
+	QMenu * oldMenu = ui->actionDisplaySerialPort->menu();
+	if (oldMenu)
+	{
+		oldMenu->setParent(NULL);
+		delete oldMenu;
+		ui->actionDisplaySerialPort->setMenu(NULL);
+	}
+	//add default device
+	QMenu * deviceMenu = new QMenu(this);
+	QAction * action = deviceMenu->addAction(tr("None"));
+	action->setCheckable(true);
+	deviceMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(displaySerialPortSelected()));
+	//add actual devices
+	QStringList serialPorts = m_displayThread.getAvailablePortNames();
+	for (int i = 0; i < serialPorts.size(); ++i)
+	{
+		action = deviceMenu->addAction(serialPorts.at(i));
+		action->setCheckable(true);
+		deviceMenu->addAction(action);
+		connect(action, SIGNAL(triggered()), this, SLOT(displaySerialPortSelected()));
+		//if this is the active port, select it
+		action->setChecked(serialPorts.at(i) == m_displayThread.portName);
+	}
+	//add menu to UI
+	ui->actionDisplaySerialPort->setMenu(deviceMenu);
+	//baud rates to menu
+	const int rates[7] = { 57600, 115200, 230400, 250000, 300000, 400000, 500000 };
+	for (int i = 0; i < 7; ++i)
+	{
+		action = ui->menuDisplayBaudrate->addAction(QString::number(rates[i]) + " Baud");
+		action->setCheckable(true);
+		action->setData(rates[i]);
+		connect(action, SIGNAL(triggered()), this, SLOT(displayBaudrateSelected()));
+	}
+	//add scanline directions data to menu
+	ui->actionConstantLeftRight->setData(ScanlineDirection::ConstantLeftToRight);
+	connect(ui->actionConstantLeftRight, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
+	ui->actionConstantRightLeft->setData(ScanlineDirection::ConstantRightToLeft);
+	connect(ui->actionConstantRightLeft, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
+	ui->actionAlternatingStartLeft->setData(ScanlineDirection::AlternatingStartLeft);
+	connect(ui->actionAlternatingStartLeft, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
+	ui->actionAlternatingStartRight->setData(ScanlineDirection::AlternatingStartRight);
+	connect(ui->actionAlternatingStartRight, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
+	//add spinbox actions to menu
+	QtSpinBoxAction * intervalAction = new QtSpinBoxAction("Update interval", "ms");
+	intervalAction->setObjectName("displayInterval");
+	ui->menuDisplaySettings->insertAction(ui->actionDisplayStart, intervalAction);
+	connectParameter(displayInterval, intervalAction->control());
+	QtSpinBoxAction * widthAction = new QtSpinBoxAction("Display width");
+	widthAction->setObjectName("displayWidth");
+	ui->menuDisplaySettings->insertAction(ui->actionDisplayStart, widthAction);
+	connectParameter(displayWidth, widthAction->control());
+	QtSpinBoxAction * heightAction = new QtSpinBoxAction("Display height");
+	heightAction->setObjectName("displayHeight");
+	ui->menuDisplaySettings->insertAction(ui->actionDisplayStart, heightAction);
+	connectParameter(displayHeight, heightAction->control());
+}
+
+void MainWindow::displaySerialPortSelected()
+{
+	QAction * action = qobject_cast<QAction*>(sender());
+	if (action)
+	{
+		m_displayThread.sending = false;
+		if (action->text() == tr("None"))
+		{
+			m_displayThread.portName = "";
+		}
+		else
+		{
+			m_displayThread.portName = action->text();
+		}
+	}
+}
+
+void MainWindow::displayBaudrateSelected()
+{
+	QAction * action = qobject_cast<QAction*>(sender());
+	if (action)
+	{
+		m_displayThread.baudrate = action->data().toInt();
+	}
+}
+
+void MainWindow::displayScanlineDirectionSelected()
+{
+	QAction * action = qobject_cast<QAction*>(sender());
+	if (action)
+	{
+		m_displayThread.scanlineDirection = (ScanlineDirection)action->data().toInt();
+	}
+}
+
 void MainWindow::displayStartSending(bool checked)
 {
-	m_displayThread.setSendData(checked);
+	m_displayThread.sending = checked;
 }
 
 void MainWindow::displayStopSending()
 {
-	m_displayThread.setSendData(false);
+	m_displayThread.sending = false;
 }
 
 void MainWindow::displayPortStatusChanged(bool opened)
@@ -377,17 +661,13 @@ void MainWindow::displaySendStatusChanged(bool sending)
 	ui->actionDisplayStart->setChecked(sending);
 }
 
+void MainWindow::displayFlipChanged(bool horizontal, bool vertical)
+{
+	ui->actionDisplayFlipHorizontal->setChecked(horizontal);
+	ui->actionDisplayFlipVertical->setChecked(vertical);
+}
+
 //-------------------------------------------------------------------------------------------------
-
-QImage MainWindow::currentImage() const
-{
-	return m_currentImage;
-}
-
-QImage MainWindow::realImage() const
-{
-	return m_realImage;
-}
 
 void MainWindow::updateDeckImages()
 {
@@ -405,49 +685,19 @@ void MainWindow::updateDeckImages()
 void MainWindow::grabDeckImages()
 {
 	m_signalJoiner.stop();
-	//grab images from the decks
-	QImage deckImageA = ui->widgetDeckA->getGrabbedFramebuffer();
-	QImage deckImageB = ui->widgetDeckB->getGrabbedFramebuffer();
-	//composite deck framebuffers into final image
-	QPainter painter(&m_currentImage);
-	painter.setCompositionMode(QPainter::CompositionMode_Source);
-	painter.fillRect(m_currentImage.rect(), Qt::black);
-	qreal alphaB = ui->horizontalSliderCrossfade->value() / 100.0;
-	qreal alphaA = 1.0 - alphaB;
-	if (alphaA <= alphaB)
-	{
-		painter.drawImage(0, 0, deckImageA);
-		painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-		painter.setOpacity(alphaB);
-		painter.drawImage(0, 0, deckImageB);
-	}
-	else
-	{
-		painter.drawImage(0, 0, deckImageB);
-		painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-		painter.setOpacity(alphaA);
-		painter.drawImage(0, 0, deckImageA);
-	}
-	//scale image down to real size
-	m_realImage = m_currentImage.scaled(m_realImage.size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-	//do image correction
-	Settings & settings = Settings::getInstance();
-	const float gamma = settings.displayGamma();
-	const float brightness = settings.displayBrightness();
-	const float contrast = settings.displayContrast();
-	for (int y = 0; y < m_realImage.height(); ++y)
-	{
-		unsigned char * scanLine = m_realImage.scanLine(y);
-		for (int x = 0; x < m_realImage.width()*4; ++x)
-		{
-			scanLine[x] = change(scanLine[x], brightness, contrast, gamma);
-		}
-	}
-	//send image data to display
-	m_displayThread.sendData(m_realImage);
-	//draw images in UI
-	ui->labelFinalImage->setPixmap(QPixmap::fromImage(m_currentImage));
-	ui->labelRealImage->setPixmap(QPixmap::fromImage(m_realImage.scaled(m_currentImage.size())));
+	//grab images from the decks and convert for display
+	m_displayImageConverter.convertImages(ui->widgetDeckA->getGrabbedFramebuffer(), ui->widgetDeckB->getGrabbedFramebuffer());
+}
+
+void MainWindow::updatePreview(const QImage & image)
+{
+	ui->labelFinalImage->setPixmap(QPixmap::fromImage(image));
+}
+
+void MainWindow::updateDisplay(const QImage & image)
+{
+	m_displayThread.sendImage(image);
+	ui->labelRealImage->setPixmap(QPixmap::fromImage(image.scaled(ui->labelFinalImage->size())));
 }
 
 QStringList buildFileList(const QString & path)
@@ -510,6 +760,36 @@ void MainWindow::updateEffectMenu()
 		ui->actionLoadDeckA->setMenu(menuA);
 		ui->actionLoadDeckB->setMenu(menuB);
 	}
+}
+
+void MainWindow::updateDeckMenu()
+{
+	//add spinbox actions to menu
+	QtSpinBoxAction * intervalActionA = new QtSpinBoxAction("Update interval", "ms");
+	intervalActionA->setObjectName("updateInterval");
+	ui->menuSettingsDeckA->addAction(intervalActionA);
+	connectParameter(previewInterval, intervalActionA->control());
+	QtSpinBoxAction * widthActionA = new QtSpinBoxAction("Preview width");
+	widthActionA->setObjectName("previewWidth");
+	ui->menuSettingsDeckA->addAction(widthActionA);
+	connectParameter(previewWidth, widthActionA->control());
+	QtSpinBoxAction * heightActionA = new QtSpinBoxAction("Preview height");
+	heightActionA->setObjectName("previewHeight");
+	ui->menuSettingsDeckA->addAction(heightActionA);
+	connectParameter(previewHeight, heightActionA->control());
+	//deck B
+	QtSpinBoxAction * intervalActionB = new QtSpinBoxAction("Update interval", "ms");
+	intervalActionB->setObjectName("updateInterval");
+	ui->menuSettingsDeckB->addAction(intervalActionB);
+	connectParameter(previewInterval, intervalActionB->control());
+	QtSpinBoxAction * widthActionB = new QtSpinBoxAction("Preview width");
+	widthActionB->setObjectName("previewWidth");
+	ui->menuSettingsDeckB->addAction(widthActionB);
+	connectParameter(previewWidth, widthActionB->control());
+	QtSpinBoxAction * heightActionB = new QtSpinBoxAction("Preview height");
+	heightActionB->setObjectName("previewHeight");
+	ui->menuSettingsDeckB->addAction(heightActionB);
+	connectParameter(previewHeight, heightActionB->control());
 }
 
 void MainWindow::loadDeckA(bool /*checked*/)

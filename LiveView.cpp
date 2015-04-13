@@ -1,5 +1,4 @@
 #include "LiveView.h"
-#include "Settings.h"
 
 #include <QResizeEvent>
 #include <QDebug>
@@ -7,10 +6,10 @@
 
 
 const float LiveView::m_quadData[20] = {
-	-1.0f, -1.0f, 0.0, 0.0f, 1.0f,
-	-1.0f,  1.0f, 0.0, 0.0f, 0.0f,
-	 1.0f, -1.0f, 0.0, 1.0f, 1.0f,
-	 1.0f,  1.0f, 0.0, 1.0f, 0.0f
+	-1.0f, -1.0f, 0.0, 0.0f, 0.0f,
+	-1.0f,  1.0f, 0.0, 0.0f, 1.0f,
+	 1.0f, -1.0f, 0.0, 1.0f, 0.0f,
+	 1.0f,  1.0f, 0.0, 1.0f, 1.0f
 };
 
 const char * LiveView::m_defaultVertexCode = "\
@@ -48,9 +47,6 @@ LiveView::LiveView(QWidget * parent, QGLWidget * sharedWidget)
 	, m_mustInitialize(true)
 	, m_renderRequested(false)
 {
-	//load settings from file
-    Settings & settings = Settings::getInstance();
-    setFixedSize(settings.frameBufferWidth(), settings.frameBufferHeight());
 	//create buffer swapping thread
 	m_swapThread = new SwapThread(this);
 	connect(m_swapThread, SIGNAL(bufferSwapFinished()), this, SLOT(bufferSwapFinished()), Qt::QueuedConnection);

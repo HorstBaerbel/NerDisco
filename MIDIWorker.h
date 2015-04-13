@@ -18,6 +18,7 @@ public:
 	static void midiCallback(double deltatime, std::vector<unsigned char> * message, void * userData);
 	void midiCallback(double deltatime, std::vector<unsigned char> * message);
 	bool isCapturing() const;
+	QString captureDevice() const;
 
 	QStringList inputDeviceNames() const;
 	QString defaultInputDeviceName() const;

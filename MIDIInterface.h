@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MIDIDeviceInterface.h"
-#include "MIDIControlMapping.h"
+#include "MIDIParameterMapping.h"
 
 #include <memory>
 #include <mutex>
@@ -25,9 +25,9 @@ public:
 	/// @return Pointer to MIDI device interface object.
 	MIDIDeviceInterface * getDeviceInterface();
 
-	/// @brief Retrieve MIDI control mapping.
-	/// @return Pointer to MIDI control mapping object.
-	MIDIControlMapping * getControlMapping();
+	/// @brief Retrieve MIDI parameter mapping.
+	/// @return Pointer to MIDI parameter mapping object.
+	MIDIParameterMapping * getParameterMapping();
 
 	/// @Destructor. We delete the QObjects here.
 	~MIDIInterface();
@@ -39,5 +39,5 @@ private:
 
 	static std::mutex s_mutex;
 	MIDIDeviceInterface * m_interface;
-	MIDIControlMapping * m_mapping;
+	MIDIParameterMapping * m_mapping;
 };

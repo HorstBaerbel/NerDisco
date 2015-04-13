@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <QColor>
 
 
 template<class T>
@@ -41,5 +40,3 @@ inline T mix(T a, T b, T bias)
 {
     return a + (b - a) * bias;
 }
-
-QColor mix(const QColor& c1, const QColor& c2, qreal bias);

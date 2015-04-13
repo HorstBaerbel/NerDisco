@@ -5,7 +5,9 @@
 #include "AudioInterface.h"
 #include "SignalJoiner.h"
 #include "MIDIInterface.h"
-#include "MIDIControlMapping.h"
+#include "MIDIParameterMapping.h"
+#include "DisplayImageConverter.h"
+#include "Parameters.h"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -19,19 +21,39 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    QImage currentImage() const;
-    QImage realImage() const;
     ~MainWindow();
+
+	/// @brief Save the current settings to an XML document.
+	/// @param parent The paren element to write the settings to.
+	void toXML(QDomElement & parent) const;
+	/// @brief Read current settings from XML document.
+	/// @param parent The parent element to load the settings from.
+	MainWindow & fromXML(const QDomElement & parent);
+
+	void loadSettings(const QString & fileName = "settings.xml");
+	void saveSettings(const QString & fileName = "settings.xml");
+
+	ParameterInt previewInterval;
+	ParameterInt previewWidth;
+	ParameterInt previewHeight;
+	ParameterInt displayInterval;
+	ParameterInt displayWidth;
+	ParameterInt displayHeight;
+	ParameterFloat displayGamma;
+	ParameterFloat displayBrightness;
+	ParameterFloat displayContrast;
+	ParameterFloat crossFadeValue;
 
 protected slots:
     void updateDeckImages();
 	void grabDeckImages();
+	void updatePreview(const QImage & image);
+	void updateDisplay(const QImage & image);    
 
-	void updateEffectMenu();
-    void updateSettingsFromUi();
-    void updateAudioDevices();
-	void updateMidiDevices();
+	void setFramebufferWidth(int width);
+	void setFramebufferHeight(int height);
 
+	void updateAudioDevices();
     void audioInputDeviceSelected();
     void audioInputDeviceChanged(const QString & name);
     void audioRecordTriggered(bool checked);
@@ -39,6 +61,7 @@ protected slots:
     void audioCaptureStateChanged(bool capturing);
     void audioUpdateLevels(const QVector<float> & data, float timeus);
 
+	void updateMidiDevices();
 	void midiInputDeviceSelected();
 	void midiInputDeviceChanged(const QString & name);
 	void midiStartTriggered(bool checked);
@@ -48,11 +71,18 @@ protected slots:
 	void midiStoreLearnedConnection();
 	void midiLearnedConnectionStateChanged(bool valid);
 
+	void updateDisplayMenu();
+	void displaySerialPortSelected();
+	void displayBaudrateSelected();
+	void displayScanlineDirectionSelected();
 	void displayStartSending(bool checked);
 	void displayStopSending();
 	void displayPortStatusChanged(bool opened);
 	void displaySendStatusChanged(bool sending);
+	void displayFlipChanged(bool horizontal, bool vertical);
 
+	void updateEffectMenu();
+	void updateDeckMenu();
     void loadDeckA(bool checked = false);
     void saveDeckA(bool checked = false);
     void saveAsDeckA(bool checked = false);
@@ -65,14 +95,14 @@ protected slots:
     void processTimeout(const QString &s);
 
 public slots:
-    void showSettings();
 	void exitApplication();
 
 private:
     Ui::MainWindow *ui;
+
     QTimer m_displayTimer;
-    QImage m_currentImage;
-    QImage m_realImage;
+
+	DisplayImageConverter m_displayImageConverter;
     DisplayThread m_displayThread;
     AudioInterface m_audioInterface;
 	SignalJoiner m_signalJoiner;

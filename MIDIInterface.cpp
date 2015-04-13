@@ -21,16 +21,16 @@ MIDIDeviceInterface * MIDIInterface::getDeviceInterface()
 	return m_interface;
 }
 
-MIDIControlMapping * MIDIInterface::getControlMapping()
+MIDIParameterMapping * MIDIInterface::getParameterMapping()
 {
 	return m_mapping;
 }
 
 MIDIInterface::MIDIInterface()
 	: m_interface(new MIDIDeviceInterface())
-	, m_mapping(new MIDIControlMapping())
+	, m_mapping(new MIDIParameterMapping())
 {
-	QObject::connect(m_interface, SIGNAL(captureDeviceChanged(const QString &)), m_mapping, SLOT(setMidiDevice(const QString &)));
+	connectParameter(m_interface->captureDevice, m_mapping->deviceName);
 	QObject::connect(m_interface, SIGNAL(midiControlMessage(double, unsigned char, const QByteArray &)), m_mapping, SLOT(midiControlMessage(double, unsigned char, const QByteArray &)));
 }
 

@@ -1,167 +1,254 @@
 #include "DisplayThread.h"
-#include "Settings.h"
 
 #include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
 #include <QTime>
 
 
 DisplayThread::DisplayThread(QObject *parent)
 	: QThread(parent)
-	, m_waitTimeout(0)
+	, m_waitTimeout(100)
 	, m_quit(false)
-	, m_baudrate(QSerialPort::Baud115200)
-	, m_sendData(false)
+	, portName("portName", "")
+	, baudrate("baudrate", QSerialPort::Baud115200, QSerialPort::Baud1200, 500000)
+	, sending("sendData", false)
+	, displayWidth("displayWidth", 32, 8, 64)
+	, displayHeight("displayHeight", 18, 4, 32)
+	, displayInterval("displayInterval", 50, 20, 100)
+	, flipHorizontal("flipHorizontal", false)
+	, flipVertical("flipVertical", false)
+	, scanlineDirection("scanlineDirection", ConstantLeftToRight)
 {
+	connect(portName.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(setPortName(const QString &)));
+	connect(baudrate.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setBaudrate(int)));
+	connect(sending.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(setSendData(bool)));
 }
 
 DisplayThread::~DisplayThread()
 {
-    m_mutex.lock();
+    //m_mutex.lock();
     m_quit = true;
     m_condition.wakeOne();
-    m_mutex.unlock();
+    //m_mutex.unlock();
     wait();
+}
+
+void DisplayThread::toXML(QDomElement & parent) const
+{
+	//try to find element in document
+	QDomElement element = parent.firstChildElement("DisplayThread");
+	if (element.isNull())
+	{
+		//add the new element
+		element = parent.ownerDocument().createElement("DisplayThread");
+		parent.appendChild(element);
+	}
+	portName.toXML(element);
+	baudrate.toXML(element);
+	displayWidth.toXML(element);
+	displayHeight.toXML(element);
+	displayInterval.toXML(element);
+	flipHorizontal.toXML(element);
+	flipVertical.toXML(element);
+	scanlineDirection.toXML(element);
+	sending.toXML(element);
+}
+
+DisplayThread & DisplayThread::fromXML(const QDomElement & parent)
+{
+	//try to find element in document
+	QDomElement element = parent.firstChildElement("DisplayThread");
+	if (element.isNull())
+	{
+		throw std::runtime_error("No audio device settings found!");
+	}
+	portName.fromXML(element);
+	baudrate.fromXML(element);
+	displayWidth.fromXML(element);
+	displayHeight.fromXML(element);
+	displayInterval.fromXML(element);
+	flipHorizontal.fromXML(element);
+	flipVertical.fromXML(element);
+	scanlineDirection.fromXML(element);
+	sending.fromXML(element);
+	return *this;
+}
+
+QStringList DisplayThread::getAvailablePortNames() const
+{
+	QStringList result;
+	foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
+	{
+		result.append(info.portName());
+	}
+	return result;
 }
 
 void DisplayThread::setSendData(bool sendData)
 {
 	QMutexLocker locker(&m_mutex);
-	m_sendData = sendData;
+	sending = sendData;
 	if (!isRunning())
+	{
 		start();
+		setPriority(QThread::HighPriority);
+	}
 	else
 		m_condition.wakeOne();
 }
 
 void DisplayThread::setPortName(const QString &name)
 {
-    m_portName = name;
+	QMutexLocker locker(&m_mutex);
+	portName = name;
 	if (!isRunning())
+	{
 		start();
+		setPriority(QThread::HighPriority);
+	}
 	else
 		m_condition.wakeOne();
 }
 
-void DisplayThread::setBaudrate(int baudrate)
+void DisplayThread::setBaudrate(int rate)
 {
-	m_baudrate = baudrate;
+	QMutexLocker locker(&m_mutex);
+	baudrate = rate;
 	if (!isRunning())
+	{
 		start();
+		setPriority(QThread::HighPriority);
+	}
 	else
 		m_condition.wakeOne();
 }
 
-void DisplayThread::sendData(const QImage & image, int waitTimeout)
+void DisplayThread::sendImage(const QImage & image, int waitTimeout)
 {
     QMutexLocker locker(&m_mutex);
     m_waitTimeout = waitTimeout;
     m_displayImage = image;
     if (!isRunning())
-        start();
+	{
+		start();
+		setPriority(QThread::HighPriority);
+	}
     else
         m_condition.wakeOne();
 }
 
 void DisplayThread::run()
 {
-	QString currentPortName = m_portName;
+	QString currentPortName = portName;
     bool currentPortNameChanged = true;
-	int currentBaudrate = m_baudrate;
+	int currentBaudrate = baudrate;
 	bool currentBaudrateChanged = false;
-	bool sendData = m_sendData;
+	bool sendData = sending;
     QSerialPort serial;
     QByteArray data;
 
-    while (!m_quit) {
+    while (!m_quit)
+	{
         m_mutex.lock();
-        if (currentPortName != m_portName) {
-            currentPortName = m_portName;
+        if (currentPortName != portName) {
+			currentPortName = portName;
             currentPortNameChanged = true;
         }
-		if (currentBaudrate != m_baudrate) {
-			currentBaudrate = m_baudrate;
+		if (currentBaudrate != baudrate) {
+			currentBaudrate = baudrate;
 			currentBaudrateChanged = true;
 		}
-		if (sendData != m_sendData) {
-			sendData = m_sendData;
-			emit sendingData(sendData);
+		if (sendData != sending) {
+			sendData = sending;
 		}
-        //set up display parameters
-        Settings & settings = Settings::getInstance();
-        const unsigned int count = settings.displayWidth() * settings.displayHeight();
-        const unsigned char hi = (count >> 8) & 0xFF;
-        const unsigned char lo = count & 0xFF;
-        const unsigned char checksum = hi ^ lo ^ 0x55;
-        //store display parameters in data
-        data.clear();
-        data.append(QString("Ada").toLatin1());
-        data.append(hi);
-        data.append(lo);
-        data.append(checksum);
-        //convert image to format
-        QImage dataImage;
-        if (dataImage.format() != QImage::Format_ARGB32
-                && dataImage.format() != QImage::Format_ARGB32_Premultiplied
-                && dataImage.format() != QImage::Format_RGB32)
-        {
-            dataImage = m_displayImage.convertToFormat(QImage::Format_ARGB32);
-        }
-        else {
-            dataImage = m_displayImage;//.rgbSwapped();
-        }
-        m_mutex.unlock();
-        //convert image to proper size
-        if (dataImage.width() != settings.displayWidth() || dataImage.height() != settings.displayHeight())
-        {
-            dataImage = dataImage.scaled(settings.displayWidth(), settings.displayHeight(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        }
-        //flip image according to settings
-        if (settings.displayFlipHorizontal() || settings.displayFlipVertical())
-        {
-            dataImage = dataImage.mirrored(settings.displayFlipHorizontal(), settings.displayFlipVertical());
-        }
-        //convert image for diplay. get initial scan line direction
-        int direction = settings.scanlineDirection() == Settings::ConstantRightToLeft || settings.scanlineDirection() == Settings::AlternatingStartRight ? 4 : -4;
-        for (int y = 0; y < dataImage.height(); ++y)
-        {
-            const unsigned char * scanLine = dataImage.constScanLine(y);
-            //loop through pixels left-right
-            if (direction > 0)
-            {
-                for (int x = 0; x < dataImage.width()*4; x+=4)
-                {
-                    data.append(scanLine[x+2]);
-                    data.append(scanLine[x+1]);
-                    data.append(scanLine[x]);
-                }
-            }
-            else
-            {
-                for (int x = (dataImage.width()-1)*4; x >= 0; x-=4)
-                {
-                    data.append(scanLine[x+2]);
-                    data.append(scanLine[x+1]);
-                    data.append(scanLine[x]);
-                }
-            }
-            //if we have alternating lines, flip direction after every line
-            if (settings.scanlineDirection() == Settings::AlternatingStartLeft || settings.scanlineDirection() == Settings::AlternatingStartRight)
-            {
-                direction = -direction;
-            }
-        }
-        //open new serial port device
-        if (currentPortNameChanged)
+		//get settings
+		int waitTimeout = m_waitTimeout;
+		const int width = displayWidth;
+		const int height = displayHeight;
+		const bool horizontal = flipHorizontal;
+		const bool vertical = flipVertical;
+		const ScanlineDirection direction = scanlineDirection;
+		//convert image to format
+		QImage dataImage;
+		if (dataImage.format() != QImage::Format_ARGB32
+			&& dataImage.format() != QImage::Format_ARGB32_Premultiplied
+			&& dataImage.format() != QImage::Format_RGB32)
+		{
+			dataImage = m_displayImage.convertToFormat(QImage::Format_ARGB32);
+		}
+		else {
+			dataImage = m_displayImage;//.rgbSwapped();
+		}
+		m_mutex.unlock();
+		//check if we have data and display setup is ok
+		if (!dataImage.isNull() && width > 0 && height > 0)
+		{
+			//convert image to proper size
+			if (dataImage.width() != width || dataImage.height() != height)
+			{
+				dataImage = dataImage.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+			}
+			//flip image according to settings
+			if (horizontal || vertical)
+			{
+				dataImage = dataImage.mirrored(horizontal, vertical);
+			}
+			//set up display parameters
+			const unsigned int count = width * height;
+			const unsigned char hi = (count >> 8) & 0xFF;
+			const unsigned char lo = count & 0xFF;
+			const unsigned char checksum = hi ^ lo ^ 0x55;
+			//store display parameters in data
+			data.clear();
+			data.append(QString("Ada").toLatin1());
+			data.append(hi);
+			data.append(lo);
+			data.append(checksum);
+			//convert image for diplay. get initial scan line direction
+			int stepDirection = ((direction == ConstantRightToLeft) || (direction == AlternatingStartRight)) ? 4 : -4;
+			for (int y = 0; y < dataImage.height(); ++y)
+			{
+				const unsigned char * scanLine = dataImage.constScanLine(y);
+				//loop through pixels left-right
+				if (stepDirection > 0)
+				{
+					for (int x = 0; x < dataImage.width() * 4; x += 4)
+					{
+						data.append(scanLine[x + 1]);
+						data.append(scanLine[x + 2]);
+						data.append(scanLine[x]);
+					}
+				}
+				else
+				{
+					for (int x = (dataImage.width() - 1) * 4; x >= 0; x -= 4)
+					{
+						data.append(scanLine[x + 1]);
+						data.append(scanLine[x + 2]);
+						data.append(scanLine[x]);
+					}
+				}
+				//if we have alternating lines, flip direction after every line
+				if ((direction == AlternatingStartLeft) || (direction == AlternatingStartRight))
+				{
+					stepDirection = -stepDirection;
+				}
+			}
+		}
+		//open new serial port device
+		if (currentPortNameChanged)
 		{
 			//close old port down
-            serial.close();
-            serial.setPortName(currentPortName);
-			emit portOpened(false);
+			serial.close();
+			serial.setPortName(currentPortName);
+			portName = currentPortName;
+			sending = false;
 			//try opening
-            if (!serial.open(QIODevice::ReadWrite))
+			if (!serial.open(QIODevice::ReadWrite))
 			{
-                emit error(tr("Can't open %1, error code %2").arg(m_portName).arg(serial.error()));
-            }
+				emit error(tr("Can't open %1, error code %2").arg(currentPortName).arg(serial.error()));
+				emit portOpened(false);
+			}
 			else
 			{
 				//set up serial port
@@ -174,24 +261,31 @@ void DisplayThread::run()
 				currentPortNameChanged = false;
 				emit portOpened(true);
 			}
-        }
+		}
 		if (currentBaudrateChanged)
 		{
 			serial.setBaudRate(currentBaudrate);
 			currentBaudrateChanged = false;
+			baudrate = currentBaudrate;
 		}
-		if (sendData && serial.isOpen() && serial.isWritable())
-        {
-            // write request
-            serial.write(data);
-            if (serial.waitForBytesWritten(m_waitTimeout)) {
-                emit this->response("Sent");
-            } else {
-                emit timeout(tr("Wait write request timeout %1").arg(QTime::currentTime().toString()));
-            }
-        }
+		if (sendData && serial.isOpen() && serial.isWritable() && data.size() > 0)
+		{
+			// write request
+			serial.write(data);
+			if (serial.waitForBytesWritten(waitTimeout)) {
+				emit this->response("Sent");
+			}
+			else {
+				emit timeout(tr("Wait write request timeout %1").arg(QTime::currentTime().toString()));
+			}
+		}
         m_mutex.lock();
         m_condition.wait(&m_mutex);
-        m_mutex.unlock();
+		if (m_quit)
+		{
+			m_mutex.unlock();
+			break;
+		}
+		m_mutex.unlock();
     }
 }

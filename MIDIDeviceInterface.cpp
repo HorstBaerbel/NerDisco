@@ -9,13 +9,17 @@ MIDIDeviceInterface::MIDIDeviceInterface(QObject *parent)
 	: QObject(parent)
 	, m_midiIn(new RtMidiIn())
 	, m_midiWorker(new MIDIWorker(m_midiIn))
+	, captureDevice("captureDevice", "")
+	, capturing("capturing", false)
 {
 	//do all possible connections to worker objects
 	connect(&m_workerThread, &QThread::finished, m_midiWorker, &QObject::deleteLater);
 	//connect returning signals
 	connect(m_midiWorker, SIGNAL(midiMessage(double, const QByteArray &)), this, SLOT(messageReceived(double, const QByteArray &)));
-	connect(m_midiWorker, SIGNAL(captureDeviceChanged(const QString &)), this, SLOT(inputDeviceChanged(const QString &)));
-	connect(m_midiWorker, SIGNAL(captureStateChanged(bool)), this, SLOT(inputStateChanged(bool)));
+	connect(m_midiWorker, SIGNAL(captureDeviceChanged(const QString &)), captureDevice.GetSharedParameter().get(), SLOT(setValue(const QString &)));
+	connect(m_midiWorker, SIGNAL(captureStateChanged(bool)), capturing.GetSharedParameter().get(), SLOT(setValue(bool)));
+	connect(captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(setCaptureDevice(const QString &)));
+	connect(capturing.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(setCaptureState(bool)));
 	//move worker objects to thread and run thread
 	m_midiWorker->moveToThread(&m_workerThread);
 	m_workerThread.start();
@@ -29,29 +33,55 @@ MIDIDeviceInterface::~MIDIDeviceInterface()
 	delete m_midiIn;
 }
 
-void MIDIDeviceInterface::setCurrentCaptureDevice(const QString & inputName)
+void MIDIDeviceInterface::toXML(QDomElement & parent) const
 {
-	QMetaObject::invokeMethod(m_midiWorker, "setCaptureDevice", Q_ARG(const QString &, inputName));
+	//try to find element in document
+	QDomNodeList children = parent.elementsByTagName("MIDIDeviceInterface");
+	for (int i = 0; i < children.size(); ++i)
+	{
+		QDomElement child = children.at(i).toElement();
+		if (!child.isNull() && child.attribute("deviceName") == m_midiWorker->captureDevice())
+		{
+			//remove child from document, we'll re-add it
+			parent.removeChild(child);
+			break;
+		}
+	}
+	//(re-)add the new element
+	QDomElement element = parent.ownerDocument().createElement("MIDIDeviceInterface");
+	parent.appendChild(element);
+	capturing.toXML(element);
+	captureDevice.toXML(element);
+}
+
+MIDIDeviceInterface & MIDIDeviceInterface::fromXML(const QDomElement & parent)
+{
+	//try to find element in document
+	QDomElement element = parent.firstChildElement("MIDIDeviceInterface");
+	if (element.isNull())
+	{
+		throw std::runtime_error("No MIDI device settings found!");
+	}
+	//read device name from element
+	capturing = false;
+	captureDevice.fromXML(element);
+	return *this;
+}
+
+void MIDIDeviceInterface::setCaptureDevice(const QString & inputName)
+{
+	if (m_midiWorker->captureDevice() != inputName)
+	{
+		QMetaObject::invokeMethod(m_midiWorker, "setCaptureDevice", Q_ARG(const QString &, inputName));
+	}
 }
 
 void MIDIDeviceInterface::setCaptureState(bool capture)
 {
-	QMetaObject::invokeMethod(m_midiWorker, "setCaptureState", Q_ARG(bool, capture));
-}
-
-bool MIDIDeviceInterface::isCapturing() const
-{
-	return m_midiWorker->isCapturing();
-}
-
-void MIDIDeviceInterface::inputDeviceChanged(const QString & deviceName)
-{
-	emit captureDeviceChanged(deviceName);
-}
-
-void MIDIDeviceInterface::inputStateChanged(bool capturing)
-{
-	emit captureStateChanged(capturing);
+	if (m_midiWorker->isCapturing() != capture)
+	{
+		QMetaObject::invokeMethod(m_midiWorker, "setCaptureState", Q_ARG(bool, capture));
+	}
 }
 
 QStringList MIDIDeviceInterface::inputDeviceNames() const

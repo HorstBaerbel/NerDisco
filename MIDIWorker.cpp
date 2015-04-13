@@ -55,6 +55,12 @@ void MIDIWorker::setCaptureDevice(const QString & deviceName)
 	}
 }
 
+QString MIDIWorker::captureDevice() const
+{
+	QMutexLocker locker(&m_mutex);
+	return m_deviceName;
+}
+
 void MIDIWorker::setCaptureState(bool capture)
 {
 	QMutexLocker locker(&m_mutex);
