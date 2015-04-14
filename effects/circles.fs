@@ -5,7 +5,7 @@ uniform float time;
 uniform float valueA;
 uniform float valueB;
 uniform float valueC;
-uniform float trigger;
+uniform float triggerA;
 
 varying vec2 texcoordVar;
 
@@ -47,7 +47,7 @@ float px = cx*cos(rad)+cy*sin(rad);
 float py = -cx*sin(rad)+cy*cos(rad);
 float multiplier = 6+5*sin(time)*valueB;
 float v = 1.-opRep(multiplier*vec2(px, py)+shift, vec2(3,3), 0.5, pattern);
-					float brightness = trigger < 1. ? 1.5 : 3.0;
+					float brightness = triggerA < 1. ? 1.5 : 3.0;
 					vec3 hsv;
 					hsv.x = 0.5 + 0.5*sin(PI*time);
 					hsv.y = 0.5 + 0.5*sin(PI*time+ 2.0*PI/3.0);

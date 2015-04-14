@@ -240,26 +240,30 @@ void DisplayThread::run()
 		{
 			//close old port down
 			serial.close();
-			serial.setPortName(currentPortName);
-			portName = currentPortName;
 			sending = false;
-			//try opening
-			if (!serial.open(QIODevice::ReadWrite))
+			portName = currentPortName;
+			currentPortNameChanged = false;
+			//check if a proper port name was passed
+			if (!currentPortName.isEmpty())
 			{
-				emit error(tr("Can't open %1, error code %2").arg(currentPortName).arg(serial.error()));
-				emit portOpened(false);
-			}
-			else
-			{
-				//set up serial port
-				serial.setBaudRate(currentBaudrate);
-				serial.setDataBits(QSerialPort::Data8);
-				serial.setParity(QSerialPort::NoParity);
-				serial.setStopBits(QSerialPort::OneStop);
-				//serial.setFlowControl(QSerialPort::HardwareControl);
-				serial.setBreakEnabled(false);
-				currentPortNameChanged = false;
-				emit portOpened(true);
+				serial.setPortName(currentPortName);
+				//try opening
+				if (!serial.open(QIODevice::ReadWrite))
+				{
+					emit error(tr("Can't open %1, error code %2").arg(currentPortName).arg(serial.error()));
+					emit portOpened(false);
+				}
+				else
+				{
+					//set up serial port
+					serial.setBaudRate(currentBaudrate);
+					serial.setDataBits(QSerialPort::Data8);
+					serial.setParity(QSerialPort::NoParity);
+					serial.setStopBits(QSerialPort::OneStop);
+					//serial.setFlowControl(QSerialPort::HardwareControl);
+					serial.setBreakEnabled(false);
+					emit portOpened(true);
+				}
 			}
 		}
 		if (currentBaudrateChanged)

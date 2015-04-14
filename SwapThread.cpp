@@ -70,6 +70,11 @@ void SwapThread::run()
 		//wait for next buffer swap
 		m_mutex.lock();
 		m_condition.wait(&m_mutex);
+		if (m_quit)
+		{
+			m_mutex.unlock();
+			break;
+		}
 		m_mutex.unlock();
 	}
 }

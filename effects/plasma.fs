@@ -5,7 +5,7 @@ uniform float time;
 uniform float valueA;
 uniform float valueB;
 uniform float valueC;
-uniform float trigger;
+uniform float triggerA;
 
 varying vec2 texcoordVar;
 
