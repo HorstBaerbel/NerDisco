@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../resources/icon.ico</file>
+        <file>../resources/icon.svg</file>
+        <file>../resources/icon_16.png</file>
+        <file>../resources/icon_24.png</file>
+        <file>../resources/icon_32.png</file>
+        <file>../resources/icon_64.png</file>
+        <file>../effects/default.fs</file>
+    </qresource>
+</RCC>

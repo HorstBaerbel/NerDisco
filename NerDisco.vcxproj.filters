@@ -46,9 +46,6 @@
     <Filter Include="Sources\MIDI">
       <UniqueIdentifier>{b8d9ce29-7537-4f6a-8046-28d2eebec14e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\MIDI\Controls">
-      <UniqueIdentifier>{a75043da-a1f0-4058-b415-8516a1837741}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\MIDI\RtMidi">
       <UniqueIdentifier>{cecd81e2-4620-4ce5-ae15-5fea52d0c54b}</UniqueIdentifier>
     </Filter>
@@ -63,30 +60,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CodeEdit.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Deck.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayThread.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="LiveView.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="NerDisco.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="QTextEditLineNumberArea.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="QTextEditStatusArea.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_CodeEdit.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -129,9 +102,6 @@
     <ClCompile Include="Release\moc_QTextEditStatusArea.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_resources.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_AudioInterface.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -150,17 +120,11 @@
     <ClCompile Include="Release\moc_AudioConversion.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="SwapThread.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_SwapThread.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_SwapThread.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalJoiner.cpp">
-      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_SignalJoiner.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -177,35 +141,11 @@
     <ClCompile Include="rtmidi\RtMidi.cpp">
       <Filter>Sources\MIDI\RtMidi</Filter>
     </ClCompile>
-    <ClCompile Include="QtMIDIButton.cpp">
-      <Filter>Sources\MIDI\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_QtMIDIButton.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_QtMIDIButton.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_MIDIDeviceInterface.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_MIDIDeviceInterface.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="MIDIWorker.cpp">
-      <Filter>Sources\MIDI</Filter>
-    </ClCompile>
-    <ClCompile Include="MIDIDeviceInterface.cpp">
-      <Filter>Sources\MIDI</Filter>
-    </ClCompile>
-    <ClCompile Include="MIDIInterface.cpp">
-      <Filter>Sources\MIDI</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageOperations.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayImageConverter.cpp">
-      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_DisplayImageConverter.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -213,17 +153,11 @@
     <ClCompile Include="Release\moc_DisplayImageConverter.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="QtSpinBoxAction.cpp">
-      <Filter>Sources\WidgetActions</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_QtSpinBoxAction.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_QtSpinBoxAction.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="MIDIParameterConnection.cpp">
-      <Filter>Sources\MIDI</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_MIDIParameterMapping.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -231,23 +165,11 @@
     <ClCompile Include="Release\moc_MIDIParameterMapping.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="MIDIParameterMapping.cpp">
-      <Filter>Sources\MIDI</Filter>
-    </ClCompile>
-    <ClCompile Include="ParameterQtConnect.cpp">
-      <Filter>Sources\Parameter</Filter>
-    </ClCompile>
-    <ClCompile Include="ParameterScanlineDirection.cpp">
-      <Filter>Sources\Parameter</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_NodeBase.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_NodeBase.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="NodeBase.cpp">
-      <Filter>Sources\Parameter</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_ParameterScanlineDirection.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -255,17 +177,11 @@
     <ClCompile Include="Release\moc_ParameterScanlineDirection.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="NodeQString.cpp">
-      <Filter>Sources\Parameter</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_NodeRanged.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_NodeRanged.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="NodeRanged.cpp">
-      <Filter>Sources\Parameter</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_NodeQString.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -273,105 +189,175 @@
     <ClCompile Include="Release\moc_NodeQString.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="NodeEnum.cpp">
-      <Filter>Sources\Parameter</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_NodeEnum.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_NodeEnum.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="AudioConversion.cpp">
+    <ClCompile Include="GeneratedFiles\qrc_resources.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CodeEdit.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Deck.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayImageConverter.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayThread.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImageOperations.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LiveView.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainWindow.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NerDisco.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QTextEditLineNumberArea.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QTextEditStatusArea.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SignalJoiner.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwapThread.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioConversion.cpp">
       <Filter>Sources\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="AudioInterface.cpp">
+    <ClCompile Include="src\AudioInterface.cpp">
       <Filter>Sources\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="AudioProcessing.cpp">
+    <ClCompile Include="src\AudioProcessing.cpp">
       <Filter>Sources\Audio</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="QtMIDIButton.h">
-      <Filter>Sources\MIDI\Controls</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MIDIDeviceInterface.h">
+    <ClCompile Include="src\MIDIWorker.cpp">
       <Filter>Sources\MIDI</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MIDIWorker.h">
+    </ClCompile>
+    <ClCompile Include="src\MIDIParameterMapping.cpp">
       <Filter>Sources\MIDI</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SwapThread.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Deck.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="DisplayThread.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="LiveView.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MainWindow.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QTextEditLineNumberArea.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SignalJoiner.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="DisplayImageConverter.h">
-      <Filter>Sources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QtSpinBoxAction.h">
+    </ClCompile>
+    <ClCompile Include="src\MIDIParameterConnection.cpp">
+      <Filter>Sources\MIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MIDIInterface.cpp">
+      <Filter>Sources\MIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MIDIDeviceInterface.cpp">
+      <Filter>Sources\MIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeBase.cpp">
+      <Filter>Sources\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeEnum.cpp">
+      <Filter>Sources\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeQString.cpp">
+      <Filter>Sources\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeRanged.cpp">
+      <Filter>Sources\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParameterQtConnect.cpp">
+      <Filter>Sources\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParameterScanlineDirection.cpp">
+      <Filter>Sources\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QtSpinBoxAction.cpp">
       <Filter>Sources\WidgetActions</Filter>
-    </CustomBuild>
-    <CustomBuild Include="MIDIParameterMapping.h">
-      <Filter>Sources\MIDI</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ParameterScanlineDirection.h">
-      <Filter>Sources\Parameter</Filter>
-    </CustomBuild>
-    <CustomBuild Include="NodeBase.h">
-      <Filter>Sources\Parameter</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Parameters.h">
-      <Filter>Sources\Parameter</Filter>
-    </CustomBuild>
-    <CustomBuild Include="NodeRanged.h">
-      <Filter>Sources\Parameter</Filter>
-    </CustomBuild>
-    <CustomBuild Include="NodeQString.h">
-      <Filter>Sources\Parameter</Filter>
-    </CustomBuild>
-    <CustomBuild Include="NodeEnum.h">
-      <Filter>Sources\Parameter</Filter>
-    </CustomBuild>
-    <CustomBuild Include="AudioConversion.h">
-      <Filter>Sources\Audio</Filter>
-    </CustomBuild>
-    <CustomBuild Include="AudioInterface.h">
-      <Filter>Sources\Audio</Filter>
-    </CustomBuild>
-    <CustomBuild Include="AudioProcessing.h">
-      <Filter>Sources\Audio</Filter>
-    </CustomBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Deck.ui">
+    <CustomBuild Include="src/Deck.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="MainWindow.ui">
+    <CustomBuild Include="src/MainWindow.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="CodeEdit.h">
+    <CustomBuild Include="src/resources.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/SwapThread.h">
       <Filter>Sources</Filter>
     </CustomBuild>
-    <CustomBuild Include="QTextEditStatusArea.h">
+    <CustomBuild Include="src/SignalJoiner.h">
       <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/QTextEditStatusArea.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/QTextEditLineNumberArea.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/MainWindow.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/LiveView.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/DisplayThread.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/DisplayImageConverter.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/Deck.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/CodeEdit.h">
+      <Filter>Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/AudioConversion.h">
+      <Filter>Sources\Audio</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/AudioInterface.h">
+      <Filter>Sources\Audio</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/AudioProcessing.h">
+      <Filter>Sources\Audio</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/MIDIDeviceInterface.h">
+      <Filter>Sources\MIDI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/MIDIParameterMapping.h">
+      <Filter>Sources\MIDI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/MIDIWorker.h">
+      <Filter>Sources\MIDI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/NodeBase.h">
+      <Filter>Sources\Parameter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/NodeEnum.h">
+      <Filter>Sources\Parameter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/NodeQString.h">
+      <Filter>Sources\Parameter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/NodeRanged.h">
+      <Filter>Sources\Parameter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/Parameters.h">
+      <Filter>Sources\Parameter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/ParameterScanlineDirection.h">
+      <Filter>Sources\Parameter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src/QtSpinBoxAction.h">
+      <Filter>Sources\WidgetActions</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -393,9 +379,6 @@
     <None Include="resources\icon_64.png">
       <Filter>Resource Files</Filter>
     </None>
-    <CustomBuild Include="resources.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
     <None Include="effects\default.fs">
       <Filter>Resource Files</Filter>
     </None>
@@ -410,28 +393,25 @@
     <ClInclude Include="rtmidi\RtMidi.h">
       <Filter>Sources\MIDI\RtMidi</Filter>
     </ClInclude>
-    <ClInclude Include="ColorOperations.h">
+    <ClInclude Include="src/ImageOperations.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="MIDIInterface.h">
-      <Filter>Sources\MIDI</Filter>
-    </ClInclude>
-    <ClInclude Include="I_MIDIControl.h">
-      <Filter>Sources\MIDI\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageOperations.h">
+    <ClInclude Include="src/ColorOperations.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="MIDIParameterConnection.h">
+    <ClInclude Include="src/I_MIDIControl.h">
       <Filter>Sources\MIDI</Filter>
     </ClInclude>
-    <ClInclude Include="ParameterQtConnect.h">
+    <ClInclude Include="src/MIDIInterface.h">
+      <Filter>Sources\MIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="src/MIDIParameterConnection.h">
+      <Filter>Sources\MIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="src/ParameterQtConnect.h">
       <Filter>Sources\Parameter</Filter>
     </ClInclude>
-    <ClInclude Include="ParameterT.h">
-      <Filter>Sources\Parameter</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeFilter.h">
+    <ClInclude Include="src/ParameterT.h">
       <Filter>Sources\Parameter</Filter>
     </ClInclude>
   </ItemGroup>
