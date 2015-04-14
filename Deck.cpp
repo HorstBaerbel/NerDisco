@@ -142,12 +142,12 @@ void Deck::setDeckName(const QString & name)
 {
 	setObjectName(name);
 	//register parameters in MIDI interface
-	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueA.GetSharedParameter());
-	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueB.GetSharedParameter());
-	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueC.GetSharedParameter());
-	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueD.GetSharedParameter());
-	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerA.GetSharedParameter());
-	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter());
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueA.GetSharedParameter(), name);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueB.GetSharedParameter(), name);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueC.GetSharedParameter(), name);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueD.GetSharedParameter(), name);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerA.GetSharedParameter(), name);
+	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter(), name);
 }
 
 void Deck::setUpdateInterval(int interval)

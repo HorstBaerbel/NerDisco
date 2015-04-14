@@ -18,11 +18,11 @@ MIDIParameterConnection::MIDIParameterConnection(unsigned char controller, NodeR
 void MIDIParameterConnection::toXML(QDomElement & parent) const
 {
 	QDomElement element = parent.ownerDocument().createElement("MIDIParameterConnection");
-	parent.appendChild(element);
 	//build name from parent + control
 	element.setAttribute("parameterName", m_parameter->name());
 	element.setAttribute("parameterParentName", m_parameterParentName);
 	element.setAttribute("controller", m_controller);
+	parent.appendChild(element);
 }
 
 MIDIParameterConnection & MIDIParameterConnection::fromXML(const QDomElement & element)

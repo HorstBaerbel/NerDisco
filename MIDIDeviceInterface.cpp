@@ -35,23 +35,17 @@ MIDIDeviceInterface::~MIDIDeviceInterface()
 
 void MIDIDeviceInterface::toXML(QDomElement & parent) const
 {
-	//try to find element in document
-	QDomNodeList children = parent.elementsByTagName("MIDIDeviceInterface");
-	for (int i = 0; i < children.size(); ++i)
+	//try to find element in parent
+	QDomElement element = parent.firstChildElement("MIDIDeviceInterface");
+	if (element.isNull())
 	{
-		QDomElement child = children.at(i).toElement();
-		if (!child.isNull() && child.attribute("deviceName") == m_midiWorker->captureDevice())
-		{
-			//remove child from document, we'll re-add it
-			parent.removeChild(child);
-			break;
-		}
+		//add the new element
+		element = parent.ownerDocument().createElement("MIDIDeviceInterface");
+		parent.appendChild(element);
 	}
-	//(re-)add the new element
-	QDomElement element = parent.ownerDocument().createElement("MIDIDeviceInterface");
-	parent.appendChild(element);
 	capturing.toXML(element);
 	captureDevice.toXML(element);
+	parent.appendChild(element);
 }
 
 MIDIDeviceInterface & MIDIDeviceInterface::fromXML(const QDomElement & parent)
@@ -63,8 +57,8 @@ MIDIDeviceInterface & MIDIDeviceInterface::fromXML(const QDomElement & parent)
 		throw std::runtime_error("No MIDI device settings found!");
 	}
 	//read device name from element
-	capturing = false;
 	captureDevice.fromXML(element);
+	capturing.fromXML(element);
 	return *this;
 }
 

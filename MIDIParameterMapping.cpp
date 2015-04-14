@@ -24,38 +24,38 @@ void MIDIParameterMapping::toXML(QDomElement & parent) const
 	for (int i = 0; i < children.size(); ++i)
 	{
 		QDomElement child = children.at(i).toElement();
-		if (!child.isNull() && child.attribute("deviceName") == deviceName)
+		if (!child.isNull() && child.attribute("name") == deviceName)
 		{
 			//remove child from document, we'll re-add it
 			parent.removeChild(child);
 			break;
 		}
 	}
-	//(re-)add the new element
-	QDomElement element = parent.ownerDocument().createElement("MIDIParameterMapping");
-	deviceName.toXML(element);
-	foreach(const MIDIParameterConnection & connection, m_connections)
+	//(re-)add the new element if we have connections
+	if (!m_connections.isEmpty())
 	{
-		connection.toXML(element);
+		QDomElement element = parent.ownerDocument().createElement("MIDIParameterMapping");
+		element.setAttribute("name", deviceName);
+		deviceName.toXML(element);
+		foreach(const MIDIParameterConnection & connection, m_connections)
+		{
+			connection.toXML(element);
+		}
+		parent.appendChild(element);
 	}
-	parent.appendChild(element);
 }
 
 MIDIParameterMapping & MIDIParameterMapping::fromXML(const QDomElement & parent)
 {
 	QMutexLocker locker(&m_mutex);
 	setLearnMode(false);
-	//try to find element in document
-	QDomNodeList mappings = parent.elementsByTagName("MIDIParameterMapping");
-	if (mappings.isEmpty())
+
+	//try to find element in parent
+	QDomNodeList children = parent.elementsByTagName("MIDIParameterMapping");
+	for (int i = 0; i < children.size(); ++i)
 	{
-		throw std::runtime_error("No MIDI mappings found!");
-	}
-	//try to find devicename in children
-	for (int j = 0; j < mappings.size(); ++j)
-	{
-		QDomElement child = mappings.at(j).toElement();
-		if (!child.isNull() && child.attribute("deviceName") == deviceName)
+		QDomElement child = children.at(i).toElement();
+		if (!child.isNull() && child.attribute("name") == deviceName)
 		{
 			//found. read connections
 			clearConnections();
@@ -87,8 +87,9 @@ MIDIParameterMapping & MIDIParameterMapping::fromXML(const QDomElement & parent)
 			}
 			return *this;
 		}
+		throw std::runtime_error("No MIDI mappings found for current device!");
 	}
-	throw std::runtime_error("No MIDI mappings found for current device!");
+	throw std::runtime_error("No MIDI mappings found!");
 }
 
 void MIDIParameterMapping::registerMIDIParameter(NodeRanged::SPtr parameter, const QString & parameterParentName)
@@ -225,7 +226,7 @@ void MIDIParameterMapping::storeLearnedConnection()
 	if (learnMode && m_learnedGuiSide && m_learnedMidiSide)
 	{
 		//store connection
-		addConnection(m_learnConnection.m_controller, m_learnConnection.m_parameter);
+		addConnection(m_learnConnection.m_controller, m_learnConnection.m_parameter, m_learnConnection.m_parameterParentName);
 		//clear connection for next round
 		m_learnConnection.m_parameter.reset();
 		m_learnConnection.m_parameterName = "";

@@ -188,6 +188,7 @@ void LiveView::bufferSwapFinished()
 	if (m_grabFramebuffer)
 	{
 		m_grabFramebuffer = false;
+		makeCurrent();
 		m_grabbedFramebuffer = grabFrameBuffer();
 	}
 	m_grabMutex.unlock();
