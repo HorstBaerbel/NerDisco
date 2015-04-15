@@ -1,5 +1,3 @@
-#version 120
-
 uniform vec2 renderSize;
 uniform float time;
 uniform float valueA;
@@ -21,10 +19,10 @@ void main() {
       float v = 0.0;
 					v += sin((texcoordVar.x*10.0*valueB+time));
 					v += sin((texcoordVar.y*10.0+time)/2.0);
-					v += sin((texcoordVar.x*10.0+texcoordVar.y*10*valueA+time)/2.0);
+					v += sin((texcoordVar.x*10.0+texcoordVar.y*10.0*valueA+time)/2.0);
 					float cx = texcoordVar.x + .5 * sin(time*0.3) * 8.0 * valueC;
 					float cy = texcoordVar.y + .5 * cos(time*0.4) * 8.0 * valueC;
-					v += 0.5*sin(sqrt((cx*cx+cy*cy)+1)+time);
+					v += 0.5*sin(sqrt((cx*cx+cy*cy)+1.0)+time);
 					float brightness = 0.01;//1.0 +  sin(time*5) * 0.5;
 					vec3 hsv;
 					hsv.x = 0.5 + 0.5*sin(PI*cx);

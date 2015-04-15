@@ -1,5 +1,3 @@
-#version 120
-
 uniform vec2 renderSize;
 uniform float time;
 uniform float valueA;
@@ -11,7 +9,7 @@ varying vec2 texcoordVar;
 
 void main() {
 float brightness = 0.5;//sin(10*valueC*time);
-float v = brightness*(sin(100*valueA*texcoordVar.x+10*valueB*texcoordVar.y+valueC*time));
+float v = brightness*(sin(100.0*valueA*texcoordVar.x+10.0*valueB*texcoordVar.y+valueC*time));
 float r = sin(time);
 float g = sin(1.5*time-1.4);
 float b = cos(time+0.87);

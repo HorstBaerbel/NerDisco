@@ -1,5 +1,3 @@
-#version 120
-
 uniform vec2 renderSize;
 uniform float time;
 uniform float valueA;
@@ -16,7 +14,7 @@ float circle(vec2 p, float size) {
 float torus(vec2 p, float size) {
  vec2 q = vec2(length(p)-1.6*size,1.);
 float l = length(q);
-return pow(l*l*l*l-size,3);
+return pow(l*l*l*l-size,3.0);
 }
 
 float cross(vec2 p, float size) {
@@ -38,16 +36,16 @@ vec3 hsv2rgb(vec3 c)
 
 void main() {
 const float PI = 3.1415926;
-float pattern = 0.01*mod(time, 100);
+float pattern = 0.01*mod(time, 100.0);
 float rad = PI*sin(valueC*time);
-vec2 shift = vec2(sin(1.3*time), sin(0.8*time+2.));
+vec2 shift = vec2(sin(1.3*time), sin(0.8*time+2.0));
 float cx = texcoordVar.x - 0.5;
 float cy = texcoordVar.y - 0.5;
 float px = cx*cos(rad)+cy*sin(rad);
 float py = -cx*sin(rad)+cy*cos(rad);
-float multiplier = 6+5*sin(time)*valueB;
+float multiplier = 6.0+5.0*sin(time)*valueB;
 float v = 1.-opRep(multiplier*vec2(px, py)+shift, vec2(3,3), 0.5, pattern);
-					float brightness = triggerA < 1. ? 1.5 : 3.0;
+					float brightness = triggerA < 1.0 ? 1.5 : 3.0;
 					vec3 hsv;
 					hsv.x = 0.5 + 0.5*sin(PI*time);
 					hsv.y = 0.5 + 0.5*sin(PI*time+ 2.0*PI/3.0);

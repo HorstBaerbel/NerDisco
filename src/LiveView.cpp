@@ -12,8 +12,25 @@ const float LiveView::m_quadData[20] = {
 	 1.0f,  1.0f, 0.0, 1.0f, 1.0f
 };
 
-const char * LiveView::m_defaultVertexCode = "\
+const char * LiveView::m_vertexPrefixGLES2 = "\
+#version 100\n\
+\n";
+
+const char * LiveView::m_fragmentPrefixGLES2 = "\
+#version 100\n\
+precision highp float;\n\
+\n";
+
+const char * LiveView::m_vertexPrefixGL2 = "\
 #version 120\n\
+\n";
+
+const char * LiveView::m_fragmentPrefixGL2 = "\
+#version 120\n\
+\n";
+
+const char * LiveView::m_defaultVertexCode = "\
+uniform mat4 projectionMatrix;\n\
 \n\
 attribute vec3 position;\n\
 attribute vec2 texcoord0;\n\
@@ -21,13 +38,11 @@ attribute vec2 texcoord0;\n\
 varying vec2 texcoordVar;\n\
 \n\
 void main() {\n\
-    gl_Position = vec4(position, 1.0);\n\
+    gl_Position = projectionMatrix * vec4(position, 1.0);\n\
     texcoordVar = texcoord0;\n\
 }";
 
 const char * LiveView::m_defaultFragmentCode = "\
-#version 120\n\
-\n\
 uniform vec2 renderSize;\n\
 \n\
 varying vec2 texcoordVar;\n\
@@ -71,6 +86,7 @@ QSurfaceFormat LiveView::getDefaultFormat()
 	QSurfaceFormat format(QSurfaceFormat::defaultFormat());
 	//format.setProfile(QSurfaceFormat::CompatibilityProfile);
 	format.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+	format.setVersion(2, 1);
 /*	format.setRedBufferSize(8);
 	format.setGreenBufferSize(8);
 	format.setBlueBufferSize(8);
@@ -100,12 +116,6 @@ void LiveView::resizeGL(int width, int height)
 	{
 		//setup viewport
 		glViewport(0, 0, width, height);
-		//setup orthographic projection
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
 	}
 }
 
@@ -116,6 +126,9 @@ void LiveView::initializeGL()
 	//check if the context is valid, else inuitialization will crash!
 	if (context() && context()->isValid())
 	{
+		//check which OpenGL backend we're using and switch shader prefixes accordingly
+		m_vertexPrefix = context()->isOpenGLES() ? m_vertexPrefixGLES2 : m_vertexPrefixGL2;
+		m_fragmentPrefix = context()->isOpenGLES() ? m_fragmentPrefixGLES2 : m_fragmentPrefixGL2;
 		//initialize opengl function bindings
 		initializeOpenGLFunctions();
 		//setup some OpenGL stuff
@@ -124,6 +137,8 @@ void LiveView::initializeGL()
 		//glEnable(GL_TEXTURE_2D);
 		glEnable(GL_RESCALE_NORMAL);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//setup orthographic projection matrix for vertex shader
+		m_projectionMatrix.ortho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 		m_mustInitialize = false;
 	}
 }
@@ -162,13 +177,13 @@ void LiveView::paintGL()
 			{
 				//compile default vertex shader
 				m_vertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
-				if (!m_vertexShader->compileSourceCode(m_defaultVertexCode))
+				if (!m_vertexShader->compileSourceCode(m_vertexPrefix + m_defaultVertexCode))
 				{
 					errors.append(m_vertexShader->log());
 				}
 				//compile default fragment shader
 				m_fragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
-				if (!m_fragmentShader->compileSourceCode(m_defaultFragmentCode))
+				if (!m_fragmentShader->compileSourceCode(m_fragmentPrefix + m_defaultFragmentCode))
 				{
 					errors.append(m_fragmentShader->log());
 				}
@@ -185,7 +200,7 @@ void LiveView::paintGL()
 			//if the fragment script changed, update and compile it and re-link the shader
 			QOpenGLShader * newShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
 			//try to compile new fragment shader code
-			if (!newShader->compileSourceCode(m_fragmentScript))
+			if (!newShader->compileSourceCode(m_fragmentPrefix + m_fragmentScript))
 			{
 				errors.append(newShader->log());
 			}
@@ -229,6 +244,7 @@ void LiveView::paintGL()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//now render with shader
 			m_shaderProgram->bind();
+			m_shaderProgram->setUniformValue("projectionMatrix", m_projectionMatrix);
 			m_shaderProgram->setUniformValue("renderSize", QVector2D(width(), height()));
 			//set all uniforms stored in the maps
 			setShaderUniformsFromMap(m_shaderProgram, m_shaderValues2d);
@@ -252,8 +268,7 @@ void LiveView::paintGL()
 			glDisableVertexAttribArray(texcoord0);
 			m_shaderProgram->release();
 			locker.unlock();
-			//now tell the system to do compositing etc. and send a frameSwapped signal
-			//update();
+			//return and let the system do compositing etc. and send a frameSwapped signal
 		}
 		else
 		{

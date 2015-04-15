@@ -95,9 +95,10 @@ void Deck::toXML(QDomElement & parent) const
 	//(re)add the new element
 	QDomElement element = parent.ownerDocument().createElement("Deck");
 	element.setAttribute("name", objectName());
-	element.setAttribute("currentText", m_currentText);
-	element.setAttribute("scriptModified", m_scriptModified);
 	element.setAttribute("currentScriptPath", m_currentScriptPath);
+	element.setAttribute("scriptModified", m_scriptModified);
+	//if the script hasn't been modified, do not store the text, because it is identical to the file
+	element.setAttribute("currentText", m_scriptModified ? m_currentText : "");
 	updateInterval.toXML(element);
 	valueA.toXML(element);
 	valueB.toXML(element);
@@ -124,8 +125,12 @@ Deck & Deck::fromXML(const QDomElement & parent)
 		{
 			//found. read and apply settings
  			loadScript(child.attribute("currentScriptPath"));
-			m_codeEdit->setPlainText(child.attribute("currentText"));
 			scriptModified(child.attribute("scriptModified", "0").toUInt());
+			//only read text if the script has been modified, else it is the same as the file already loaded...
+			if (m_scriptModified)
+			{
+				m_codeEdit->setPlainText(child.attribute("currentText"));
+			}
 			updateInterval.fromXML(child);
 			valueA.fromXML(child);
 			valueB.fromXML(child);

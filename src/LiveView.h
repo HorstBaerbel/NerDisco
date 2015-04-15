@@ -7,6 +7,7 @@
 #include <QOpenGLShader>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
+#include <QMatrix4x4>
 #include <QMap>
 #include <QMutex>
 
@@ -69,11 +70,19 @@ protected slots:
 
 private:
 	static const float m_quadData[20];
+	static const char * m_vertexPrefixGLES2;
+	static const char * m_fragmentPrefixGLES2;
+	static const char * m_vertexPrefixGL2;
+	static const char * m_fragmentPrefixGL2;
 	static const char * m_defaultVertexCode;
 	static const char * m_defaultFragmentCode;
+	QString m_vertexPrefix;
+	QString m_fragmentPrefix;
 
 	bool m_mustInitialize;
 	bool m_renderRequested;
+
+	QMatrix4x4 m_projectionMatrix;
 	QMap<QString, QVector2D> m_shaderValues2d;
 	QMap<QString, QVector3D> m_shaderValues3d;
 	QMap<QString, QVector4D> m_shaderValues4d;
