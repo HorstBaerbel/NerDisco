@@ -3,7 +3,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
-#include <QGLContext>
+#include <QOpenGLWidget>
 
 
 class SwapThread : public QThread
@@ -17,7 +17,7 @@ public:
 	///@brief Do an asynchronous buffer swap.
 	///@note ONLY CALL THIS FROM THE MAIN THREAD!
 	/// The object will emit bufferSwapFinished() when the buffer swap is done.
-	void swapBuffersAsync(QGLContext * context);
+	void swapBuffersAsync(QOpenGLWidget * widget);
 
 protected:
 	void run();
@@ -27,7 +27,7 @@ signals:
 	void bufferSwapFinished();
 
 private:
-	QGLContext * m_context;
+	QOpenGLWidget * m_widget;
 	QMutex m_mutex;
 	QWaitCondition m_condition;
 	bool m_quit;

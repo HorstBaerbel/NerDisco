@@ -9,7 +9,6 @@
 Deck::Deck(QWidget *parent)
 	: QWidget(parent)
 	, ui(new Ui::CodeDeck)
-	, m_liveView(new LiveView())
 	, m_codeEdit(new CodeEdit())
 	, m_scriptTime(QTime::currentTime())
 	, m_scriptModified(false)
@@ -31,6 +30,8 @@ Deck::Deck(QWidget *parent)
     //insert code editor
 	deckLayout->insertWidget(0, m_codeEdit);
     //insert live editor
+	QSurfaceFormat::setDefaultFormat(LiveView::getDefaultFormat());
+	m_liveView = new LiveView(this);
 	deckLayout->insertWidget(1, m_liveView);
 	m_liveView->setFixedSize(previewWidth, previewHeight);
     //connect signals from dials to parameters
@@ -65,12 +66,12 @@ Deck::Deck(QWidget *parent)
     connect(&m_editTimer, SIGNAL(timeout()), this, SLOT(updateScriptFromText()));
     m_editTimer.setSingleShot(true);
     //set up timer for updating the time property
-    connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
-	m_updateTimer.start(updateInterval);
+//    connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
+//	m_updateTimer.start(updateInterval);
+	//load default script
+	loadScript(":/effects/default.fs");
     //reset elapsed time
     m_scriptTime.start();
-    //load default script
-    loadScript(":/effects/default.fs");
 }
 
 Deck::~Deck()

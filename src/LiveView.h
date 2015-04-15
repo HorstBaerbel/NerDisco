@@ -2,24 +2,26 @@
 
 #include "SwapThread.h"
 
-#include <QGLWidget>
-#include <QGLFormat>
+#include <QOpenGLWidget>
+#include <QSurfaceFormat>
 #include <QOpenGLShader>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions_2_1>
+#include <QOpenGLFunctions>
 #include <QMap>
 #include <QMutex>
 
 
-class LiveView : public QGLWidget, protected QOpenGLFunctions_2_1
+class LiveView : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 
 public:
-    LiveView(QWidget * parent = NULL, QGLWidget * sharedWidget = NULL);
+	LiveView(QWidget * parent = NULL);
+
+	~LiveView();
 
 	/// @brief Get the default OpenGL format used for the live view.
-	static QGLFormat getDefaultFormat();
+	static QSurfaceFormat getDefaultFormat();
 
 	/// @brief Call when you want the framebuffer after the next buffer swap.
 	/// You can retrieve the last grabbed framebuffer using QImage getGrabbedFrameBuffer().
@@ -83,6 +85,7 @@ private:
 	QOpenGLShader * m_fragmentShader;
 	QOpenGLShaderProgram * m_shaderProgram;
 	QString m_fragmentScript;
+	bool m_scriptChanged;
 
 	SwapThread * m_swapThread;
 

@@ -1,12 +1,13 @@
 #include "SwapThread.h"
 
 #include <QApplication>
+#include <QOpenGLContext>
 #include <QDebug>
 
 
 SwapThread::SwapThread(QObject * parent)
 	: QThread(parent)
-	, m_context(NULL)
+	, m_widget(NULL)
 	, m_quit(false)
 	, m_isSwapping(false)
 {
@@ -16,20 +17,20 @@ SwapThread::~SwapThread()
 {
 	m_mutex.lock();
 	m_quit = true;
-	m_context = NULL;
+	m_widget = NULL;
 	m_condition.wakeOne();
 	m_mutex.unlock();
 	wait();
 }
 
-void SwapThread::swapBuffersAsync(QGLContext * context)
+void SwapThread::swapBuffersAsync(QOpenGLWidget * widget)
 {
 	QMutexLocker locker(&m_mutex);
 	//unbind context from main thread
-	m_context = context;
-	m_context->doneCurrent();
+	m_widget = widget;
+	m_widget->doneCurrent();
 	//move object to our thread. this can only be done in the thread you're moving from...
-	m_context->moveToThread(this);
+	m_widget->context()->moveToThread(this);
 	//wake up thread or start if it isn't running
 	if (!isRunning())
 		start();
@@ -39,28 +40,28 @@ void SwapThread::swapBuffersAsync(QGLContext * context)
 
 void SwapThread::run()
 {
-	QGLContext * context = NULL;
+	QOpenGLWidget * widget = NULL;
 
 	while (!m_quit) {
 		//when we ge here the main thread must have called doneCurrent() for m_context
 		m_mutex.lock();
-		context = m_context;
-		m_context = NULL;
+		widget = m_widget;
+		m_widget = NULL;
 		//we only do something if a context was set in swapBuffersAsync()
-		if (context)
+		if (widget)
 		{
 			//mark swapping as in progress
 			m_isSwapping.fetchAndStoreAcquire(true);
 			//make context current in this thread
-			context->makeCurrent();
+			widget->makeCurrent();
 			//do blocking buffer swap
-			context->swapBuffers();
+			//widget->context()->swapBuffers(widget);
 			//unbind context from this thread
-			context->doneCurrent();
+			widget->doneCurrent();
 			//move context back to main thread
-			context->moveToThread(qApp->thread());
+			widget->context()->moveToThread(qApp->thread());
 			//clear context variable again
-			context = NULL;
+			widget = NULL;
 			//mark swapping as finished again
 			m_isSwapping.fetchAndStoreAcquire(false);
 			//signal that we're done swapping
