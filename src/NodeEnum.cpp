@@ -34,6 +34,21 @@ void NodeEnum::fromXML(QDomElement & parent)
 	setValue(child.attribute("value", "").toInt());
 }
 
+void NodeEnum::connect(NodeBase::SPtr other)
+{
+	if (this == other.get())
+	{
+		throw std::runtime_error("NodeEnum::connect() - Can't connect a node to itself!");
+	}
+	NodeEnum * otherNode = qobject_cast<NodeEnum*>(other.get());
+	if (otherNode == nullptr)
+	{
+		throw std::runtime_error("NodeEnum::connect() - Only nodes of type NodeEnum can be connected!");
+	}
+	QObject::connect(this, SIGNAL(valueChanged(int64_t)), other.get(), SLOT(setValue(int64_t)));
+	QObject::connect(other.get(), SIGNAL(valueChanged(int64_t)), this, SLOT(setValue(int64_t)));
+}
+
 void NodeEnum::addValue(int64_t value, const QString & name)
 {
 	if (m_entries.contains(value))

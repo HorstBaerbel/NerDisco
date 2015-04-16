@@ -39,10 +39,10 @@ public:
 	ParameterInt displayInterval;
 	ParameterInt displayWidth;
 	ParameterInt displayHeight;
-	ParameterFloat displayGamma;
-	ParameterFloat displayBrightness;
-	ParameterFloat displayContrast;
-	ParameterFloat crossFadeValue;
+	ParameterInt displayGamma; //[150,350]
+	ParameterInt displayBrightness; //[-50,50]
+	ParameterInt displayContrast; //[-50,50]
+	ParameterInt crossFadeValue; //[0,100]
 
 protected slots:
     void updateDeckImages();

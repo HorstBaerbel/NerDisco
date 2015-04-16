@@ -18,6 +18,8 @@ public:
 	virtual void toXML(QDomElement & parent) const;
 	virtual void fromXML(QDomElement & parent);
 
+	virtual void connect(NodeBase::SPtr other);
+
 	NodeQString & operator=(const QString & value);
 	operator QString() const;
 
@@ -35,5 +37,3 @@ signals:
 protected:
 	QString m_value;
 };
-
-void connect(NodeQString::SPtr a, NodeQString::SPtr b);

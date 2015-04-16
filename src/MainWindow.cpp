@@ -21,10 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
 	, displayInterval("displayInterval", 50, 20, 100)
 	, displayWidth("displayWidth", 32, 16, 64)
 	, displayHeight("displayHeight", 16, 8, 32)
-	, displayBrightness("displayBrightness", 0.0f, -1.0f, 1.0f)
-	, displayContrast("displayContrast", 0.0f, -1.0f, 1.0f)
-	, displayGamma("displayGamma", 2.2f, 1.5f, 3.5f)
-	, crossFadeValue("displayGamma", 0.0f, 0.0f, 1.0f)
+	, displayBrightness("displayBrightness", 0, -50, 50)
+	, displayContrast("displayContrast", 0, -50, 50)
+	, displayGamma("displayGamma", 220, 100, 400)
+	, crossFadeValue("crossFadeValue", 0, 0, 100)
 {
 	ui->setupUi(this);
 	ui->widgetDeckA->setDeckName("DeckA");
@@ -64,33 +64,33 @@ MainWindow::MainWindow(QWidget *parent)
 	//update the menu showing the effect files
 	updateEffectMenu();
 	//connect the parameters in the decks to parameters here
-	connectParameter(ui->widgetDeckA->updateInterval, previewInterval);
-	connectParameter(ui->widgetDeckA->previewWidth, previewWidth);
-	connectParameter(ui->widgetDeckA->previewHeight, previewHeight);
-	connectParameter(ui->widgetDeckA->updateInterval, previewInterval);
-	connectParameter(ui->widgetDeckB->previewWidth, previewWidth);
-	connectParameter(ui->widgetDeckB->previewHeight, previewHeight);
+	ui->widgetDeckA->updateInterval.connect(previewInterval);
+	ui->widgetDeckA->previewWidth.connect(previewWidth);
+	ui->widgetDeckA->previewHeight.connect(previewHeight);
+	ui->widgetDeckA->updateInterval.connect(previewInterval);
+	ui->widgetDeckB->previewWidth.connect(previewWidth);
+	ui->widgetDeckB->previewHeight.connect(previewHeight);
 	updateDeckMenu();
 	//connect parameters for preview resolution here
 	connect(previewWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFramebufferWidth(int)));
 	connect(previewHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFramebufferHeight(int)));
 	//connect parameters in the image converter to parameters here
-	connectParameter(m_displayImageConverter.crossfadeValue, crossFadeValue);
-	connectParameter(m_displayImageConverter.displayBrightness, displayBrightness);
-	connectParameter(m_displayImageConverter.displayContrast, displayContrast);
-	connectParameter(m_displayImageConverter.displayGamma, displayGamma);
-	connectParameter(m_displayImageConverter.displayWidth, displayWidth);
-	connectParameter(m_displayImageConverter.displayHeight, displayHeight);
+	m_displayImageConverter.crossFadeValue.connect(crossFadeValue);
+	m_displayImageConverter.displayBrightness.connect(displayBrightness);
+	m_displayImageConverter.displayContrast.connect(displayContrast);
+	m_displayImageConverter.displayGamma.connect(displayGamma);
+	m_displayImageConverter.displayWidth.connect(displayWidth);
+	m_displayImageConverter.displayHeight.connect(displayHeight);
 	connect(&m_displayImageConverter, SIGNAL(previewImageChanged(const QImage &)), this, SLOT(updatePreview(const QImage &)));
 	connect(&m_displayImageConverter, SIGNAL(displayImageChanged(const QImage &)), this, SLOT(updateDisplay(const QImage &)));
 	//set up serial display sending thread
 	updateDisplayMenu();
-	connectParameter(m_displayThread.displayWidth, displayWidth);
-	connectParameter(m_displayThread.displayHeight, displayHeight);
-	connectParameter(m_displayThread.displayInterval, displayInterval);
+	m_displayThread.displayWidth.connect(displayWidth);
+	m_displayThread.displayHeight.connect(displayHeight);
+	m_displayThread.displayInterval.connect(displayInterval);
 	connectParameter(m_displayThread.flipHorizontal, ui->actionDisplayFlipHorizontal);
 	connectParameter(m_displayThread.flipVertical, ui->actionDisplayFlipVertical);
-	connectParameter(m_displayThread.sending, ui->actionDisplayStart);	
+	connectParameter(m_displayThread.sending, ui->actionDisplayStart);
 	connect(ui->actionDisplayStart, SIGNAL(triggered(bool)), this, SLOT(displayStartSending(bool)));
 	connect(ui->actionDisplayStop, SIGNAL(triggered()), this, SLOT(displayStopSending()));
 	connect(&m_displayThread, SIGNAL(portOpened(bool)), this, SLOT(displayPortStatusChanged(bool)));

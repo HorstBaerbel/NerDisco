@@ -45,6 +45,11 @@ public:
 		m_parameter->fromXML(element);
 	}
 
+	void connect(ParameterT & other)
+	{
+		m_parameter->connect(other.m_parameter);
+	}
+
 	std::shared_ptr<NODETYPE> GetSharedParameter()
 	{
 		return m_parameter;
@@ -84,60 +89,6 @@ public:
 		return m_parameter->normalizedValue();
 	}
 
-	/*friend bool operator==(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b);
-	friend bool operator==(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const VALUETYPE & b);
-	friend bool operator==(const VALUETYPE & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b);
-
-	friend bool operator!=(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b);
-	friend bool operator!=(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const VALUETYPE & b);
-	friend bool operator!=(const VALUETYPE & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b);*/
-
 protected:
 	std::shared_ptr<NODETYPE> m_parameter;
 };
-
-/*template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-bool operator==(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b)
-{
-	return (*a.m_parameter == *b.m_parameter);
-}
-
-template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-bool operator==(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const VALUETYPE & b)
-{
-	return (*a.m_parameter->value() == b);
-}
-
-template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-bool operator==(const VALUETYPE & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b)
-{
-	return (a == *b.m_parameter->value());
-}
-
-template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-bool operator!=(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b)
-{
-	return !(a == b);
-}
-
-template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-bool operator!=(const ParameterT<VALUETYPE, NODETYPE, RANGED> & a, const VALUETYPE & b)
-{
-	return !(a == b);
-}
-
-template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-bool operator!=(const VALUETYPE & a, const ParameterT<VALUETYPE, NODETYPE, RANGED> & b)
-{
-	return !(a == b);
-}*/
-
-template<typename VALUETYPE, typename NODETYPE, bool RANGED = true>
-void connectParameter(ParameterT<VALUETYPE, NODETYPE, RANGED> & a, ParameterT<VALUETYPE, NODETYPE, RANGED> & b)
-{
-	if (a.GetSharedParameter() == b.GetSharedParameter())
-	{
-		throw std::runtime_error("connectParameter() - Connecting a parameter to itself is not allowed!");
-	}
-	connect(a.GetSharedParameter(), b.GetSharedParameter());
-}

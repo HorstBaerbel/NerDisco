@@ -19,6 +19,8 @@ public:
 	virtual void toXML(QDomElement & element) const = 0;
 	virtual void fromXML(QDomElement & element) = 0;
 
+	virtual void connect(SPtr other) = 0;
+
 	virtual QString typeName() const = 0;
 	QString name() const;
 	void setName(const QString & name);

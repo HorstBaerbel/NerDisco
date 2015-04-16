@@ -14,6 +14,8 @@ public:
 	virtual void toXML(QDomElement & parent) const;
 	virtual void fromXML(QDomElement & parent);
 
+	virtual void connect(NodeBase::SPtr other);
+
 	void addValue(int64_t value, const QString & name = "");
 	NodeEnum & operator=(int64_t value);
 	NodeEnum & operator=(const QString & value);
@@ -41,5 +43,3 @@ protected:
 	int64_t m_value;
 	QMap<int64_t, QString> m_entries;
 };
-
-void connect(NodeEnum::SPtr a, NodeEnum::SPtr b);

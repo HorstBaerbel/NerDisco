@@ -76,6 +76,34 @@ void NodeRanged::fromXML(QDomElement & parent)
 	setValue(child.attribute("value", "0.0").toDouble());
 }
 
+void NodeRanged::connect(NodeBase::SPtr other)
+{
+	if (this == other.get())
+	{
+		throw std::runtime_error("NodeRanged::connect() - Can't connect a node to itself!");
+	}
+	NodeRanged * otherNode = qobject_cast<NodeRanged*>(other.get());
+	if (otherNode == nullptr)
+	{
+		throw std::runtime_error("NodeRanged::connect() - Only nodes of type NodeRanged can be connected!");
+	}
+	QObject::connect(this, SIGNAL(valueChanged(double)), other.get(), SLOT(setValue(double)));
+	QObject::connect(other.get(), SIGNAL(valueChanged(double)), this, SLOT(setValue(double)));
+	QObject::connect(this, SIGNAL(rangeChanged(double, double)), other.get(), SLOT(setRange(double, double)));
+	QObject::connect(other.get(), SIGNAL(rangeChanged(double, double)), this, SLOT(setRange(double, double)));
+}
+
+void NodeRanged::connectNormalized(NodeRanged::SPtr other)
+{
+	NodeRanged * otherNode = qobject_cast<NodeRanged*>(other.get());
+	if (otherNode == nullptr)
+	{
+		throw std::runtime_error("NodeRanged::connect() - Only nodes of type NodeRanged can be connected!");
+	}
+	QObject::connect(this, SIGNAL(normalizedValueChanged(float)), other.get(), SLOT(setNormalizedValue(float)));
+	QObject::connect(other.get(), SIGNAL(normalizedValueChanged(float)), this, SLOT(setNormalizedValue(float)));
+}
+
 NodeRanged & NodeRanged::operator=(bool value)
 {
 	setValue(value);
@@ -224,14 +252,4 @@ bool operator==(const NodeRanged & a, const NodeRanged & b)
 bool operator!=(const NodeRanged & a, const NodeRanged & b)
 {
 	return !(a == b);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void connect(NodeRanged::SPtr a, NodeRanged::SPtr b)
-{
-	QObject::connect(a.get(), SIGNAL(valueChanged(double)), b.get(), SLOT(setValue(double)));
-	QObject::connect(b.get(), SIGNAL(valueChanged(double)), a.get(), SLOT(setValue(double)));
-	QObject::connect(a.get(), SIGNAL(rangeChanged(double, double)), b.get(), SLOT(setRange(double, double)));
-	QObject::connect(b.get(), SIGNAL(rangeChanged(double, double)), a.get(), SLOT(setRange(double, double)));
 }

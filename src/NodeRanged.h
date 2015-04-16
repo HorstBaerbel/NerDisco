@@ -21,6 +21,9 @@ public:
 	virtual void toXML(QDomElement & parent) const;
 	virtual void fromXML(QDomElement & parent);
 
+	virtual void connect(NodeBase::SPtr other);
+	virtual void connectNormalized(NodeRanged::SPtr other);
+
 	NodeRanged & operator=(bool value);
 	NodeRanged & operator=(int value);
 	NodeRanged & operator=(float value);
@@ -67,5 +70,3 @@ protected:
 	double m_minRange;
 	double m_maxRange;
 };
-
-void connect(NodeRanged::SPtr a, NodeRanged::SPtr b);

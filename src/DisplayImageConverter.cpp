@@ -8,10 +8,10 @@ DisplayImageConverter::DisplayImageConverter(QObject * parent)
 	: QObject(parent)
 	, displayWidth("displayWidth", 32, 8, 64)
 	, displayHeight("displayHeight", 18, 4, 64)
-	, crossfadeValue("crossFadeValue", 0.0f, 0.0f, 1.0f)
-	, displayGamma("displayGamma", 2.2f, 1.5f, 3.5f)
-	, displayBrightness("displayBrightness", 0.0f, 0.0f, 1.0f)
-	, displayContrast("displayContrast", 1.0f, 0.5f, 2.0f)
+	, displayBrightness("displayBrightness", 0, -50, 50)
+	, displayContrast("displayContrast", 0, -50, 50)
+	, displayGamma("displayGamma", 220, 100, 400)
+	, crossFadeValue("crossFadeValue", 0, 0, 100)
 {
 }
 
@@ -27,7 +27,7 @@ void DisplayImageConverter::toXML(QDomElement & parent) const
 	}
 	displayWidth.toXML(element);
 	displayHeight.toXML(element);
-	crossfadeValue.toXML(element);
+	crossFadeValue.toXML(element);
 	displayBrightness.toXML(element);
 	displayContrast.toXML(element);
 	displayGamma.toXML(element);
@@ -43,7 +43,7 @@ DisplayImageConverter& DisplayImageConverter::fromXML(const QDomElement & parent
 	}
 	displayWidth.fromXML(element);
 	displayHeight.fromXML(element);
-	crossfadeValue.fromXML(element);
+	crossFadeValue.fromXML(element);
 	displayBrightness.fromXML(element);
 	displayContrast.fromXML(element);
 	displayGamma.fromXML(element);
@@ -61,7 +61,7 @@ void DisplayImageConverter::convertImages(const QImage & a, const QImage & b)
 	QPainter painter(&m_previewImage);
 	painter.setCompositionMode(QPainter::CompositionMode_Source);
 	painter.fillRect(m_previewImage.rect(), Qt::black);
-	qreal alphaB = crossfadeValue.normalizedValue();
+	qreal alphaB = crossFadeValue.normalizedValue();
 	qreal alphaA = 1.0 - alphaB;
 	if (alphaA <= alphaB)
 	{
@@ -80,7 +80,10 @@ void DisplayImageConverter::convertImages(const QImage & a, const QImage & b)
 	//scale image down to real size
 	m_displayImage = m_previewImage.scaled(displayWidth, displayHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 	//do image correction
-	m_displayImage = changeImage(m_displayImage, displayBrightness, displayContrast, displayGamma);
+	float brightness = displayBrightness / 50.0f;
+	float contrast = (displayContrast + 50.0f) / 100.0f * 2.0f;
+	float gamma = displayGamma / 220.0f;
+	m_displayImage = changeImage(m_displayImage, brightness, contrast, gamma);
 	//send results
 	displayImageChanged(m_displayImage);
 	previewImageChanged(m_previewImage);

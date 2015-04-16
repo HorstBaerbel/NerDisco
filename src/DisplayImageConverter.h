@@ -23,10 +23,10 @@ public:
 
 	ParameterInt displayWidth;
 	ParameterInt displayHeight;
-	ParameterFloat crossfadeValue;
-	ParameterFloat displayGamma;
-	ParameterFloat displayBrightness;
-	ParameterFloat displayContrast;
+	ParameterInt crossFadeValue; //[0,100]
+	ParameterInt displayGamma; //[150,350]
+	ParameterInt displayBrightness; //[-50,50]
+	ParameterInt displayContrast; //[-50,50]
 
 	void convertImages(const QImage & a, const QImage & b);
 

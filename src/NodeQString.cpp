@@ -44,6 +44,21 @@ void NodeQString::fromXML(QDomElement & parent)
 	setValue(child.attribute("value", ""));
 }
 
+void NodeQString::connect(NodeBase::SPtr other)
+{
+	if (this == other.get())
+	{
+		throw std::runtime_error("NodeQString::connect() - Can't connect a node to itself!");
+	}
+	NodeQString * otherNode = qobject_cast<NodeQString*>(other.get());
+	if (otherNode == nullptr)
+	{
+		throw std::runtime_error("NodeQString::connect() - Only nodes of type NodeQString can be connected!");
+	}
+	QObject::connect(this, SIGNAL(valueChanged(QString)), other.get(), SLOT(setValue(QString)));
+	QObject::connect(other.get(), SIGNAL(valueChanged(QString)), this, SLOT(setValue(QString)));
+}
+
 NodeQString & NodeQString::operator=(const QString & value)
 {
 	setValue(value);

@@ -30,7 +30,7 @@ MIDIInterface::MIDIInterface()
 	: m_interface(new MIDIDeviceInterface())
 	, m_mapping(new MIDIParameterMapping())
 {
-	connectParameter(m_interface->captureDevice, m_mapping->deviceName);
+	m_interface->captureDevice.connect(m_mapping->deviceName);
 	QObject::connect(m_interface, SIGNAL(midiControlMessage(double, unsigned char, const QByteArray &)), m_mapping, SLOT(midiControlMessage(double, unsigned char, const QByteArray &)));
 }
 
