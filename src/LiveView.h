@@ -1,15 +1,15 @@
 #pragma once
 
-#include "SwapThread.h"
+//#include "SwapThread.h"
 
-#include <QOpenGLWidget>
+#include <QMap>
+#include <QMutex>
+#include <QMatrix4x4>
 #include <QSurfaceFormat>
 #include <QOpenGLShader>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
-#include <QMatrix4x4>
-#include <QMap>
-#include <QMutex>
+#include <QOpenGLWidget>
 
 
 class LiveView : public QOpenGLWidget, protected QOpenGLFunctions
@@ -96,7 +96,7 @@ private:
 	QString m_fragmentScript;
 	bool m_scriptChanged;
 
-	SwapThread * m_swapThread;
+	//SwapThread * m_swapThread;
 
 	QMutex m_grabMutex;
 	bool m_grabFramebuffer;

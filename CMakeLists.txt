@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0.2)
+cmake_minimum_required (VERSION 2.8.8)
  
 project(NerDisco)
 
@@ -15,6 +15,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Widgets finds its own dependencies (Core and Gui).
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Gui REQUIRED)
 find_package(Qt5SerialPort REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5OpenGL REQUIRED)
@@ -42,6 +44,19 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     #set up compiler flags for GCC
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2") #support C++11 for std::, optimize
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s") #strip binary
+endif()
+
+#-------------------------------------------------------------------------------
+#set up RtMidi
+
+if(MSVC)
+    add_definitions(-D__WINDOWS_MM__)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    find_package (Threads)
+    find_package (ALSA)
+    add_definitions(-D__LINUX_ALSA__)
 endif()
 
 #-------------------------------------------------------------------------------
@@ -78,8 +93,8 @@ set(TARGET_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtMIDIButton.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtSpinBoxAction.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SignalJoiner.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/SwapThread.h
-	${CMAKE_CURRENT_SOURCE_DIR}/rtmidi/rtmidi.h
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/SwapThread.h
+	${CMAKE_CURRENT_SOURCE_DIR}/rtmidi/RtMidi.h
 )
 
 set(TARGET_SOURCES
@@ -110,8 +125,8 @@ set(TARGET_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtMIDIButton.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtSpinBoxAction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SignalJoiner.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/SwapThread.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/rtmidi/rtmidi.cpp
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/SwapThread.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/rtmidi/RtMidi.cpp
 )
 
 set(TARGET_FORMS
@@ -125,6 +140,9 @@ set(TARGET_RESOURCES
 )
 qt5_add_resources(RESOURCE_ADDED ${TARGET_RESOURCES})
 
+#Add source directory to include directories for building .ui files etc.
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 #-------------------------------------------------------------------------------
 #set up build directories
 
@@ -137,3 +155,13 @@ set(LIBRARY_OUTPUT_PATH ${dir} CACHE PATH "Build directory" FORCE)
 
 add_executable(NerDisco ${TARGET_SOURCES} ${TARGET_HEADERS} ${RESOURCE_ADDED} ${FORMS_ADDED})
 qt5_use_modules(NerDisco Core Gui Widgets Multimedia OpenGL SerialPort Xml)
+
+#add libraries for RtMidi
+if(MSVC)
+    target_link_libraries (NerDisco winmm)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    target_link_libraries (NerDisco ${CMAKE_THREAD_LIBS_INIT} ${ALSA_LIBRARY})
+endif()
+

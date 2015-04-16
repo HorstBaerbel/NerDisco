@@ -18,7 +18,7 @@ void NodeEnum::toXML(QDomElement & parent) const
 		child.setAttribute("name", m_name);
 		parent.appendChild(child);
 	}
-	child.setAttribute("value", m_value);
+	child.setAttribute("value", (qlonglong)m_value);
 }
 
 void NodeEnum::fromXML(QDomElement & parent)
