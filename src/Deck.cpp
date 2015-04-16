@@ -283,6 +283,8 @@ void Deck::scriptCompiledOk()
 
 void Deck::scriptHasErrors(const QString & errors)
 {
+	//figure out line number adjustment due to script prefix
+	const int prefixLineCount = m_liveView->currentScriptPrefix().count(QLatin1Char('\n'));
 	//parse errors
 	QVector<CodeEdit::Error> list;
 	CodeEdit::Error error;
@@ -291,7 +293,7 @@ void Deck::scriptHasErrors(const QString & errors)
 	error.message = "Unknown script error";
 	if (m_errorExp.indexIn(errors) >= 0)
 	{
-		error.line = m_errorExp.cap(3).toInt() + 1;
+		error.line = m_errorExp.cap(3).toInt() + 1 - prefixLineCount;
 		error.column = 0;
 		error.message = m_errorExp.cap(4);
 	}

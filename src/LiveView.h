@@ -34,6 +34,10 @@ public:
 	/// @brief Set new render script, actually a fragment shader
     void setFragmentScript(const QString & script);
 
+	/// @brief Retrieve current prefix applied to fragment script to make it compilable.
+	/// @return Current script prefix.
+	QString currentScriptPrefix() const;
+
 	/// @brief Set parameter in fragment shader.
 	void setFragmentScriptProperty(const QString & name, const QVector2D & value);
 	void setFragmentScriptProperty(const QString & name, const QVector3D & value);
@@ -51,6 +55,9 @@ public slots:
 signals:
 	/// @brief Called when setScript is called, but shader compilation failed.
 	/// @param errors Error log from shader compilation / linking.
+	/// @note The line numbers here must not exactly match the script passed.
+	/// This is because a prefix has been added to the script. You can get the current prefix
+	/// using currentScriptPrefix() to adjust line numbers.
 	void fragmentScriptErrors(const QString & errors);
 	/// @brief Called when setScript is called and the script was sucessfully compiled and will be displayed.
     void fragmentScriptChanged();

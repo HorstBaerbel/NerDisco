@@ -332,6 +332,11 @@ void LiveView::setFragmentScript(const QString & script)
 	m_fragmentScript = script;
 }
 
+QString LiveView::currentScriptPrefix() const
+{
+	return m_fragmentPrefix;
+}
+
 void LiveView::setFragmentScriptProperty(const QString & name, const QVector2D & value)
 {
 	m_shaderValues2d[name] = value;
