@@ -14,8 +14,8 @@
    <string>NerDisco 0.7b</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/resources/icon.ico</normaloff>:/resources/icon.ico</iconset>
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/icon.ico</normaloff>:/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,1">
@@ -739,7 +739,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
