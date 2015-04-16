@@ -13,6 +13,7 @@ Deck::Deck(QWidget *parent)
 	, m_scriptTime(QTime::currentTime())
 	, m_scriptModified(false)
 	, m_errorExp("\\b(ERROR|Error|error)\\b:\\s?(\\d+):\\s?(\\d+):\\s?(.*)\\n")
+	, m_errorExp2("\\s?(\\d+):(\\d+)\\(\\d+\\):\\s?(ERROR|Error|error):\\s?(.*)\\n")
 	, m_midiInterface(MIDIInterface::getInstance())
 	, updateInterval("updateInterval", 50, 20, 100)
 	, previewWidth("previewWidth", 128, 64, 256)
@@ -296,6 +297,12 @@ void Deck::scriptHasErrors(const QString & errors)
 		error.line = m_errorExp.cap(3).toInt() + 1 - prefixLineCount;
 		error.column = 0;
 		error.message = m_errorExp.cap(4);
+	}
+	else if (m_errorExp2.indexIn(errors) >= 0)
+	{
+		error.line = m_errorExp2.cap(2).toInt() + 1 - prefixLineCount;
+		error.column = 0;
+		error.message = m_errorExp2.cap(4);
 	}
 	list.append(error);
 	m_codeEdit->setErrors(list);

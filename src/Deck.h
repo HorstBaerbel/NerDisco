@@ -85,6 +85,7 @@ private:
 	bool m_scriptModified;
     QTimer m_editTimer;
 	QRegExp m_errorExp;
+    QRegExp m_errorExp2;
     QString m_currentScriptPath;
 
 	MIDIInterface::SPtr m_midiInterface;
