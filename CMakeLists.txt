@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.8)
+cmake_minimum_required (VERSION 2.8.9)
  
 project(NerDisco)
 
@@ -158,7 +158,7 @@ qt5_use_modules(NerDisco Core Gui Widgets Multimedia OpenGL SerialPort Xml)
 
 #add libraries for RtMidi
 if(MSVC)
-    target_link_libraries (NerDisco winmm)
+    target_link_libraries (NerDisco winmm ${QT_QTMAIN_LIBRARY})
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
