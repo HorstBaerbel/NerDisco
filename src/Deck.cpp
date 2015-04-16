@@ -25,15 +25,16 @@ Deck::Deck(QWidget *parent)
 	, triggerB("triggerB", false)
 {
     ui->setupUi(this);
-	QHBoxLayout * deckLayout = (QHBoxLayout*)ui->groupBox->layout();
-	//deckLayout->setAlignment(Qt::AlignHCenter);
+	QVBoxLayout * deckLayout = (QVBoxLayout*)ui->groupBox->layout();
     //insert code editor
 	deckLayout->insertWidget(0, m_codeEdit);
     //insert live editor
 	QSurfaceFormat::setDefaultFormat(LiveView::getDefaultFormat());
 	m_liveView = new LiveView(this);
-	deckLayout->insertWidget(1, m_liveView);
 	m_liveView->setFixedSize(previewWidth, previewHeight);
+	QHBoxLayout * centerLayout = new QHBoxLayout();
+	deckLayout->insertLayout(1, centerLayout);
+	centerLayout->addWidget(m_liveView);
     //connect signals from dials to parameters
 	connectParameter(valueA, ui->valueA);
 	connectParameter(valueB, ui->valueB);
