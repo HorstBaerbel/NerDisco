@@ -71,7 +71,8 @@ protected slots:
 	void midiStoreLearnedConnection();
 	void midiLearnedConnectionStateChanged(bool valid);
 
-	void updateDisplayMenu();
+	void updateDisplaySerialPortMenu();
+	void updateDisplaySettingsMenu();
 	void displaySerialPortSelected();
 	void displayBaudrateSelected();
 	void displayScanlineDirectionSelected();

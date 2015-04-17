@@ -85,7 +85,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(&m_displayImageConverter, SIGNAL(previewImageChanged(const QImage &)), this, SLOT(updatePreview(const QImage &)));
 	connect(&m_displayImageConverter, SIGNAL(displayImageChanged(const QImage &)), this, SLOT(updateDisplay(const QImage &)));
 	//set up serial display sending thread
-	updateDisplayMenu();
+	updateDisplaySerialPortMenu();
+	updateDisplaySettingsMenu();
 	m_displayThread.displayWidth.connect(displayWidth);
 	m_displayThread.displayHeight.connect(displayHeight);
 	m_displayThread.displayInterval.connect(displayInterval);
@@ -326,15 +327,18 @@ void MainWindow::setFramebufferHeight(int height)
 void MainWindow::updateAudioDevices()
 {
 	//clear old menu
-	QMenu * oldMenu = ui->actionAudioDevices->menu();
-	if (oldMenu)
+	QMenu * deviceMenu = ui->actionAudioDevices->menu();
+	if (deviceMenu)
 	{
-        oldMenu->setParent(NULL);
-		delete oldMenu;
-        ui->actionAudioDevices->setMenu(NULL);
+		//remove all actions
+		deviceMenu->clear();
+	}
+	else
+	{
+		//menu does not exiost create it
+		deviceMenu = new QMenu(this);
 	}
 	//add default device
-	QMenu * deviceMenu = new QMenu(this);
 	QAction * action = deviceMenu->addAction(tr("None"));
 	action->setCheckable(true);
 	deviceMenu->addAction(action);
@@ -350,6 +354,9 @@ void MainWindow::updateAudioDevices()
 		//if this is the active audio device, select it
 		action->setChecked(inputDevices.at(i) == m_audioInterface.captureDevice);
 	}
+	//add refresh action
+	QAction * refresh = deviceMenu->addAction(QIcon(":/view-refresh.png"), tr("Refresh"));
+	connect(refresh, SIGNAL(triggered()), this, SLOT(updateAudioDevices()));
 	//add menu to UI
 	ui->actionAudioDevices->setMenu(deviceMenu);
 }
@@ -437,11 +444,7 @@ void MainWindow::updateMidiDevices()
 	if (deviceMenu)
 	{
 		//remove all actions
-		for (auto oldAction : deviceMenu->actions())
-		{
-			deviceMenu->removeAction(oldAction);
-			oldAction->deleteLater();
-		}
+		deviceMenu->clear();
 	}
 	else
 	{
@@ -465,7 +468,7 @@ void MainWindow::updateMidiDevices()
 		action->setChecked(midiDevices.at(i) == m_midiInterface->getDeviceInterface()->captureDevice);
 	}
 	//add refresh action
-	QAction * refresh = deviceMenu->addAction(QIcon(":/view-refresh.png"), tr("Update"));
+	QAction * refresh = deviceMenu->addAction(QIcon(":/view-refresh.png"), tr("Refresh"));
 	connect(refresh, SIGNAL(triggered()), this, SLOT(updateMidiDevices()));
 	//add menu to UI
 	ui->actionMidiDevices->setMenu(deviceMenu);
@@ -578,18 +581,21 @@ void MainWindow::midiStoreLearnedConnection()
 
 //-------------------------------------------------------------------------------------------------
 
-void MainWindow::updateDisplayMenu()
+void MainWindow::updateDisplaySerialPortMenu()
 {
 	//clear old menu
-	QMenu * oldMenu = ui->actionDisplaySerialPort->menu();
-	if (oldMenu)
+	QMenu * deviceMenu = ui->actionDisplaySerialPort->menu();
+	if (deviceMenu)
 	{
-		oldMenu->setParent(NULL);
-		delete oldMenu;
-		ui->actionDisplaySerialPort->setMenu(NULL);
+		//remove all actions
+		deviceMenu->clear();
+	}
+	else
+	{
+		//menu does not exist create it
+		deviceMenu = new QMenu(this);
 	}
 	//add default device
-	QMenu * deviceMenu = new QMenu(this);
 	QAction * action = deviceMenu->addAction(tr("None"));
 	action->setCheckable(true);
 	deviceMenu->addAction(action);
@@ -605,13 +611,20 @@ void MainWindow::updateDisplayMenu()
 		//if this is the active port, select it
 		action->setChecked(serialPorts.at(i) == m_displayThread.portName);
 	}
+	//add refresh action
+	QAction * refresh = deviceMenu->addAction(QIcon(":/view-refresh.png"), tr("Refresh"));
+	connect(refresh, SIGNAL(triggered()), this, SLOT(updateDisplaySerialPortMenu()));
 	//add menu to UI
 	ui->actionDisplaySerialPort->setMenu(deviceMenu);
+}
+
+void MainWindow::updateDisplaySettingsMenu()
+{
 	//baud rates to menu
 	const int rates[7] = { 57600, 115200, 230400, 250000, 300000, 400000, 500000 };
 	for (int i = 0; i < 7; ++i)
 	{
-		action = ui->menuDisplayBaudrate->addAction(QString::number(rates[i]) + " Baud");
+		QAction * action = ui->menuDisplayBaudrate->addAction(QString::number(rates[i]) + " Baud");
 		action->setCheckable(true);
 		action->setData(rates[i]);
 		connect(action, SIGNAL(triggered()), this, SLOT(displayBaudrateSelected()));
@@ -791,6 +804,11 @@ void MainWindow::updateEffectMenu()
 				connect(actionB, SIGNAL(triggered()), this, SLOT(loadDeckB()));
 			}
 		}
+		//add refresh actions
+		QAction * refreshA = menuA->addAction(QIcon(":/view-refresh.png"), tr("Refresh"));
+		connect(refreshA, SIGNAL(triggered()), this, SLOT(updateEffectMenu()));
+		QAction * refreshB = menuB->addAction(QIcon(":/view-refresh.png"), tr("Refresh"));
+		connect(refreshB, SIGNAL(triggered()), this, SLOT(updateEffectMenu()));
 		//add new menus
 		ui->actionLoadDeckA->setMenu(menuA);
 		ui->actionLoadDeckB->setMenu(menuB);
