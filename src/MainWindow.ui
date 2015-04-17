@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>NerDisco 0.7b</string>
+   <string>NerDisco 0.7.1b</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/resources.qrc">
