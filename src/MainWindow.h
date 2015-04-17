@@ -76,6 +76,9 @@ protected slots:
 	void displaySerialPortSelected();
 	void displayBaudrateSelected();
 	void displayScanlineDirectionSelected();
+	void displaySerialPortChanged(const QString & name);
+	void displayBaudrateChanged(int rate);
+	void displayScanlineDirectionChanged(ScanlineDirection direction);
 	void displayStartSending(bool checked);
 	void displayStopSending();
 	void displayPortStatusChanged(bool opened);

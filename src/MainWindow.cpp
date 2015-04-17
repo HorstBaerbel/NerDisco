@@ -97,6 +97,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionDisplayStop, SIGNAL(triggered()), this, SLOT(displayStopSending()));
 	connect(&m_displayThread, SIGNAL(portOpened(bool)), this, SLOT(displayPortStatusChanged(bool)));
 	connect(m_displayThread.sending.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(displaySendStatusChanged(bool)));
+	connect(m_displayThread.portName.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(displaySerialPortChanged(const QString &)));
+	connect(m_displayThread.baudrate.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(displayBaudrateChanged(int)));
+	connect(m_displayThread.scanlineDirection.GetSharedParameter().get(), SIGNAL(valueChanged(ScanlineDirection)), this, SLOT(displayScanlineDirectionChanged(ScanlineDirection)));
 	m_displayThread.start();
 	//retrieve settings from XML for all components
 	loadSettings(m_settingsFileName);
@@ -500,7 +503,7 @@ void MainWindow::midiInputDeviceChanged(const QString & name)
 	QMenu * menu = ui->actionMidiDevices->menu();
 	if (menu && menu->actions().size() > 0)
 	{
-		foreach(QAction * action, menu->actions())
+		for (auto action : menu->actions())
 		{
 			action->setChecked(action->text() == name || (action->text() == tr("None") && name == ""));
 		}
@@ -627,17 +630,29 @@ void MainWindow::updateDisplaySettingsMenu()
 		QAction * action = ui->menuDisplayBaudrate->addAction(QString::number(rates[i]) + " Baud");
 		action->setCheckable(true);
 		action->setData(rates[i]);
+		action->setChecked(rates[i] == m_displayThread.baudrate);
 		connect(action, SIGNAL(triggered()), this, SLOT(displayBaudrateSelected()));
 	}
 	//add scanline directions data to menu
 	ui->actionConstantLeftRight->setData(ScanlineDirection::ConstantLeftToRight);
+	ui->actionConstantLeftRight->setCheckable(true);
+	ui->actionConstantLeftRight->setChecked(m_displayThread.scanlineDirection == ScanlineDirection::ConstantLeftToRight);
 	connect(ui->actionConstantLeftRight, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
 	ui->actionConstantRightLeft->setData(ScanlineDirection::ConstantRightToLeft);
+	ui->actionConstantRightLeft->setCheckable(true);
+	ui->actionConstantRightLeft->setChecked(m_displayThread.scanlineDirection == ScanlineDirection::ConstantRightToLeft);
 	connect(ui->actionConstantRightLeft, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
 	ui->actionAlternatingStartLeft->setData(ScanlineDirection::AlternatingStartLeft);
+	ui->actionAlternatingStartLeft->setCheckable(true);
+	ui->actionAlternatingStartLeft->setChecked(m_displayThread.scanlineDirection == ScanlineDirection::AlternatingStartLeft);
 	connect(ui->actionAlternatingStartLeft, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
 	ui->actionAlternatingStartRight->setData(ScanlineDirection::AlternatingStartRight);
+	ui->actionAlternatingStartRight->setCheckable(true);
+	ui->actionAlternatingStartRight->setChecked(m_displayThread.scanlineDirection == ScanlineDirection::AlternatingStartRight);
 	connect(ui->actionAlternatingStartRight, SIGNAL(triggered()), this, SLOT(displayScanlineDirectionSelected()));
+	//set if display is flipped
+	ui->actionDisplayFlipHorizontal->setChecked(m_displayThread.flipHorizontal);
+	ui->actionDisplayFlipVertical->setChecked(m_displayThread.flipVertical);
 	//add spinbox actions to menu
 	QtSpinBoxAction * intervalAction = new QtSpinBoxAction("Update interval", "ms");
 	intervalAction->setObjectName("displayInterval");
@@ -651,6 +666,48 @@ void MainWindow::updateDisplaySettingsMenu()
 	heightAction->setObjectName("displayHeight");
 	ui->menuDisplaySettings->insertAction(ui->actionDisplayStart, heightAction);
 	connectParameter(displayHeight, heightAction->control());
+}
+
+void MainWindow::displaySerialPortChanged(const QString & name)
+{
+	//disable buttons if not audio device selected
+	ui->actionDisplayStart->setEnabled(name != "");
+	ui->actionDisplayStop->setEnabled(false);
+	//check which action to select
+	QMenu * menu = ui->actionDisplaySerialPort->menu();
+	if (menu && menu->actions().size() > 0)
+	{
+		for (auto action : menu->actions())
+		{
+			action->setChecked(action->text() == name || (action->text() == tr("None") && name == ""));
+		}
+	}
+}
+
+void MainWindow::displayBaudrateChanged(int rate)
+{
+	//check which action to select
+	QMenu * menu = ui->menuDisplayBaudrate;
+	if (menu && menu->actions().size() > 0)
+	{
+		for (auto action : menu->actions())
+		{
+			action->setChecked(action->data().toInt() == rate);
+		}
+	}
+}
+
+void MainWindow::displayScanlineDirectionChanged(ScanlineDirection direction)
+{
+	//check which action to select
+	QMenu * menu = ui->menuDisplayScanlineDirection;
+	if (menu && menu->actions().size() > 0)
+	{
+		for (auto action : menu->actions())
+		{
+			action->setChecked(action->data().toInt() == direction);
+		}
+	}
 }
 
 void MainWindow::displaySerialPortSelected()
@@ -701,12 +758,13 @@ void MainWindow::displayStopSending()
 void MainWindow::displayPortStatusChanged(bool opened)
 {
 	ui->actionDisplayStart->setEnabled(opened);
-	ui->actionDisplayStop->setEnabled(opened);
+	ui->actionDisplayStop->setEnabled(false);
 }
 
 void MainWindow::displaySendStatusChanged(bool sending)
 {
 	ui->actionDisplayStart->setChecked(sending);
+	ui->actionDisplayStop->setEnabled(sending);
 }
 
 void MainWindow::displayFlipChanged(bool horizontal, bool vertical)
