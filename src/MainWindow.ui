@@ -464,6 +464,10 @@
       <property name="title">
        <string>Scanline direction</string>
       </property>
+      <property name="icon">
+       <iconset resource="../resources/resources.qrc">
+        <normaloff>:/led_direction.png</normaloff>:/led_direction.png</iconset>
+      </property>
       <addaction name="actionConstantLeftRight"/>
       <addaction name="actionConstantRightLeft"/>
       <addaction name="actionAlternatingStartLeft"/>
@@ -473,12 +477,20 @@
       <property name="title">
        <string>Flip display</string>
       </property>
+      <property name="icon">
+       <iconset resource="../resources/resources.qrc">
+        <normaloff>:/flip_menu.png</normaloff>:/flip_menu.png</iconset>
+      </property>
       <addaction name="actionDisplayFlipHorizontal"/>
       <addaction name="actionDisplayFlipVertical"/>
      </widget>
      <widget class="QMenu" name="menuDisplayBaudrate">
       <property name="title">
        <string>Baud rate</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../resources/resources.qrc">
+        <normaloff>:/network-wired.png</normaloff>:/network-wired.png</iconset>
       </property>
      </widget>
      <addaction name="menuDisplayBaudrate"/>
@@ -683,6 +695,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/midi_connect_learn.png</normaloff>:/midi_connect_learn.png</iconset>
+   </property>
    <property name="text">
     <string>Learn MIDI-&gt;control mapping</string>
    </property>
@@ -690,6 +706,10 @@
   <action name="actionStoreLearnedConnection">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/midi_connect_store.png</normaloff>:/midi_connect_store.png</iconset>
    </property>
    <property name="text">
     <string>Store learned connection</string>
@@ -720,6 +740,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/flip_horizontal.png</normaloff>:/flip_horizontal.png</iconset>
+   </property>
    <property name="text">
     <string>Horizontal</string>
    </property>
@@ -727,6 +751,10 @@
   <action name="actionDisplayFlipVertical">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/flip_vertical.png</normaloff>:/flip_vertical.png</iconset>
    </property>
    <property name="text">
     <string>Vertical</string>
@@ -736,6 +764,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/scanline_direction_clr.png</normaloff>:/scanline_direction_clr.png</iconset>
+   </property>
    <property name="text">
     <string>Constant left-&gt;right</string>
    </property>
@@ -743,6 +775,10 @@
   <action name="actionConstantRightLeft">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/scanline_direction_crl.png</normaloff>:/scanline_direction_crl.png</iconset>
    </property>
    <property name="text">
     <string>Constant right-&gt;left</string>
@@ -752,6 +788,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/scanline_direction_asl.png</normaloff>:/scanline_direction_asl.png</iconset>
+   </property>
    <property name="text">
     <string>Alternating, start left</string>
    </property>
@@ -759,6 +799,10 @@
   <action name="actionAlternatingStartRight">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/scanline_direction_asr.png</normaloff>:/scanline_direction_asr.png</iconset>
    </property>
    <property name="text">
     <string>Alternating, start right</string>

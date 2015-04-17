@@ -601,6 +601,7 @@ void MainWindow::updateDisplaySerialPortMenu()
 	//add default device
 	QAction * action = deviceMenu->addAction(tr("None"));
 	action->setCheckable(true);
+	action->setChecked(true);
 	deviceMenu->addAction(action);
 	connect(action, SIGNAL(triggered()), this, SLOT(displaySerialPortSelected()));
 	//add actual devices

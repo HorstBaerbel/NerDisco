@@ -1,5 +1,15 @@
 <RCC>
   <qresource prefix="/">
+    <file>flip_menu.png</file>
+    <file>led_direction.png</file>
+    <file>flip_horizontal.png</file>
+    <file>flip_vertical.png</file>
+    <file>scanline_direction_asl.png</file>
+    <file>scanline_direction_asr.png</file>
+    <file>scanline_direction_clr.png</file>
+    <file>scanline_direction_crl.png</file>
+    <file>midi_connect_learn.png</file>
+    <file>midi_connect_store.png</file>
     <file>audio-input-microphone.png</file>
     <file>user-trash.png</file>
     <file>network-wired.png</file>
