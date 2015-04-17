@@ -15,6 +15,7 @@ License
 
 [BSD-2-Clause](http://opensource.org/licenses/BSD-2-Clause), see [LICENSE.md](LICENSE.md).  
 For [RtMidi](https://github.com/thestk/rtmidi), see [the RtMidi readme](https://github.com/thestk/rtmidi/blob/master/readme).
+Some of the icons are from or are based on icons from the [Tango Icon Library](http://tango.freedesktop.org/Tango_Icon_Library) v0.8.90, which seems to be PD. Thanks a bunch!
 
 Building
 ========
