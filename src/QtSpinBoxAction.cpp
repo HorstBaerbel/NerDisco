@@ -14,6 +14,7 @@ QtSpinBoxAction::QtSpinBoxAction(QObject * parent)
 QtSpinBoxAction::QtSpinBoxAction(const QString & preText, QObject * parent)
 	: QWidgetAction(parent)
 {
+	setCheckable(false);
 	QWidget * actionWidget = new QWidget(NULL);
 	QHBoxLayout * actionLayout = new QHBoxLayout();
 	actionLayout->setMargin(1);
@@ -29,6 +30,7 @@ QtSpinBoxAction::QtSpinBoxAction(const QString & preText, QObject * parent)
 QtSpinBoxAction::QtSpinBoxAction(const QString & preText, const QString & postText, QObject * parent)
 	: QWidgetAction(parent)
 {
+	setCheckable(false);
 	QWidget * actionWidget = new QWidget(NULL);
 	QHBoxLayout * actionLayout = new QHBoxLayout();
 	actionLayout->setMargin(1);
