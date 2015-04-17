@@ -30,8 +30,8 @@ public:
 	/// @param parent The parent element to load the settings from.
 	MainWindow & fromXML(const QDomElement & parent);
 
-	void loadSettings(const QString & fileName = "settings.xml");
-	void saveSettings(const QString & fileName = "settings.xml");
+	void loadSettings(const QString & fileName);
+	void saveSettings(const QString & fileName);
 
 	ParameterInt previewInterval;
 	ParameterInt previewWidth;
@@ -101,6 +101,7 @@ private:
     Ui::MainWindow *ui;
 
     QTimer m_displayTimer;
+	QString m_settingsFileName;
 
 	DisplayImageConverter m_displayImageConverter;
     DisplayThread m_displayThread;

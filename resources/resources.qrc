@@ -7,5 +7,6 @@
         <file>icon_32.png</file>
         <file>icon_64.png</file>
         <file>../effects/default.fs</file>
+        <file>view-refresh.png</file>
     </qresource>
 </RCC>

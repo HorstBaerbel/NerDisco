@@ -31,17 +31,21 @@ void MIDIParameterMapping::toXML(QDomElement & parent) const
 			break;
 		}
 	}
-	//(re-)add the new element if we have connections
-	if (!m_connections.isEmpty())
+	//check if our device is empty. then we don't need to store connections
+	if (deviceName != "")
 	{
-		QDomElement element = parent.ownerDocument().createElement("MIDIParameterMapping");
-		element.setAttribute("name", deviceName);
-		deviceName.toXML(element);
-		foreach(const MIDIParameterConnection & connection, m_connections)
+		//(re-)add the new element if we have connections
+		if (!m_connections.isEmpty())
 		{
-			connection.toXML(element);
+			QDomElement element = parent.ownerDocument().createElement("MIDIParameterMapping");
+			element.setAttribute("name", deviceName);
+			deviceName.toXML(element);
+			foreach(const MIDIParameterConnection & connection, m_connections)
+			{
+				connection.toXML(element);
+			}
+			parent.appendChild(element);
 		}
-		parent.appendChild(element);
 	}
 }
 
@@ -50,46 +54,51 @@ MIDIParameterMapping & MIDIParameterMapping::fromXML(const QDomElement & parent)
 	QMutexLocker locker(&m_mutex);
 	setLearnMode(false);
 
-	//try to find element in parent
-	QDomNodeList children = parent.elementsByTagName("MIDIParameterMapping");
-	for (int i = 0; i < children.size(); ++i)
+	//check if our device is empty. then we don't need to load connections
+	if (deviceName != "")
 	{
-		QDomElement child = children.at(i).toElement();
-		if (!child.isNull() && child.attribute("name") == deviceName)
+		//try to find element in parent
+		QDomNodeList children = parent.elementsByTagName("MIDIParameterMapping");
+		for (int i = 0; i < children.size(); ++i)
 		{
-			//found. read connections
-			clearConnections();
-			QDomNodeList connections = child.childNodes();
-			for (int i = 0; i < connections.size(); ++i)
+			QDomElement child = children.at(i).toElement();
+			if (!child.isNull() && child.attribute("name") == deviceName)
 			{
-				try
+				//found. read connections
+				clearConnections();
+				QDomNodeList connections = child.childNodes();
+				for (int i = 0; i < connections.size(); ++i)
 				{
-					MIDIParameterConnection connection;
-					QDomElement connectionElement = connections.at(i).toElement();
-					connection.fromXML(connectionElement);
-					//wow. that worked. try to find object in list
-					foreach(const ControlEntry & control, m_controls)
+					try
 					{
-						if (control.parameter->name() == connection.m_parameterName && control.parentName == connection.m_parameterParentName)
+						MIDIParameterConnection connection;
+						QDomElement connectionElement = connections.at(i).toElement();
+						connection.fromXML(connectionElement);
+						//wow. that worked. try to find object in list
+						foreach(const ControlEntry & control, m_controls)
 						{
-							//objects' name matches. store pointer in connection
-							connection.m_parameter = control.parameter;
-							connection.m_parameterParentName = control.parentName;
-							m_connections.append(connection);
-							break;
+							if (control.parameter->name() == connection.m_parameterName && control.parentName == connection.m_parameterParentName)
+							{
+								//objects' name matches. store pointer in connection
+								connection.m_parameter = control.parameter;
+								connection.m_parameterParentName = control.parentName;
+								m_connections.append(connection);
+								break;
+							}
 						}
 					}
+					catch (std::runtime_error e)
+					{
+						//simply ignore unknown/bad nodes...
+					}
 				}
-				catch (std::runtime_error e)
-				{
-					//simply ignore unknown/bad nodes...
-				}
+				return *this;
 			}
-			return *this;
+			throw std::runtime_error("No MIDI mappings found for current device!");
 		}
-		throw std::runtime_error("No MIDI mappings found for current device!");
+		throw std::runtime_error("No MIDI mappings found!");
 	}
-	throw std::runtime_error("No MIDI mappings found!");
+	return *this;
 }
 
 void MIDIParameterMapping::registerMIDIParameter(NodeRanged::SPtr parameter, const QString & parameterParentName)

@@ -14,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindow)
+	, m_settingsFileName("settings.xml")
 	, m_midiInterface(MIDIInterface::getInstance())
 	, previewInterval("previewInterval", 33, 20, 100)
 	, previewWidth("previewWidth", 128, 32, 256)
@@ -97,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(m_displayThread.sending.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(displaySendStatusChanged(bool)));
 	m_displayThread.start();
 	//retrieve settings from XML for all components
-	loadSettings();
+	loadSettings(m_settingsFileName);
 	//set up signal joiner that waits for both render windows being finished with rendering to grab their framebuffers
 	m_signalJoiner.addObjectToJoin(ui->widgetDeckA);
 	m_signalJoiner.addObjectToJoin(ui->widgetDeckB);
@@ -115,7 +116,7 @@ MainWindow::~MainWindow()
 	m_displayTimer.stop();
 	m_audioInterface.capturing = false;
 	//save settings to XML
-	saveSettings();
+	saveSettings(m_settingsFileName);
 	delete ui;
 }
 
@@ -432,15 +433,22 @@ void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/
 void MainWindow::updateMidiDevices()
 {
 	//clear old menu
-	QMenu * oldMenu = ui->actionMidiDevices->menu();
-	if (oldMenu)
+	QMenu * deviceMenu = ui->actionMidiDevices->menu();
+	if (deviceMenu)
 	{
-		oldMenu->setParent(NULL);
-		delete oldMenu;
-		ui->actionMidiDevices->setMenu(NULL);
+		//remove all actions
+		for (auto oldAction : deviceMenu->actions())
+		{
+			deviceMenu->removeAction(oldAction);
+			oldAction->deleteLater();
+		}
+	}
+	else
+	{
+		//menu does not exiost create it
+		deviceMenu = new QMenu(this);
 	}
 	//add default device
-	QMenu * deviceMenu = new QMenu(this);
 	QAction * action = deviceMenu->addAction(tr("None"));
 	action->setCheckable(true);
 	deviceMenu->addAction(action);
@@ -456,6 +464,9 @@ void MainWindow::updateMidiDevices()
 		//if this is the active midi device, select it
 		action->setChecked(midiDevices.at(i) == m_midiInterface->getDeviceInterface()->captureDevice);
 	}
+	//add refresh action
+	QAction * refresh = deviceMenu->addAction(QIcon(":/view-refresh.png"), tr("Update"));
+	connect(refresh, SIGNAL(triggered()), this, SLOT(updateMidiDevices()));
 	//add menu to UI
 	ui->actionMidiDevices->setMenu(deviceMenu);
 }
@@ -490,6 +501,30 @@ void MainWindow::midiInputDeviceChanged(const QString & name)
 		{
 			action->setChecked(action->text() == name || (action->text() == tr("None") && name == ""));
 		}
+	}
+	//try to load MIDI mappings for device
+	QDomDocument doc("NerDisco");
+	QFile file(m_settingsFileName);
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QString errorMessage;
+		if (doc.setContent(&file, &errorMessage))
+		{
+			QDomElement root = doc.documentElement();
+			try
+			{
+				m_midiInterface->getParameterMapping()->fromXML(root);
+			}
+			catch (std::runtime_error e)
+			{
+				QMessageBox::information(this, tr("Failed to read settings"), tr("Error while reading settings from \"%1\". %2").arg(m_settingsFileName).arg(e.what()));
+			}
+		}
+		else
+		{
+			QMessageBox::information(this, tr("Failed to read settings"), tr("Error reading \"%1\": %2. Using default settings.").arg(m_settingsFileName).arg(errorMessage));
+		}
+		file.close();
 	}
 }
 
