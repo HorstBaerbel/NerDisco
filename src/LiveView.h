@@ -1,6 +1,7 @@
 #pragma once
 
 //#include "SwapThread.h"
+#include "GLSLCompileThread.h"
 
 #include <QMap>
 #include <QMutex>
@@ -49,6 +50,10 @@ public:
 	void setFragmentScriptProperty(const QString & name, bool value);
 
 public slots:
+	/// @brief Toggle asynchronous shader compilation. This crashes on some systems.
+	/// @param enabled Pass true to enable. Default is disabled.
+	void enableAsynchronousCompilation(bool enabled = false);
+
 	/// @brief Render the scene and send signal renderingFinished() afterwards.
 	void render();
 
@@ -74,6 +79,7 @@ protected:
 
 protected slots:
 	void bufferSwapFinished();
+	void compilationFinished(QOpenGLShader * vertex, QOpenGLShader * fragment, QOpenGLShaderProgram * program, bool success, const QString & errors);
 
 private:
 	static const float m_quadData[20];
@@ -104,6 +110,8 @@ private:
 	bool m_scriptChanged;
 
 	//SwapThread * m_swapThread;
+	GLSLCompileThread * m_compileThread;
+	bool m_asynchronousCompilation;
 
 	QMutex m_grabMutex;
 	bool m_grabFramebuffer;

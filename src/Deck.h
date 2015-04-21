@@ -28,6 +28,7 @@ public:
 	void setDeckName(const QString & name);
 
 	ParameterInt updateInterval;
+	ParameterBool asynchronousCompilation;
 	ParameterInt previewWidth;
 	ParameterInt previewHeight;
 

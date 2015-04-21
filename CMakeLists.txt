@@ -71,6 +71,7 @@ set(TARGET_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Deck.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DisplayImageConverter.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DisplayThread.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/GLSLCompileThread.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/I_MIDIControl.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ImageOperations.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/LiveView.h
@@ -105,6 +106,7 @@ set(TARGET_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Deck.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DisplayImageConverter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DisplayThread.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/GLSLCompileThread.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ImageOperations.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/LiveView.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp

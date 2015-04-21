@@ -54,12 +54,14 @@ void main() {\n\
 
 LiveView::LiveView(QWidget * parent)
 	: QOpenGLWidget(parent)
-	, m_vertexShader(NULL)
-	, m_fragmentShader(NULL)
-	, m_shaderProgram(NULL)
+	, m_vertexShader(nullptr)
+	, m_fragmentShader(nullptr)
+	, m_shaderProgram(nullptr)
 	, m_fragmentScript(m_defaultFragmentCode)
-	, m_scriptChanged(true)
-//	, m_swapThread(NULL)
+	, m_scriptChanged(false)
+//	, m_swapThread(nullptr)
+	, m_compileThread(nullptr)
+	, m_asynchronousCompilation(false)
 	, m_grabFramebuffer(false)
 	, m_mustInitialize(true)
 	, m_renderRequested(false)
@@ -96,6 +98,11 @@ QSurfaceFormat LiveView::getDefaultFormat()
 	return format;
 }
 
+void LiveView::enableAsynchronousCompilation(bool enabled)
+{
+	m_asynchronousCompilation = enabled;
+}
+
 void LiveView::render()
 {
 	QMutexLocker locker(&m_grabMutex);
@@ -105,12 +112,6 @@ void LiveView::render()
 
 void LiveView::resizeGL(int width, int height)
 {
-	if (m_mustInitialize)
-	{
-		initializeGL();
-	}
-	//try to make the context current
-	makeCurrent();
 	//check if the context is valid, else inuitialization will crash!
 	if (context() && context()->isValid())
 	{
@@ -121,8 +122,6 @@ void LiveView::resizeGL(int width, int height)
 
 void LiveView::initializeGL()
 {
-	//try to make the context current
-	makeCurrent();
 	//check if the context is valid, else inuitialization will crash!
 	if (context() && context()->isValid())
 	{
@@ -139,7 +138,6 @@ void LiveView::initializeGL()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		//setup orthographic projection matrix for vertex shader
 		m_projectionMatrix.ortho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-		m_mustInitialize = false;
 	}
 }
 
@@ -158,83 +156,28 @@ void LiveView::paintGL()
 {
 	//first lock mutex, so we can not grab the framebuffer or modify shaders at the same time
 	QMutexLocker locker(&m_grabMutex);
-	//check if we need to initialize the widget
-	if (m_mustInitialize)
-	{
-		initializeGL();
-	}
 	//make sure the widget is completely initialized and has been shown
 	if (isValid())
 	{
 		//make context current
 		makeCurrent();
-		//check if the render script changed and we need to recompile
-		if (m_scriptChanged)
+		//allocate compile thread
+		if (!m_compileThread)
 		{
-			QString errors;
-			//initializes default vertex shader, empty fragment shader and shader program
-			if (m_shaderProgram == NULL && m_vertexShader == NULL && m_fragmentShader == NULL)
+			//doneCurrent();
+			m_compileThread = new GLSLCompileThread(context());
+			connect(m_compileThread, SIGNAL(result(QOpenGLShader *, QOpenGLShader *, QOpenGLShaderProgram *, bool, const QString &)),
+				this, SLOT(compilationFinished(QOpenGLShader *, QOpenGLShader *, QOpenGLShaderProgram *, bool, const QString &)));
+			//initializes default vertex shader, default fragment shader and shader program
+			if (m_asynchronousCompilation)
 			{
-				//compile default vertex shader
-				m_vertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
-				if (!m_vertexShader->compileSourceCode(m_vertexPrefix + m_defaultVertexCode))
-				{
-					errors.append(m_vertexShader->log());
-				}
-				//compile default fragment shader
-				m_fragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
-				if (!m_fragmentShader->compileSourceCode(m_fragmentPrefix + m_defaultFragmentCode))
-				{
-					errors.append(m_fragmentShader->log());
-				}
-				//add both shaders to program
-				m_shaderProgram = new QOpenGLShaderProgram(this);
-				m_shaderProgram->addShader(m_vertexShader);
-				m_shaderProgram->addShader(m_fragmentShader);
-				//try linking the program together
-				if (!m_shaderProgram->link())
-				{
-					errors.append(m_shaderProgram->log());
-				}
-			}
-			//if the fragment script changed, update and compile it and re-link the shader
-			QOpenGLShader * newShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
-			//try to compile new fragment shader code
-			if (!newShader->compileSourceCode(m_fragmentPrefix + m_fragmentScript))
-			{
-				errors.append(newShader->log());
+				m_compileThread->compileAndLink(m_vertexPrefix + m_defaultVertexCode, m_fragmentPrefix + m_fragmentScript, m_asynchronousCompilation);
 			}
 			else
 			{
-				//compilation succeeded. remove old fragment shader from program
-				m_shaderProgram->removeShader(m_fragmentShader);
-				//add fragment shader to program and try re-linking
-				m_shaderProgram->addShader(newShader);
-				if (m_shaderProgram->link())
-				{
-					//re-linking worked. replace fragment code and shader
-					delete m_fragmentShader;
-					m_fragmentShader = newShader;
-					locker.unlock();
-					emit fragmentScriptChanged();
-				}
-				else
-				{
-					//linking failed. use old shader again. this should work
-					errors.append(m_shaderProgram->log());
-					m_shaderProgram->removeShader(newShader);
-					m_shaderProgram->addShader(m_fragmentShader);
-					delete newShader;
-					m_shaderProgram->link();
-				}
-			}
-			//mark the script as being NOT changed. we have tried to compile and won't do so again before another change
-			m_scriptChanged = false;
-			//if errors occurred, notify the application
-			if (!errors.isEmpty())
-			{
 				locker.unlock();
-				emit fragmentScriptErrors(errors);
+				m_compileThread->compileAndLink(m_vertexPrefix + m_defaultVertexCode, m_fragmentPrefix + m_fragmentScript, m_asynchronousCompilation);
+				return;
 			}
 		}
 		//check if we have a working shader
@@ -273,6 +216,11 @@ void LiveView::paintGL()
 		else
 		{
 			locker.unlock();
+		}
+		//tell the application we've rendered
+		if (m_renderRequested)
+		{
+			m_renderRequested = false;
 			emit renderingFinished();
 		}
 	}
@@ -290,7 +238,7 @@ void LiveView::paintEvent(QPaintEvent * event)
 	QMutexLocker locker(&m_grabMutex);
 	if (m_renderRequested)
 	{
-		m_renderRequested = false;
+		m_renderRequested = true;
 		locker.unlock();
 		paintGL();
 	}
@@ -328,8 +276,45 @@ QImage LiveView::getGrabbedFramebuffer()
 void LiveView::setFragmentScript(const QString & script)
 {
 	QMutexLocker locker(&m_grabMutex);
-	m_scriptChanged = true;
-	m_fragmentScript = script;
+	if (m_fragmentScript != script)
+	{
+		if (m_compileThread)
+		{
+			if (!m_asynchronousCompilation)
+			{
+				locker.unlock();
+			}
+			m_compileThread->compileAndLink(m_vertexPrefix + m_defaultVertexCode, m_fragmentPrefix + script, m_asynchronousCompilation);
+		}
+		m_scriptChanged = true;
+		m_fragmentScript = script;
+	}
+}
+
+void LiveView::compilationFinished(QOpenGLShader * vertex, QOpenGLShader * fragment, QOpenGLShaderProgram * program, bool success, const QString & errors)
+{
+	QMutexLocker locker(&m_grabMutex);
+	if (success)
+	{
+		//make context current to free old shaders
+		makeCurrent();
+		delete m_shaderProgram;
+		delete m_vertexShader;
+		delete m_fragmentShader;
+		doneCurrent();
+		//set new shaders
+		m_vertexShader = vertex;
+		m_fragmentShader = fragment;
+		m_shaderProgram = program;
+		m_scriptChanged = false;
+		locker.unlock();
+		emit fragmentScriptChanged();
+	}
+	else
+	{
+		locker.unlock();
+		emit fragmentScriptErrors(errors);
+	}
 }
 
 QString LiveView::currentScriptPrefix() const

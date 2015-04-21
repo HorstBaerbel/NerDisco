@@ -16,6 +16,7 @@ Deck::Deck(QWidget *parent)
 	, m_errorExp2("\\s?(\\d+):(\\d+)\\(\\d+\\):\\s?(ERROR|Error|error):\\s?(.*)\\n")
 	, m_midiInterface(MIDIInterface::getInstance())
 	, updateInterval("updateInterval", 50, 20, 100)
+	, asynchronousCompilation("asynchronousCompilation", false)
 	, previewWidth("previewWidth", 128, 64, 256)
 	, previewHeight("previewHeight", 72, 36, 144)
 	, valueA("valueA", 0, 0, 100)
@@ -45,6 +46,7 @@ Deck::Deck(QWidget *parent)
 	connectParameter(triggerB, ui->triggerB);
 	//connect other parameters to functions
 	connect(updateInterval.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setUpdateInterval(int)));
+	connect(asynchronousCompilation.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), m_liveView, SLOT(enableAsynchronousCompilation(bool)));
 	connect(previewWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setPreviewWidth(int)));
 	connect(previewHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setPreviewHeight(int)));
 	//register parameters in MIDI interface
@@ -56,6 +58,7 @@ Deck::Deck(QWidget *parent)
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter());
 	//set up regular expression for error parsing
 	m_errorExp.setMinimal(true);
+	m_errorExp2.setMinimal(true);
     //when the script changes either sucessfully or has errors, we get notified
 	connect(m_liveView, SIGNAL(fragmentScriptChanged()), this, SLOT(scriptCompiledOk()));
 	connect(m_liveView, SIGNAL(fragmentScriptErrors(const QString &)), this, SLOT(scriptHasErrors(const QString &)));
@@ -102,6 +105,7 @@ void Deck::toXML(QDomElement & parent) const
 	//if the script hasn't been modified, do not store the text, because it is identical to the file
 	element.setAttribute("currentText", m_scriptModified ? m_currentText : "");
 	updateInterval.toXML(element);
+	asynchronousCompilation.toXML(element);
 	valueA.toXML(element);
 	valueB.toXML(element);
 	valueC.toXML(element);
@@ -134,6 +138,7 @@ Deck & Deck::fromXML(const QDomElement & parent)
 				m_codeEdit->setPlainText(child.attribute("currentText"));
 			}
 			updateInterval.fromXML(child);
+			asynchronousCompilation.fromXML(child);
 			valueA.fromXML(child);
 			valueB.fromXML(child);
 			valueC.fromXML(child);

@@ -306,4 +306,12 @@ void CodeEdit::setErrors(const QVector<Error> & errors)
 {
     m_errors = errors;
     updateHighlighting();
+	if (errors.isEmpty())
+	{
+		setToolTip("");
+	}
+	else
+	{
+		setToolTip(errors.at(0).message);
+	}
 }

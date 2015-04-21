@@ -28,7 +28,7 @@ DisplayThread::~DisplayThread()
 {
     //m_mutex.lock();
     m_quit = true;
-    m_condition.wakeOne();
+    m_condition.wakeAll();
     //m_mutex.unlock();
     wait();
 }
