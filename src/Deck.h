@@ -29,8 +29,8 @@ public:
 
 	ParameterInt updateInterval;
 	ParameterBool asynchronousCompilation;
-	ParameterInt previewWidth;
-	ParameterInt previewHeight;
+	ParameterInt frameBufferWidth;
+	ParameterInt frameBufferHeight;
 
 	ParameterInt valueA;
 	ParameterInt valueB;
@@ -61,8 +61,8 @@ signals:
 
 private slots:
 	void setUpdateInterval(int interval);
-	void setPreviewWidth(int width);
-	void setPreviewHeight(int height);
+	void setFrameBufferWidth(int width);
+	void setFrameBufferHeight(int height);
 	void parameterChanged(NodeBase * parameter);
 
     void scriptModified(bool modified);

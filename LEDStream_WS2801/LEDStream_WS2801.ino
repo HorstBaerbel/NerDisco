@@ -1,4 +1,4 @@
-// Arduino interface for the use of WS2812 operated LEDs with the NerDisco software.
+// Arduino interface for the use of WS2801 operated LEDs with the NerDisco software.
 // Uses Adalight protocol and is compatible with Boblight, Prismatik etc.
 // The "magic word" for synchronisation is "Ada" followed by LED count high and low byte and a checksum (the low and high byte XORed with 0x55).
 // The interface sends the string "Ada\n" in 1000ms intervals when idle, so the software can detect the display.
@@ -17,23 +17,18 @@ unsigned long lastReceiveTime = 0;
 //LED strip setup
 #define CALIBRATION_TEMPERATURE TypicalLEDStrip
 #define MAX_BRIGHTNESS 255 // 0-255
-#define PIN1 6 //Define (software) LED data port pin for upper half
-#define PIN2 7 //Define (software) LED data port pin for lower half
+#define PIN1 6 //Define (software) LED data port pin
 //initialise LED-array
-#define NUM_STRIPS 2 //we have two strips, one for the upper half, one for the lower
-#define NUM_LEDS_PER_STRIP 270 //30*9=270 LEDs per strip
-#define NUM_LEDS NUM_LEDS_PER_STRIP * NUM_STRIPS //Number of LEDs (my configuration is 2*30*9=540)
-CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
+#define NUM_STRIPS 1 //we have two strips, one for the upper half, one for the lower
+#define NUM_LEDS_PER_STRIP 540 //LEDs per strip
+CRGB leds[NUM_LEDS_PER_STRIP];
 
 void setup()
 {
 	//clear led color buffer to black
 	memset(leds, 0, NUM_LEDS * sizeof(struct CRGB));
-	//initialize FastLed library for the WS2812B strip
-        //first half is at pin 6 and starts at array index 0
-	FastLED.addLeds<WS2812B, PIN1, RGB>(leds, 0, NUM_LEDS);
-        //second half is at pin 7 and starts at array index 270
-        FastLED.addLeds<WS2812B, PIN2, RGB>(leds, NUM_LEDS_PER_STRIP, NUM_LEDS);
+	//initialize FastLed library for the WS2801B strip
+	FastLED.addLeds<WS28101, PIN1, RGB>(leds, 0, NUM_LEDS);
 	FastLED.setTemperature(CALIBRATION_TEMPERATURE);
 	FastLED.setBrightness(MAX_BRIGHTNESS);
 	//initial RGB flash

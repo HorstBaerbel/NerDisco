@@ -69,7 +69,7 @@ void GLSLCompileThread::compileInternal(QString vertexCode, QString fragmentCode
 	}
 	else
 	{
-		//fragment shader is ik. try compiling vertex shader
+		//fragment shader is ok. try compiling vertex shader
 		QOpenGLShader * vertexShader = new QOpenGLShader(QOpenGLShader::Vertex);
 		if (!vertexShader->compileSourceCode(vertexCode))
 		{

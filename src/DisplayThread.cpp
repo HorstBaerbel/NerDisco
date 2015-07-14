@@ -170,9 +170,9 @@ void DisplayThread::run()
 		const ScanlineDirection direction = scanlineDirection;
 		//convert image to format
 		QImage dataImage;
-		if (dataImage.format() != QImage::Format_ARGB32
-			&& dataImage.format() != QImage::Format_ARGB32_Premultiplied
-			&& dataImage.format() != QImage::Format_RGB32)
+		if (m_displayImage.format() != QImage::Format_ARGB32
+			&& m_displayImage.format() != QImage::Format_ARGB32_Premultiplied
+			&& m_displayImage.format() != QImage::Format_RGB32)
 		{
 			dataImage = m_displayImage.convertToFormat(QImage::Format_ARGB32);
 		}
@@ -260,7 +260,7 @@ void DisplayThread::run()
 					serial.setDataBits(QSerialPort::Data8);
 					serial.setParity(QSerialPort::NoParity);
 					serial.setStopBits(QSerialPort::OneStop);
-					//serial.setFlowControl(QSerialPort::HardwareControl);
+					serial.setFlowControl(QSerialPort::NoFlowControl);
 					serial.setBreakEnabled(false);
 					emit portOpened(true);
 				}
@@ -274,10 +274,12 @@ void DisplayThread::run()
 		}
 		if (sendData && serial.isOpen() && serial.isWritable() && data.size() > 0)
 		{
-			// write request
+			//read some data from the device so serial port is not overrun
+			serial.readAll();
+			//now write request
 			serial.write(data);
 			if (serial.waitForBytesWritten(waitTimeout)) {
-				emit this->response("Sent");
+				emit response("Sent");
 			}
 			else {
 				emit timeout(tr("Wait write request timeout %1").arg(QTime::currentTime().toString()));

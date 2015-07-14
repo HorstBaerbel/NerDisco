@@ -89,15 +89,12 @@
               <item>
                <layout class="QGridLayout" name="gridLayout">
                 <item row="1" column="1">
-                 <widget class="QLabel" name="labelRealImage">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
+                 <widget class="QAspectRatioLabel" name="labelRealImage">
                   <property name="text">
                    <string/>
+                  </property>
+                  <property name="scaledContents">
+                   <bool>true</bool>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -105,15 +102,12 @@
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLabel" name="labelFinalImage">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
+                 <widget class="QAspectRatioLabel" name="labelFinalImage">
                   <property name="text">
                    <string notr="true"/>
+                  </property>
+                  <property name="scaledContents">
+                   <bool>true</bool>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -513,12 +507,21 @@
     <addaction name="actionStoreLearnedConnection"/>
     <addaction name="actionClearMidiConnections"/>
    </widget>
+   <widget class="QMenu" name="menuScreen">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Screen</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuDeckA"/>
    <addaction name="menuDeckB"/>
    <addaction name="menuAudio"/>
    <addaction name="menuMidi"/>
    <addaction name="menuDisplay"/>
+   <addaction name="menuScreen"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOptions">
@@ -860,6 +863,11 @@
    <extends>QWidget</extends>
    <header>Deck.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QAspectRatioLabel</class>
+   <extends>QLabel</extends>
+   <header>QAspectRatioLabel.h</header>
   </customwidget>
  </customwidgets>
  <resources>

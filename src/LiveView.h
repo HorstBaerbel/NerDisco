@@ -11,6 +11,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+#include <QOpenGLFramebufferObject>
 
 
 class LiveView : public QOpenGLWidget, protected QOpenGLFunctions
@@ -21,6 +22,10 @@ public:
 	LiveView(QWidget * parent = NULL);
 
 	~LiveView();
+
+	virtual bool hasHeightForWidth() const override;
+	virtual int heightForWidth(int width) const override;
+	virtual QSize sizeHint() const override;
 
 	/// @brief Get the default OpenGL format used for the live view.
 	static QSurfaceFormat getDefaultFormat();
@@ -49,6 +54,10 @@ public:
 	void setFragmentScriptProperty(const QString & name, int value);
 	void setFragmentScriptProperty(const QString & name, bool value);
 
+	/// @brief Set a different size than the preview / actual widget size.
+	/// This is the size the image will be rendered in. It will the be rescaled to the widget size.
+	void setRenderSize(int width, int height);
+
 public slots:
 	/// @brief Toggle asynchronous shader compilation. This crashes on some systems.
 	/// @param enabled Pass true to enable. Default is disabled.
@@ -70,18 +79,21 @@ signals:
 	void renderingFinished();
 
 protected:
-	virtual void initializeGL();
-	virtual void resizeGL(int width, int height);
-	virtual void paintGL();
+	virtual void initializeGL() override;
+	virtual void resizeGL(int width, int height) override;
+	virtual void paintGL() override;
 
-	virtual void resizeEvent(QResizeEvent * event);
-	virtual void paintEvent(QPaintEvent * event);
+	//virtual void resizeEvent(QResizeEvent * event) override;
+	virtual void paintEvent(QPaintEvent * event) override;
 
 protected slots:
 	void bufferSwapFinished();
 	void compilationFinished(QOpenGLShader * vertex, QOpenGLShader * fragment, QOpenGLShaderProgram * program, bool success, const QString & errors);
 
 private:
+	void CreateFrameBufferShader();
+	void CreateFrameBuffer();
+
 	static const float m_quadData[20];
 	static const char * m_vertexPrefixGLES2;
 	static const char * m_fragmentPrefixGLES2;
@@ -89,11 +101,21 @@ private:
 	static const char * m_fragmentPrefixGL2;
 	static const char * m_defaultVertexCode;
 	static const char * m_defaultFragmentCode;
+	static const char * m_frameBufferFragmentCode;
 	QString m_vertexPrefix;
 	QString m_fragmentPrefix;
 
 	bool m_mustInitialize;
 	bool m_renderRequested;
+
+	int m_frameBufferWidth;
+	int m_frameBufferHeight;
+	bool m_keepAspect;
+	QOpenGLFramebufferObject * m_frameBufferObject;
+	QOpenGLShader * m_frameBufferVertexShader;
+	QOpenGLShader * m_frameBufferFragmentShader;
+	QOpenGLShaderProgram * m_frameBufferShaderProgram;
+	QMatrix4x4 m_blitMatrix;
 
 	QMatrix4x4 m_projectionMatrix;
 	QMap<QString, QVector2D> m_shaderValues2d;

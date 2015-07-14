@@ -17,8 +17,8 @@ Deck::Deck(QWidget *parent)
 	, m_midiInterface(MIDIInterface::getInstance())
 	, updateInterval("updateInterval", 50, 20, 100)
 	, asynchronousCompilation("asynchronousCompilation", false)
-	, previewWidth("previewWidth", 128, 64, 256)
-	, previewHeight("previewHeight", 72, 36, 144)
+	, frameBufferWidth("frameBufferWidth", 128, 32, 1024)
+	, frameBufferHeight("frameBufferHeight", 72, 32, 1024)
 	, valueA("valueA", 0, 0, 100)
 	, valueB("valueB", 0, 0, 100)
 	, valueC("valueC", 0, 0, 100)
@@ -29,11 +29,14 @@ Deck::Deck(QWidget *parent)
     ui->setupUi(this);
 	QVBoxLayout * deckLayout = (QVBoxLayout*)ui->groupBox->layout();
     //insert code editor
+	//m_codeEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	deckLayout->insertWidget(0, m_codeEdit);
+	//deckLayout->setStretchFactor(m_codeEdit, 1);
     //insert live editor
 	QSurfaceFormat::setDefaultFormat(LiveView::getDefaultFormat());
 	m_liveView = new LiveView(this);
-	m_liveView->setFixedSize(previewWidth, previewHeight);
+	m_liveView->setRenderSize(frameBufferWidth, frameBufferHeight);
+	m_liveView->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	QHBoxLayout * centerLayout = new QHBoxLayout();
 	deckLayout->insertLayout(1, centerLayout);
 	centerLayout->addWidget(m_liveView);
@@ -47,8 +50,8 @@ Deck::Deck(QWidget *parent)
 	//connect other parameters to functions
 	connect(updateInterval.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setUpdateInterval(int)));
 	connect(asynchronousCompilation.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), m_liveView, SLOT(enableAsynchronousCompilation(bool)));
-	connect(previewWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setPreviewWidth(int)));
-	connect(previewHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setPreviewHeight(int)));
+	connect(frameBufferWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFrameBufferWidth(int)));
+	connect(frameBufferHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFrameBufferHeight(int)));
 	//register parameters in MIDI interface
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueA.GetSharedParameter());
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueB.GetSharedParameter());
@@ -169,16 +172,16 @@ void Deck::setUpdateInterval(int interval)
 	updateInterval = interval;
 }
 
-void Deck::setPreviewWidth(int width)
+void Deck::setFrameBufferWidth(int width)
 {
-	m_liveView->setFixedSize(width, previewHeight);
-	previewWidth = width;
+	frameBufferWidth = width;
+	m_liveView->setRenderSize(frameBufferWidth, frameBufferHeight);
 }
 
-void Deck::setPreviewHeight(int height)
+void Deck::setFrameBufferHeight(int height)
 {
-	m_liveView->setFixedSize(previewWidth, height);
-	previewHeight = height;
+	frameBufferHeight = height;
+	m_liveView->setRenderSize(frameBufferWidth, frameBufferHeight);
 }
 
 bool Deck::loadScript(const QString & path)

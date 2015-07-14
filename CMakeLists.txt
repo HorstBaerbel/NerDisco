@@ -89,6 +89,7 @@ set(TARGET_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Parameters.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ParameterScanlineDirection.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ParameterT.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/QAspectRatioLabel.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QTextEditLineNumberArea.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QTextEditStatusArea.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtMIDIButton.h
@@ -122,6 +123,7 @@ set(TARGET_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/NodeRanged.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ParameterQtConnect.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ParameterScanlineDirection.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/QAspectRatioLabel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QTextEditLineNumberArea.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QTextEditStatusArea.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/QtMIDIButton.cpp
@@ -161,6 +163,7 @@ qt5_use_modules(NerDisco Core Gui Widgets Multimedia OpenGL SerialPort Xml)
 #add libraries for RtMidi
 if(MSVC)
     target_link_libraries (NerDisco winmm ${QT_QTMAIN_LIBRARY})
+	set(CMAKE_CREATE_WIN32_EXE "/SUBSYSTEM:WINDOWS /ENTRY:\"mainCRTStartup\"")
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)

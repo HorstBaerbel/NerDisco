@@ -34,8 +34,8 @@ public:
 	void saveSettings(const QString & fileName);
 
 	ParameterInt previewInterval;
-	ParameterInt previewWidth;
-	ParameterInt previewHeight;
+	ParameterInt frameBufferWidth;
+	ParameterInt frameBufferHeight;
 	ParameterInt displayInterval;
 	ParameterInt displayWidth;
 	ParameterInt displayHeight;
@@ -48,10 +48,11 @@ protected slots:
     void updateDeckImages();
 	void grabDeckImages();
 	void updatePreview(const QImage & image);
-	void updateDisplay(const QImage & image);    
+	void updateDisplay(const QImage & image);
 
-	void setFramebufferWidth(int width);
-	void setFramebufferHeight(int height);
+	void setDisplayWidth(int width);
+	void setDisplayHeight(int height);
+	void resizeDisplayLabels();
 
 	void updateAudioDevices();
     void audioInputDeviceSelected();
@@ -84,6 +85,8 @@ protected slots:
 	void displayPortStatusChanged(bool opened);
 	void displaySendStatusChanged(bool sending);
 	void displayFlipChanged(bool horizontal, bool vertical);
+
+	void updateScreenMenu();
 
 	void updateEffectMenu();
 	void updateDeckMenu();

@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "ImageOperations.h"
+#include "QAspectRatioLabel.h"
 #include "QtSpinBoxAction.h"
 #include "ParameterQtConnect.h"
 
@@ -9,6 +10,8 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QGuiApplication>
+#include <QScreen>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -17,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_settingsFileName("settings.xml")
 	, m_midiInterface(MIDIInterface::getInstance())
 	, previewInterval("previewInterval", 33, 20, 100)
-	, previewWidth("previewWidth", 128, 32, 256)
-	, previewHeight("previewHeight", 72, 18, 148)
+	, frameBufferWidth("frameBufferWidth", 128, 32, 1024)
+	, frameBufferHeight("frameBufferHeight", 72, 32, 1024)
 	, displayInterval("displayInterval", 50, 20, 100)
 	, displayWidth("displayWidth", 32, 16, 64)
 	, displayHeight("displayHeight", 16, 8, 32)
@@ -27,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent)
 	, displayGamma("displayGamma", 220, 100, 400)
 	, crossFadeValue("crossFadeValue", 0, 0, 100)
 {
+	//make all QOpenGLWidgets in the application share resources
+	QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+	//create GUI
 	ui->setupUi(this);
 	ui->widgetDeckA->setDeckName("DeckA");
 	ui->widgetDeckB->setDeckName("DeckB");
@@ -66,15 +72,16 @@ MainWindow::MainWindow(QWidget *parent)
 	updateEffectMenu();
 	//connect the parameters in the decks to parameters here
 	ui->widgetDeckA->updateInterval.connect(previewInterval);
-	ui->widgetDeckA->previewWidth.connect(previewWidth);
-	ui->widgetDeckA->previewHeight.connect(previewHeight);
+	ui->widgetDeckA->frameBufferWidth.connect(frameBufferWidth);
+	ui->widgetDeckA->frameBufferHeight.connect(frameBufferHeight);
 	ui->widgetDeckA->updateInterval.connect(previewInterval);
-	ui->widgetDeckB->previewWidth.connect(previewWidth);
-	ui->widgetDeckB->previewHeight.connect(previewHeight);
+	ui->widgetDeckB->frameBufferWidth.connect(frameBufferWidth);
+	ui->widgetDeckB->frameBufferHeight.connect(frameBufferHeight);
 	updateDeckMenu();
 	//connect parameters for preview resolution here
-	connect(previewWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFramebufferWidth(int)));
-	connect(previewHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFramebufferHeight(int)));
+	connect(displayWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setDisplayWidth(int)));
+	connect(displayHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setDisplayHeight(int)));
+	resizeDisplayLabels();
 	//connect parameters in the image converter to parameters here
 	m_displayImageConverter.crossFadeValue.connect(crossFadeValue);
 	m_displayImageConverter.displayBrightness.connect(displayBrightness);
@@ -101,6 +108,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(m_displayThread.baudrate.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(displayBaudrateChanged(int)));
 	connect(m_displayThread.scanlineDirection.GetSharedParameter().get(), SIGNAL(valueChanged(ScanlineDirection)), this, SLOT(displayScanlineDirectionChanged(ScanlineDirection)));
 	m_displayThread.start();
+	//set up output screens
+	//updateScreenMenu();
 	//retrieve settings from XML for all components
 	loadSettings(m_settingsFileName);
 	//set up signal joiner that waits for both render windows being finished with rendering to grab their framebuffers
@@ -134,8 +143,8 @@ void MainWindow::toXML(QDomElement & parent) const
 		element = parent.ownerDocument().createElement("General");
 		parent.appendChild(element);
 	}
-	previewWidth.toXML(element);
-	previewHeight.toXML(element);
+	frameBufferWidth.toXML(element);
+	frameBufferHeight.toXML(element);
 	displayInterval.toXML(element);
 	displayWidth.toXML(element);
 	displayHeight.toXML(element);
@@ -154,8 +163,8 @@ MainWindow & MainWindow::fromXML(const QDomElement & parent)
 		throw std::runtime_error("No general settings found!");
 	}
 	//read settings from element
-	previewWidth.fromXML(element);
-	previewHeight.fromXML(element);
+	frameBufferWidth.fromXML(element);
+	frameBufferHeight.fromXML(element);
 	displayInterval.fromXML(element);
 	displayWidth.fromXML(element);
 	displayHeight.fromXML(element);
@@ -305,24 +314,37 @@ void MainWindow::exitApplication()
 
 //-------------------------------------------------------------------------------------------------
 
-void MainWindow::setFramebufferWidth(int width)
+void MainWindow::setDisplayWidth(int width)
 {
-	if (previewWidth != width)
+	if (displayWidth != width)
 	{
-		previewWidth = width;
-		ui->labelFinalImage->setFixedSize(previewWidth, previewHeight);
-		ui->labelRealImage->setFixedSize(previewWidth, previewHeight);
+		displayWidth = width;
+		resizeDisplayLabels();
 	}
 }
 
-void MainWindow::setFramebufferHeight(int height)
+void MainWindow::setDisplayHeight(int height)
 {
-	if (previewHeight != height)
+	if (displayHeight != height)
 	{
-		previewHeight = height;
-		ui->labelFinalImage->setFixedSize(previewWidth, previewHeight);
-		ui->labelRealImage->setFixedSize(previewWidth, previewHeight);
+		displayHeight = height;
+		resizeDisplayLabels();
 	}
+}
+
+void MainWindow::resizeDisplayLabels()
+{
+	int previewWidth = displayWidth;
+	const float aspect = displayWidth / displayHeight;
+	//divide width as often as needed until above 64px.
+	while (previewWidth < 128)
+	{
+		previewWidth *= 2;
+	}
+	//make widget resize relative to display aspect ratio
+	const QSize previewSize(previewWidth, previewWidth / aspect);
+	ui->labelFinalImage->setFixedSize(previewSize);
+	ui->labelRealImage->setFixedSize(previewSize);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -776,6 +798,20 @@ void MainWindow::displayFlipChanged(bool horizontal, bool vertical)
 
 //-------------------------------------------------------------------------------------------------
 
+void MainWindow::updateScreenMenu()
+{
+	//clear old menu
+	ui->menuScreen->clear();
+	//enumerate desktop windows
+	QList<QScreen*> screens = QGuiApplication::screens();
+	for (auto screen : screens)
+	{
+		QMenu * menu = ui->menuScreen->addMenu(screen->name());
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void MainWindow::updateDeckImages()
 {
 	//check if we're still waiting for one or both views to finish rendering
@@ -882,26 +918,26 @@ void MainWindow::updateDeckMenu()
 	ui->menuSettingsDeckA->addAction(intervalActionA);
 	connectParameter(previewInterval, intervalActionA->control());
 	QtSpinBoxAction * widthActionA = new QtSpinBoxAction("Preview width");
-	widthActionA->setObjectName("previewWidth");
+	widthActionA->setObjectName("frameBufferWidth");
 	ui->menuSettingsDeckA->addAction(widthActionA);
-	connectParameter(previewWidth, widthActionA->control());
+	connectParameter(frameBufferWidth, widthActionA->control());
 	QtSpinBoxAction * heightActionA = new QtSpinBoxAction("Preview height");
-	heightActionA->setObjectName("previewHeight");
+	heightActionA->setObjectName("frameBufferHeight");
 	ui->menuSettingsDeckA->addAction(heightActionA);
-	connectParameter(previewHeight, heightActionA->control());
+	connectParameter(frameBufferHeight, heightActionA->control());
 	//deck B
 	QtSpinBoxAction * intervalActionB = new QtSpinBoxAction("Update interval", "ms");
 	intervalActionB->setObjectName("updateInterval");
 	ui->menuSettingsDeckB->addAction(intervalActionB);
 	connectParameter(previewInterval, intervalActionB->control());
 	QtSpinBoxAction * widthActionB = new QtSpinBoxAction("Preview width");
-	widthActionB->setObjectName("previewWidth");
+	widthActionB->setObjectName("frameBufferWidth");
 	ui->menuSettingsDeckB->addAction(widthActionB);
-	connectParameter(previewWidth, widthActionB->control());
+	connectParameter(frameBufferWidth, widthActionB->control());
 	QtSpinBoxAction * heightActionB = new QtSpinBoxAction("Preview height");
-	heightActionB->setObjectName("previewHeight");
+	heightActionB->setObjectName("frameBufferHeight");
 	ui->menuSettingsDeckB->addAction(heightActionB);
-	connectParameter(previewHeight, heightActionB->control());
+	connectParameter(frameBufferHeight, heightActionB->control());
 }
 
 void MainWindow::loadDeckA(bool /*checked*/)
