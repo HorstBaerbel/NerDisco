@@ -39,9 +39,14 @@ public:
 	ParameterBool triggerA;
 	ParameterBool triggerB;
 
+	ParameterBool autoCycleScripts;
+	ParameterInt autoCycleInterval;
+
+	void setScriptPath(const QString & scriptPath);
     bool loadScript(const QString & path);
     bool saveScript();
     bool saveAsScript(const QString & path = "");
+	static QStringList buildScriptList(const QString & path);
 
 	/// @brief Update view and emit signal renderingFinished when rendering and the asynchronous buffer swap have finished.
 	void render();
@@ -60,6 +65,10 @@ signals:
 	void renderingFinished();
 
 private slots:
+	void setAutoCycleScripts(bool enable);
+	void setAutoCycleInterval(int seconds);
+	void loadNextScript();
+
 	void setUpdateInterval(int interval);
 	void setFrameBufferWidth(int width);
 	void setFrameBufferHeight(int height);
@@ -88,6 +97,9 @@ private:
 	QRegExp m_errorExp;
     QRegExp m_errorExp2;
     QString m_currentScriptPath;
+	QString m_scriptPath;
+
+	QTimer m_cycleTimer;
 
 	MIDIInterface::SPtr m_midiInterface;
 };

@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDirIterator>
 
 
 Deck::Deck(QWidget *parent)
@@ -25,6 +26,8 @@ Deck::Deck(QWidget *parent)
 	, valueD("valueD", 0, 0, 100)
 	, triggerA("triggerA", false)
 	, triggerB("triggerB", false)
+	, autoCycleScripts("autoCycleScripts", false)
+	, autoCycleInterval("autoCycleInterval", 15, 1, 120)
 {
     ui->setupUi(this);
 	QVBoxLayout * deckLayout = (QVBoxLayout*)ui->groupBox->layout();
@@ -52,6 +55,9 @@ Deck::Deck(QWidget *parent)
 	connect(asynchronousCompilation.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), m_liveView, SLOT(enableAsynchronousCompilation(bool)));
 	connect(frameBufferWidth.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFrameBufferWidth(int)));
 	connect(frameBufferHeight.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setFrameBufferHeight(int)));
+	//connect parameters for script autocycling
+	connect(autoCycleScripts.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(setAutoCycleScripts(bool)));
+	connect(autoCycleInterval.GetSharedParameter().get(), SIGNAL(valueChanged(int)), this, SLOT(setAutoCycleInterval(int)));
 	//register parameters in MIDI interface
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueA.GetSharedParameter());
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(valueB.GetSharedParameter());
@@ -115,6 +121,8 @@ void Deck::toXML(QDomElement & parent) const
 	valueD.toXML(element);
 	triggerA.toXML(element);
 	triggerB.toXML(element);
+	autoCycleScripts.toXML(element);
+	autoCycleInterval.toXML(element);
 	parent.appendChild(element);
 }
 
@@ -148,6 +156,8 @@ Deck & Deck::fromXML(const QDomElement & parent)
 			valueD.fromXML(child);
 			triggerA.fromXML(child);
 			triggerB.fromXML(child);
+			autoCycleScripts.fromXML(child);
+			autoCycleInterval.fromXML(child);
 			return *this;
 		}
 	}
@@ -166,6 +176,59 @@ void Deck::setDeckName(const QString & name)
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter(), name);
 }
 
+void Deck::setAutoCycleScripts(bool enable)
+{
+	if (enable)
+	{
+		connect(&m_cycleTimer, SIGNAL(timeout()), this, SLOT(loadNextScript()));
+		m_cycleTimer.setInterval(autoCycleInterval * 1000);
+		m_cycleTimer.start();
+	}
+	else
+	{
+		m_cycleTimer.disconnect(this);
+		m_cycleTimer.stop();
+	}
+}
+
+void Deck::setAutoCycleInterval(int seconds)
+{
+	m_cycleTimer.setInterval(autoCycleInterval * 1000);
+}
+
+void Deck::loadNextScript()
+{
+	if (!m_scriptPath.isEmpty())
+	{
+		QStringList scripts = buildScriptList(m_scriptPath);
+		if (!scripts.isEmpty())
+		{
+			//try to find current script in list of scripts
+			int scriptIndex = scripts.indexOf(m_currentScriptPath);
+			//go to next script and load it
+			scriptIndex = (scriptIndex + 1) % scripts.size();
+			loadScript(scripts.at(scriptIndex));
+		}
+	}
+}
+
+QStringList Deck::buildScriptList(const QString & path)
+{
+	QStringList list;
+	QDirIterator it(path, QStringList() << "*.fs", QDir::Files, QDirIterator::Subdirectories);
+	while (it.hasNext()) {
+		if (it.fileInfo().isDir())
+		{
+			list.append(buildScriptList(it.path()));
+		}
+		else
+		{
+			list << it.next();
+		}
+	}
+	return list;
+}
+
 void Deck::setUpdateInterval(int interval)
 {
 	m_updateTimer.setInterval(interval);
@@ -182,6 +245,11 @@ void Deck::setFrameBufferHeight(int height)
 {
 	frameBufferHeight = height;
 	m_liveView->setRenderSize(frameBufferWidth, frameBufferHeight);
+}
+
+void Deck::setScriptPath(const QString & scriptPath)
+{
+	m_scriptPath = scriptPath;
 }
 
 bool Deck::loadScript(const QString & path)

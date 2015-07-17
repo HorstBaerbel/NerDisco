@@ -7,7 +7,6 @@
 
 #include <QPainter>
 #include <QDir>
-#include <QDirIterator>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QGuiApplication>
@@ -36,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->setupUi(this);
 	ui->widgetDeckA->setDeckName("DeckA");
 	ui->widgetDeckB->setDeckName("DeckB");
+	ui->widgetDeckA->setScriptPath("effects");
+	ui->widgetDeckB->setScriptPath("effects");
 	//connect preview gamma/brightness/contrast/crossfade slider to parameter and register for MIDI interaction
 	connectParameter(crossFadeValue, ui->horizontalSliderCrossfade);
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(crossFadeValue.GetSharedParameter());
@@ -843,23 +844,6 @@ void MainWindow::updateDisplay(const QImage & image)
 	ui->labelRealImage->setPixmap(QPixmap::fromImage(image.scaled(ui->labelFinalImage->size())));
 }
 
-QStringList buildFileList(const QString & path)
-{
-	QStringList list;
-	QDirIterator it(path, QStringList() << "*.fs", QDir::Files, QDirIterator::Subdirectories);
-	while (it.hasNext()) {
-		if (it.fileInfo().isDir())
-		{
-			list.append(buildFileList(it.path()));
-		}
-		else
-		{
-			list << it.next();
-		}
-	}
-	return list;
-}
-
 void MainWindow::updateEffectMenu()
 {
 	//clear entries from deck a and b
@@ -872,7 +856,7 @@ void MainWindow::updateEffectMenu()
 		ui->actionLoadDeckB->menu()->clear();
 	}
 	//find all fs files in the effects folder
-	QStringList list = buildFileList("./effects");
+	QStringList list = Deck::buildScriptList("./effects");
 	if (list.size() > 0)
 	{
 		//sort list first
@@ -904,6 +888,23 @@ void MainWindow::updateEffectMenu()
 		connect(refreshA, SIGNAL(triggered()), this, SLOT(updateEffectMenu()));
 		QAction * refreshB = menuB->addAction(QIcon(":/view-refresh.png"), tr("Refresh"));
 		connect(refreshB, SIGNAL(triggered()), this, SLOT(updateEffectMenu()));
+		//add script cycling actions to menu
+		menuA->addSeparator();
+		QAction * cycleActionA = menuA->addAction(QIcon(":/autocycle_effects.png"), tr("Auto-cycle scripts"));
+		cycleActionA->setCheckable(true);
+		connectParameter(ui->widgetDeckA->autoCycleScripts, cycleActionA);
+		QtSpinBoxAction * intervalActionA = new QtSpinBoxAction("Cycle interval", "s");
+		intervalActionA->setObjectName("autoCycleIntervalA");
+		menuA->addAction(intervalActionA);
+		connectParameter(ui->widgetDeckA->autoCycleInterval, intervalActionA->control());
+		menuB->addSeparator();
+		QAction * cycleActionB = menuB->addAction(QIcon(":/autocycle_effects.png"), tr("Auto-cycle scripts"));
+		cycleActionB->setCheckable(true);
+		connectParameter(ui->widgetDeckB->autoCycleScripts, cycleActionB);
+		QtSpinBoxAction * intervalActionB = new QtSpinBoxAction("Cycle interval", "s");
+		intervalActionB->setObjectName("autoCycleIntervalB");
+		menuB->addAction(intervalActionB);
+		connectParameter(ui->widgetDeckB->autoCycleInterval, intervalActionB->control());
 		//add new menus
 		ui->actionLoadDeckA->setMenu(menuA);
 		ui->actionLoadDeckB->setMenu(menuB);
