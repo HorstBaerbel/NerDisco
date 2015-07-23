@@ -72,11 +72,19 @@ void MIDIWorker::setCaptureState(bool capture)
 			if (!m_deviceName.isEmpty() && m_midiIn->getPortCount() > m_portNumber)
 			{
 				//try to open port and check if it worked
-				m_midiIn->openPort(m_portNumber);
-				if (m_midiIn->isPortOpen())
+				try {
+					m_midiIn->openPort(m_portNumber);
+					if (m_midiIn->isPortOpen())
+					{
+						m_midiIn->setCallback(&MIDIWorker::midiCallback, this);
+						emit captureStateChanged(true);
+					}
+				}
+				catch (RtMidiError rme)
 				{
-					m_midiIn->setCallback(&MIDIWorker::midiCallback, this);
-					emit captureStateChanged(true);
+					m_midiIn->closePort();
+					m_midiIn->setCallback(NULL, NULL);
+					emit captureStateChanged(false);
 				}
 			}
 		}
