@@ -68,7 +68,7 @@ float ConversionWorker::getPeakValue(const QAudioFormat& format)
 }
 
 template <class T>
-QVector<float> converBuffer(const T *buffer, int frames, int channels)
+QVector<float> convertBuffer(const T *buffer, int frames, int channels)
 {
 	QVector<float> values(frames*channels);
 	for (int i = 0; i < frames; ++i) {
@@ -103,27 +103,27 @@ QVector<float> ConversionWorker::converToFloat(const QByteArray & buffer, const 
 		//convert values to float, but keep range
 		if (format.sampleSize() == 32)
 		{
-			values = converBuffer((quint32*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((quint32*)buffer.constData(), frames, channelCount);
 		}
 		else if (format.sampleSize() == 16)
 		{
-			values = converBuffer((quint16*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((quint16*)buffer.constData(), frames, channelCount);
 		}
 		else if (format.sampleSize() == 8)
 		{
-			values = converBuffer((quint8*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((quint8*)buffer.constData(), frames, channelCount);
 		}
 		//normalize values to [-1,1]
 		for (int i = 0; i < values.size(); ++i)
 		{
-			values[i] = qAbs(values.at(i) - 0.5f * peak_value) / (0.5f * peak_value);
+			values[i] = (values.at(i) - 0.5f * peak_value) / (0.5f * peak_value);
 		}
 		break;
 	case QAudioFormat::Float:
 		//convert values to float, but keep range
 		if (format.sampleSize() == 32)
 		{
-			values = converBuffer((float*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((float*)buffer.constData(), frames, channelCount);
 		}
 		//normalize values to [-1,1]
 		for (int i = 0; i < values.size(); ++i)
@@ -135,15 +135,15 @@ QVector<float> ConversionWorker::converToFloat(const QByteArray & buffer, const 
 		//convert values to float, but keep range
 		if (format.sampleSize() == 32)
 		{
-			values = converBuffer((qint32*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((qint32*)buffer.constData(), frames, channelCount);
 		}
 		else if (format.sampleSize() == 16)
 		{
-			values = converBuffer((qint16*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((qint16*)buffer.constData(), frames, channelCount);
 		}
 		if (format.sampleSize() == 8)
 		{
-			values = converBuffer((qint8*)buffer.constData(), frames, channelCount);
+			values = convertBuffer((qint8*)buffer.constData(), frames, channelCount);
 		}
 		//normalize values to [-1,1]
 		for (int i = 0; i < values.size(); ++i)

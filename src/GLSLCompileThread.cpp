@@ -1,5 +1,8 @@
 #include "GLSLCompileThread.h"
 
+#include <QOpenGLFunctions>
+#include <QFile>
+
 
 GLSLCompileThread::GLSLCompileThread(QOpenGLContext * shareContext, QObject * parent)
 	: QThread(parent)
@@ -60,8 +63,19 @@ void GLSLCompileThread::compileInternal(QString vertexCode, QString fragmentCode
 {
 	//try to compile the fragment shader
 	QString errors;
+	QByteArray vertexCode8Bit = vertexCode.toLatin1();
+	QByteArray fragmentCode8Bit = fragmentCode.toLatin1();
+	/*QFile dumpV("code_vertex.bin");
+	dumpV.open(QIODevice::WriteOnly | QIODevice::Truncate);
+	dumpV.write(vertexCode8Bit);
+	dumpV.close();
+	QFile dumpF("code_fragment.bin");
+	dumpF.open(QIODevice::WriteOnly | QIODevice::Truncate);
+	dumpF.write(fragmentCode8Bit);
+	dumpF.close();
+	fragmentCode8Bit.replace(0x0A, "\n");*/
 	QOpenGLShader * fragmentShader = new QOpenGLShader(QOpenGLShader::Fragment);
-	if (!fragmentShader->compileSourceCode(fragmentCode))
+	if (!fragmentShader->compileSourceCode(fragmentCode8Bit))
 	{
 		errors.append(fragmentShader->log());
 		delete fragmentShader;
@@ -71,7 +85,7 @@ void GLSLCompileThread::compileInternal(QString vertexCode, QString fragmentCode
 	{
 		//fragment shader is ok. try compiling vertex shader
 		QOpenGLShader * vertexShader = new QOpenGLShader(QOpenGLShader::Vertex);
-		if (!vertexShader->compileSourceCode(vertexCode))
+		if (!vertexShader->compileSourceCode(vertexCode8Bit))
 		{
 			errors.append(vertexShader->log());
 			delete fragmentShader;

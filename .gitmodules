@@ -1,3 +1,6 @@
 [submodule "rtmidi"]
 	path = rtmidi
 	url = https://github.com/thestk/rtmidi.git
+[submodule "kiss_fft"]
+	path = kiss_fft
+	url = https://github.com/HorstBaerbel/kiss_fft.git

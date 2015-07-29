@@ -89,6 +89,9 @@ void AudioInterface::setCaptureState(bool on)
 	{
 		if (m_audioInput)
 		{
+			//set up processing worker with current sample rate and bit depth
+			m_processingWorker->setSampleRate(m_sampleRate);
+			m_processingWorker->setBitDepth(m_bitDepth);
 			//create buffer receiving data
 			m_inputDevice = new QBuffer(this);
 			m_inputDevice->open(QIODevice::ReadWrite);
@@ -139,15 +142,15 @@ void AudioInterface::setCaptureDevice(const QString & inputName)
 			{
 				//device found. create capture format
 				QAudioFormat format;
-				format.setSampleRate(44100);
+				format.setSampleRate(m_sampleRate);
 				format.setChannelCount(1);
-				format.setSampleSize(8);
+				format.setSampleSize(m_bitDepth);
 				format.setCodec("audio/pcm");
 				format.setByteOrder(QAudioFormat::LittleEndian);
 				format.setSampleType(QAudioFormat::UnSignedInt);
 				if (!info.isFormatSupported(format))
 				{
-					//formast not supported, try sonething similar
+					//format not supported, try something similar
 					format = info.nearestFormat(format);
 				}
 				//create audio input

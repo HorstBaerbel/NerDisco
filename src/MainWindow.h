@@ -61,6 +61,7 @@ protected slots:
     void audioStopTriggered();
     void audioCaptureStateChanged(bool capturing);
     void audioUpdateLevels(const QVector<float> & data, float timeus);
+	void audioUpdateFFT(const QVector<float> & spectrum, int channels, float timeus);
 
 	void updateMidiDevices();
 	void midiInputDeviceSelected();

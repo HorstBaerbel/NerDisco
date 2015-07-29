@@ -53,9 +53,11 @@ protected slots:
 	void inputStateChanged(QAudio::State state);
 
 private:
-	ConversionWorker * m_conversionWorker;
-	ProcessingWorker * m_processingWorker;
+	ConversionWorker * m_conversionWorker = nullptr;
+	ProcessingWorker * m_processingWorker = nullptr;
 	QThread m_workerThread;
-	QAudioInput * m_audioInput;
-	QIODevice * m_inputDevice;
+	QAudioInput * m_audioInput = nullptr;
+	QIODevice * m_inputDevice = nullptr;
+	int m_sampleRate = 44100;
+	int m_bitDepth = 16;
 };

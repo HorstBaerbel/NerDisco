@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionAudioStop, SIGNAL(triggered()), this, SLOT(audioStopTriggered()));
 	connect(m_audioInterface.capturing.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(audioCaptureStateChanged(bool)));
 	connect(&m_audioInterface, SIGNAL(levelData(const QVector<float>&, float)), this, SLOT(audioUpdateLevels(const QVector<float>&, float)));
+	connect(&m_audioInterface, SIGNAL(fftData(const QVector<float> &, int, float)), this, SLOT(audioUpdateFFT(const QVector<float> &, int, float)));
 	updateAudioDevices();
 	//update midi devices
 	connect(m_midiInterface->getDeviceInterface()->captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
@@ -437,6 +438,7 @@ void MainWindow::audioCaptureStateChanged(bool capturing)
 
 void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/)
 {
+	return;
     //qDebug() << "Audio data arrived" << timeus / 1000;
 	QImage image(ui->labelSpectrumImage->size(), QImage::Format_ARGB32);
 	QPainter painter(&image);
@@ -459,6 +461,24 @@ void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/
 	}*/
 	ui->labelSpectrumImage->setPixmap(QPixmap::fromImage(image));
 	ui->labelSpectrumImage->update();
+}
+
+void MainWindow::audioUpdateFFT(const QVector<float> & spectrum, int channels, float timeus)
+{
+	//qDebug() << "Audio data arrived" << timeus / 1000;
+	QImage image(ui->labelSpectrumImage->size(), QImage::Format_ARGB32);
+	QPainter painter(&image);
+	painter.setCompositionMode(QPainter::CompositionMode_Source);
+	painter.fillRect(image.rect(), Qt::black);
+	const float barHeight = image.height() / spectrum.size();
+	for (int i = 0; i < spectrum.size(); ++i)
+	{
+		int y = i * barHeight;
+		//painter.fillRect(x, image.height() - (image.height() * spectrum.at(i)), barWidth, image.height() * spectrum.at(i), Qt::green);
+		painter.fillRect(0, y, std::abs(100 * spectrum.at(i)), y + barHeight, Qt::green);
+	}
+	ui->labelSpectrumImage->setPixmap(QPixmap::fromImage(image));
+	//ui->labelSpectrumImage->update();
 }
 
 //-------------------------------------------------------------------------------------------------
