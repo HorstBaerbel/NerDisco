@@ -14,6 +14,7 @@ License
 ========
 [BSD-2-Clause](http://opensource.org/licenses/BSD-2-Clause), see [LICENSE.md](LICENSE.md).  
 For [RtMidi](https://github.com/thestk/rtmidi), see [the RtMidi readme](https://github.com/thestk/rtmidi/blob/master/readme).  
+For [KissFFT](https://github.com/HorstBaerbel/kiss_fft), which is a clone of [v1.3.0 from SourceForge](http://sourceforge.net/projects/kissfft/), see [COPYING](https://github.com/HorstBaerbel/kiss_fft/blob/master/COPYING).
 Some of the icons are from or are based on icons from the [Tango Icon Library](http://tango.freedesktop.org/Tango_Icon_Library) v0.8.90, which seems to be PD. Thanks a bunch!
 
 Building
