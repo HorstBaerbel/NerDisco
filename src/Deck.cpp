@@ -13,6 +13,7 @@ Deck::Deck(QWidget *parent)
 	, m_codeEdit(new CodeEdit())
 	, m_scriptTime(QTime::currentTime())
 	, m_scriptModified(false)
+	, m_commentExp("^//(\\w+)\\s*=\\s*(\\S+)$")
 	, m_errorExp("\\b(ERROR|Error|error)\\b:\\s?(\\d+):\\s?(\\d+):\\s?(.*)\\n")
 	, m_errorExp2("\\s?(\\d+):(\\d+)\\(\\d+\\):\\s?(ERROR|Error|error):\\s?(.*)\\n")
 	, m_midiInterface(MIDIInterface::getInstance())
@@ -66,6 +67,7 @@ Deck::Deck(QWidget *parent)
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerA.GetSharedParameter());
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(triggerB.GetSharedParameter());
 	//set up regular expression for error parsing
+	m_commentExp.setMinimal(true);
 	m_errorExp.setMinimal(true);
 	m_errorExp2.setMinimal(true);
     //when the script changes either sucessfully or has errors, we get notified
@@ -141,6 +143,13 @@ Deck & Deck::fromXML(const QDomElement & parent)
 		if (!child.isNull() && child.attribute("name") == objectName())
 		{
 			//found. read and apply settings
+			valueA.fromXML(child);
+			valueB.fromXML(child);
+			valueC.fromXML(child);
+			valueD.fromXML(child);
+			triggerA.fromXML(child);
+			triggerB.fromXML(child);
+			//read script after settings, so values defined in scripts will be set
  			loadScript(child.attribute("currentScriptPath"));
 			scriptModified(child.attribute("scriptModified", "0").toUInt());
 			//only read text if the script has been modified, else it is the same as the file already loaded...
@@ -150,12 +159,6 @@ Deck & Deck::fromXML(const QDomElement & parent)
 			}
 			updateInterval.fromXML(child);
 			asynchronousCompilation.fromXML(child);
-			valueA.fromXML(child);
-			valueB.fromXML(child);
-			valueC.fromXML(child);
-			valueD.fromXML(child);
-			triggerA.fromXML(child);
-			triggerB.fromXML(child);
 			autoCycleScripts.fromXML(child);
 			autoCycleInterval.fromXML(child);
 			return *this;
@@ -258,7 +261,8 @@ bool Deck::loadScript(const QString & path)
     if (file.open(QFile::ReadOnly))
     {
         //set script in editor. compilation will run automatically
-        m_codeEdit->setPlainText(file.readAll());
+		QByteArray data = file.readAll();
+        m_codeEdit->setPlainText(data);
         m_codeEdit->document()->setModified(false);
         m_currentScriptPath = path;
         if (!m_currentScriptPath.startsWith(":/"))
@@ -266,6 +270,18 @@ bool Deck::loadScript(const QString & path)
             m_currentScriptPath = QDir::current().relativeFilePath(path);
         }
 		ui->groupBox->setTitle(objectName() + " (" + m_currentScriptPath + ")");
+		//find any variables in comments
+		QList<QByteArray> lines = data.split(QChar::LineFeed);
+		for (auto line : lines)
+		{
+			if (m_commentExp.indexIn(line) >= 0)
+			{
+				//get variable name and value from line
+				QString variable = m_commentExp.cap(1);
+				QString value = m_commentExp.cap(2);
+				setScriptParameter(variable, value);
+			}
+		}
         return true;
     }
     return false;
@@ -382,6 +398,54 @@ void Deck::scriptHasErrors(const QString & errors)
 	}
 	list.append(error);
 	m_codeEdit->setErrors(list);
+}
+
+void Deck::setScriptParameter(ParameterBool parameter, const QString & value)
+{
+	bool ok = false;
+	bool bValue = value.toUInt(&ok);
+	if (ok)
+	{
+		parameter = bValue;
+	}
+}
+
+void Deck::setScriptParameter(ParameterInt parameter, const QString & value)
+{
+	bool ok = false;
+	float fValue = value.toFloat(&ok);
+	if (ok)
+	{
+		parameter = fValue * 100;
+	}
+}
+
+void Deck::setScriptParameter(const QString & name, const QString & value)
+{
+	if (name == valueA.name())
+	{
+		setScriptParameter(valueA, value);
+	}
+	else if (name == valueB.name())
+	{
+		setScriptParameter(valueB, value);
+	}
+	else if (name == valueC.name())
+	{
+		setScriptParameter(valueC, value);
+	}
+	else if (name == valueD.name())
+	{
+		setScriptParameter(valueD, value);
+	}
+	else if (name == triggerA.name())
+	{
+		setScriptParameter(triggerA, value);
+	}
+	else if (name == triggerB.name())
+	{
+		setScriptParameter(triggerB, value);
+	}
 }
 
 void Deck::updateScriptValues()

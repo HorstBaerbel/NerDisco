@@ -81,10 +81,17 @@ private slots:
 	void scriptCompiledOk();
 	void scriptHasErrors(const QString & errors);
 
+	void setScriptParameter(ParameterBool parameter, const QString & value);
+	void setScriptParameter(ParameterInt parameter, const QString & value);
+	void setScriptParameter(const QString & name, const QString & value);
 	void updateScriptValues();
     void updateTime();
 
 private:
+	QRegExp m_commentExp;
+	QRegExp m_errorExp;
+	QRegExp m_errorExp2;
+
     Ui::CodeDeck *ui;
     LiveView * m_liveView;
     CodeEdit * m_codeEdit;
@@ -94,8 +101,6 @@ private:
     QString m_currentText;
 	bool m_scriptModified;
     QTimer m_editTimer;
-	QRegExp m_errorExp;
-    QRegExp m_errorExp2;
     QString m_currentScriptPath;
 	QString m_scriptPath;
 

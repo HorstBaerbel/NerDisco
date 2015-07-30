@@ -63,6 +63,14 @@ void main() {
 	gl_FragColor = vec4(r, g, b, 1.0);
 }
 ```
+You can also set all built-in script variables (valueA-D, triggerA+B) to a custom value when the script is loaded. For that add a comment on top of the file. The line:  
+```
+//valueA = 0.5
+
+uniform float valueA;
+...
+```
+will set valueA to 0.5. This is useful to make an effect "look good" when loading it.
 NerDisco dynamically adds the proper #version and precision statements for OpenGL or OpenGLES2 for you, depending on the OpenGL backend used when starting the software.  
 If you want to learn about GLSL I recommend the [Lighthouse3d GLSL tutorial](http://www.lighthouse3d.com/tutorials/glsl-tutorial/) and the [GLSL cheat sheet](http://mew.cx/glsl_quickref.pdf).
 
