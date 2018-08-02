@@ -47,13 +47,13 @@ MainWindow::MainWindow(QWidget *parent)
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(displayContrast.GetSharedParameter());
 	m_midiInterface->getParameterMapping()->registerMIDIParameter(displayGamma.GetSharedParameter());
 	//update audio devices
-	connect(m_audioInterface.captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(audioInputDeviceChanged(const QString &)));
+/*	connect(m_audioInterface.captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(audioInputDeviceChanged(const QString &)));
 	connect(ui->actionAudioRecord, SIGNAL(triggered(bool)), this, SLOT(audioRecordTriggered(bool)));
 	connect(ui->actionAudioStop, SIGNAL(triggered()), this, SLOT(audioStopTriggered()));
 	connect(m_audioInterface.capturing.GetSharedParameter().get(), SIGNAL(valueChanged(bool)), this, SLOT(audioCaptureStateChanged(bool)));
 	connect(&m_audioInterface, SIGNAL(levelData(const QVector<float>&, float)), this, SLOT(audioUpdateLevels(const QVector<float>&, float)));
 	connect(&m_audioInterface, SIGNAL(fftData(const QVector<float> &, int, float)), this, SLOT(audioUpdateFFT(const QVector<float> &, int, float)));
-	updateAudioDevices();
+	updateAudioDevices();*/
 	//update midi devices
 	connect(m_midiInterface->getDeviceInterface()->captureDevice.GetSharedParameter().get(), SIGNAL(valueChanged(const QString &)), this, SLOT(midiInputDeviceChanged(const QString &)));
 	connect(ui->actionMidiStart, SIGNAL(triggered(bool)), this, SLOT(midiStartTriggered(bool)));
@@ -129,7 +129,7 @@ MainWindow::~MainWindow()
 {
 	//stop display refresh and audio capturing
 	m_displayTimer.stop();
-	m_audioInterface.capturing = false;
+//	m_audioInterface.capturing = false;
 	//save settings to XML
 	saveSettings(m_settingsFileName);
 	delete ui;
@@ -205,7 +205,7 @@ void MainWindow::loadSettings(const QString & fileName)
 			}
 			try
 			{
-				m_audioInterface.fromXML(root);
+//				m_audioInterface.fromXML(root);
 			}
 			catch (std::runtime_error e)
 			{
@@ -287,7 +287,7 @@ void MainWindow::saveSettings(const QString & fileName)
 		{
 			m_displayImageConverter.toXML(root);
 			m_displayThread.toXML(root);
-			m_audioInterface.toXML(root);
+//			m_audioInterface.toXML(root);
 			m_midiInterface->getDeviceInterface()->toXML(root);
 			m_midiInterface->getParameterMapping()->toXML(root);
 			ui->widgetDeckA->toXML(root);
@@ -350,7 +350,7 @@ void MainWindow::resizeDisplayLabels()
 }
 
 //-------------------------------------------------------------------------------------------------
-
+/*
 void MainWindow::updateAudioDevices()
 {
 	//clear old menu
@@ -436,7 +436,7 @@ void MainWindow::audioCaptureStateChanged(bool capturing)
 	ui->actionAudioRecord->setChecked(capturing);
 }
 
-void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/)
+void MainWindow::audioUpdateLevels(const QVector<float> & data, float) //timeus)
 {
 	return;
     //qDebug() << "Audio data arrived" << timeus / 1000;
@@ -446,7 +446,7 @@ void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/
 	painter.fillRect(image.rect(), Qt::black);
 	painter.fillRect(QRect(0, 0, image.width() / 2, image.height() * data.at(0)), Qt::green);
 	//painter.fillRect(QRect(image.width() / 2, 0, image.width() / 2, image.height() * data.at(1)), Qt::green);
-	/*const int sampleCount = data.size();
+	const int sampleCount = data.size();
 	const int samplesPerPixel = (float)sampleCount / (float)image.width() < 0 ? 1 : (float)sampleCount / (float)image.width();
 	for (int x = 0; x < image.width(); ++x)
 	{
@@ -458,7 +458,7 @@ void MainWindow::audioUpdateLevels(const QVector<float> & data, float /*timeus*/
 		}
 		value /= (float)samplesPerPixel;
 		image.setPixel(x, value * image.height(), 0xFF0000FF);
-	}*/
+	}
 	ui->labelSpectrumImage->setPixmap(QPixmap::fromImage(image));
 	ui->labelSpectrumImage->update();
 }
@@ -480,7 +480,7 @@ void MainWindow::audioUpdateFFT(const QVector<float> & spectrum, int channels, f
 	ui->labelSpectrumImage->setPixmap(QPixmap::fromImage(image));
 	//ui->labelSpectrumImage->update();
 }
-
+*/
 //-------------------------------------------------------------------------------------------------
 
 void MainWindow::updateMidiDevices()

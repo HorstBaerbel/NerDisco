@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.9)
+cmake_minimum_required (VERSION 3.1.0)
  
 project(NerDisco)
 
@@ -7,8 +7,8 @@ project(NerDisco)
 
 # Tell CMake to run moc when necessary:
 set(CMAKE_AUTOMOC ON)
-# Tell CMake to run uic when necessary:
-#set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 # As moc files are generated in the binary dir, tell CMake
 # to always look for includes there:
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -18,16 +18,29 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5SerialPort REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
+# find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5OpenGL REQUIRED)
 find_package(Qt5Xml REQUIRED)
 
 #-------------------------------------------------------------------------------
 #set up compiler flags and executable names
 
-#set(CMAKE_CXX_FLAGS "-fPIC") #or -fPIE
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-if(MSVC)
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+    #set up compiler flags for Clang
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2") #support C++11 for std::, optimize
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -O2") #optimize
+elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
+    #check for G++ 4.7+
+    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE G++_VERSION)
+    if (G++_VERSION VERSION_LESS 5.4)
+            message(SEND_ERROR "You need at least G++ 4.7 to compile ${PROJECT_NAME}!")
+    endif()
+    #set up compiler flags for GCC
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2") #support C++11 for std::, optimize
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -O2") #optimize
+elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "MSVC")
     set(CMAKE_DEBUG_POSTFIX "d")
     add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
     add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
@@ -35,15 +48,13 @@ if(MSVC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP") #multi-processor compilation
 endif()
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    #check for G++ 4.7+
-    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE G++_VERSION)
-    if (G++_VERSION VERSION_LESS 4.7)
-            message(SEND_ERROR "You need at least G++ 4.7 to compile NerDisco!")
-    endif()
-    #set up compiler flags for GCC
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2") #support C++11 for std::, optimize
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s") #strip binary
+
+if(MSVC)
+    set(CMAKE_DEBUG_POSTFIX "d")
+    add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
+    add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP") #multi-processor compilation
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP") #multi-processor compilation
 endif()
 
 #-------------------------------------------------------------------------------
@@ -63,9 +74,9 @@ endif()
 #define basic sources and headers
 
 set(TARGET_HEADERS
-	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioConversion.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioInterface.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioProcessing.h
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioConversion.h
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioInterface.h
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioProcessing.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/CodeEdit.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/ColorOperations.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Deck.h
@@ -100,9 +111,9 @@ set(TARGET_HEADERS
 )
 
 set(TARGET_SOURCES
-	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioConversion.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioInterface.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioProcessing.cpp
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioConversion.cpp
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioInterface.cpp
+#	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioProcessing.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/CodeEdit.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Deck.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DisplayImageConverter.cpp
@@ -157,16 +168,16 @@ set(LIBRARY_OUTPUT_PATH ${dir} CACHE PATH "Build directory" FORCE)
 #-------------------------------------------------------------------------------
 #define target
 
-add_executable(NerDisco ${TARGET_SOURCES} ${TARGET_HEADERS} ${RESOURCE_ADDED} ${FORMS_ADDED})
-qt5_use_modules(NerDisco Core Gui Widgets Multimedia OpenGL SerialPort Xml)
+add_executable(${PROJECT_NAME} ${TARGET_SOURCES} ${TARGET_HEADERS} ${RESOURCE_ADDED} ${FORMS_ADDED})
+target_link_libraries(${PROJECT_NAME} ${Qt5Widgets_LIBRARIES} Qt5::OpenGL Qt5::SerialPort Qt5::Xml)
 
 #add libraries for RtMidi
 if(MSVC)
-    target_link_libraries (NerDisco winmm ${QT_QTMAIN_LIBRARY})
+    target_link_libraries (${PROJECT_NAME} winmm ${QT_QTMAIN_LIBRARY})
 	set(CMAKE_CREATE_WIN32_EXE "/SUBSYSTEM:WINDOWS /ENTRY:\"mainCRTStartup\"")
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    target_link_libraries (NerDisco ${CMAKE_THREAD_LIBS_INIT} ${ALSA_LIBRARY})
+    target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} ${ALSA_LIBRARY})
 endif()
 

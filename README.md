@@ -17,21 +17,32 @@ For [RtMidi](https://github.com/thestk/rtmidi), see [the RtMidi readme](https://
 For [KissFFT](https://github.com/HorstBaerbel/kiss_fft), which is a clone of [v1.3.0 from SourceForge](http://sourceforge.net/projects/kissfft/), see [COPYING](https://github.com/HorstBaerbel/kiss_fft/blob/master/COPYING).
 Some of the icons are from or are based on icons from the [Tango Icon Library](http://tango.freedesktop.org/Tango_Icon_Library) v0.8.90, which seems to be PD. Thanks a bunch!
 
+Handling the repository
+========
+You can get the repository and all its submodules with:   
+<pre>
+git clone https://github.com/HorstBaerbel/NerDisco.git --recurse-submodules
+</pre>
+To update the whole repository including submodules, use:  
+<pre>
+git pull --recurse-submodules
+</pre>
+
 Building
 ========
 **Use CMake**
 
 <pre>
 cd NerDisco
-cmake .
+cmake . -DCMAKE_PREFIX_PATH=<YOUR_PATH_TO>/lib/cmake/Qt5
 make
 </pre>
 
 The Qt framework version 5.4 or higher is required for OpenGL, GUI, audio and serial port functionality. You might need to additionally install the "qtmultimedia5-dev" package for audio input support.
 If NerDisco does not find any audio devices your system might lack the [Qt5 multimedia plugins](http://stackoverflow.com/questions/21939759/qaudiodeviceinfo-finds-no-default-audio-device-on-ubuntu). Install the "libqt5multimedia5-plugins" package.
 Make sure your CMAKE_PREFIX_PATH is set to the proper Qt installation or use the CMake GUI to configure (actually simpler).  
-[RtMidi](https://github.com/thestk/rtmidi) is used for MIDI input support (thank you!). It should come to you as an external GIT submodule in the "\rtmidi" subfolder. To get it, do a "git submodule init; git submodule update". 
-RtMidi uses Windows Multimedia (winmm) on Windows. On Linux ALSA (asound, pthread) is used. So these are needed too. 
+[RtMidi](https://github.com/thestk/rtmidi) is used for MIDI input support (thank you!). It should come to you as an external GIT submodule in the "\rtmidi" subfolder.  
+RtMidi uses Windows Multimedia (winmm) on Windows. On Linux ALSA (asound, pthread) is used. So these are needed too.   
 G++ 4.7 or higher (for C++11) will be needed to compile NerDisco. For installing G++ 4.7 see [here](http://lektiondestages.blogspot.de/2013/05/installing-and-switching-gccg-versions.html).
 
 Overview

@@ -2,7 +2,7 @@
 
 #include "Deck.h"
 #include "DisplayThread.h"
-#include "AudioInterface.h"
+//#include "AudioInterface.h"
 #include "SignalJoiner.h"
 #include "MIDIInterface.h"
 #include "MIDIParameterMapping.h"
@@ -54,14 +54,14 @@ protected slots:
 	void setDisplayHeight(int height);
 	void resizeDisplayLabels();
 
-	void updateAudioDevices();
-    void audioInputDeviceSelected();
-    void audioInputDeviceChanged(const QString & name);
-    void audioRecordTriggered(bool checked);
-    void audioStopTriggered();
-    void audioCaptureStateChanged(bool capturing);
-    void audioUpdateLevels(const QVector<float> & data, float timeus);
-	void audioUpdateFFT(const QVector<float> & spectrum, int channels, float timeus);
+//	void updateAudioDevices();
+//    void audioInputDeviceSelected();
+//    void audioInputDeviceChanged(const QString & name);
+//    void audioRecordTriggered(bool checked);
+//    void audioStopTriggered();
+//    void audioCaptureStateChanged(bool capturing);
+//    void audioUpdateLevels(const QVector<float> & data, float timeus);
+//	void audioUpdateFFT(const QVector<float> & spectrum, int channels, float timeus);
 
 	void updateMidiDevices();
 	void midiInputDeviceSelected();
@@ -113,7 +113,7 @@ private:
 
 	DisplayImageConverter m_displayImageConverter;
     DisplayThread m_displayThread;
-    AudioInterface m_audioInterface;
+//    AudioInterface m_audioInterface;
 	SignalJoiner m_signalJoiner;
 	MIDIInterface::SPtr m_midiInterface;
 };
